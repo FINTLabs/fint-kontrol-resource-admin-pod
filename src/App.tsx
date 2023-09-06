@@ -1,13 +1,18 @@
 // App.tsx
 import React from 'react';
-import { MyContextProvider } from './data/MyContext';
+import theme from './template/theme';
+
+import { DataProvider } from './data/DataContext';
 import Main from './features/Main';
+import {ThemeProvider} from "@mui/material";
 
 function AppWrapper() {
     return (
-        <MyContextProvider>
-            <Main />
-        </MyContextProvider>
+        <ThemeProvider theme={theme}>
+            <DataProvider>
+                <Main />
+            </DataProvider>
+        </ThemeProvider>
     );
 }
 
