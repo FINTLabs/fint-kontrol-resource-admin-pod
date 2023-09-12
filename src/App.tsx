@@ -2,15 +2,21 @@
 import React from 'react';
 import theme from './template/theme';
 
-import { DataProvider } from './data/DataContext';
+import { DataProvider } from './data/RoleContext';
 import Main from './features/Main';
 import {ThemeProvider} from "@mui/material";
+import {OrgUnitsProvider} from "./data/OrgUnitContext";
+import {UserProvider} from "./data/UserContext";
 
 function AppWrapper() {
     return (
         <ThemeProvider theme={theme}>
             <DataProvider>
-                <Main />
+                <UserProvider>
+                <OrgUnitsProvider>
+                    <Main />
+                </OrgUnitsProvider>
+                </UserProvider>
             </DataProvider>
         </ThemeProvider>
     );

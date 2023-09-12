@@ -1,6 +1,6 @@
-import Data from "./types";
+import {Role} from "./types";
 
-const initialData: Data[] = [
+const initialData: Role[] = [
     {
         Id: 1,
         Feature: "/api/users",

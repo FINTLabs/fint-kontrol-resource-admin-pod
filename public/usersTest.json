@@ -1,0 +1,43 @@
+{
+  "totalItems": 5,
+  "members": [
+    {
+      "id": 100,
+      "firstName": "John",
+      "lastName": "Brustad",
+      "userType": "EMPLOYEE",
+      "userName": null
+    },
+    {
+      "id": 104,
+      "firstName": "Anne",
+      "lastName": "Pettersen",
+      "userType": "EMPLOYEE",
+      "userName": null
+    },
+    {
+      "id": 92,
+      "firstName": "Tove",
+      "lastName": "Hansen",
+      "userType": "EMPLOYEE",
+      "userName": null
+    },
+    {
+      "id": 97,
+      "firstName": "Terje",
+      "lastName": "Nordby",
+      "userType": "EMPLOYEE",
+      "userName": null
+    },
+    {
+      "id": 86,
+      "firstName": "Martin",
+      "lastName": "Lund",
+      "userType": "EMPLOYEE",
+      "userName": null
+    }
+  ],
+  "size": 15,
+  "totalPages": 1,
+  "currentPage": 0
+}

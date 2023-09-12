@@ -4,12 +4,13 @@ import style from '../template/style';
 
 import PermissionTab from './PermissionTab';
 import ResourcesTab from './ResourcesTab';
-import { useData } from '../data/DataContext';
-import TestTable from './TestTable'
+import { useData } from '../data/RoleContext';
+import { useUser } from '../data/UserContext';
 
 const Main = () => {
     const [selectedTab, setSelectedTab] = useState<number>(0);
     const data = useData();
+
 
     const handleTabChange = (event: React.ChangeEvent<{}>, newValue: number) => {
         setSelectedTab(newValue);
@@ -25,7 +26,6 @@ const Main = () => {
             >
                 Applikasjonsadministrator
             </Typography>
-            {/*<pre>{JSON.stringify(data, null, 2)}</pre>*/}
 
             <Tabs
                 value={selectedTab}
@@ -40,22 +40,16 @@ const Main = () => {
             >
                 <Tab label="Tildel rettigheter" />
                 <Tab label="Definer rolle" />
-                <Tab label="Testing Stuff" />
             </Tabs>
             <TabPanel value={selectedTab} index={0} >
                 <Box>
-                    <ResourcesTab permissions={data} />
+                    Follow the steps to create access rights for a user.
+                    <ResourcesTab  />
                 </Box>
             </TabPanel>
             <TabPanel value={selectedTab} index={1}>
                 <Box>
-                    <PermissionTab permissions={data} />
-                </Box>
-            </TabPanel>
-
-            <TabPanel value={selectedTab} index={2}>
-                <Box>
-                    <TestTable />
+                    <PermissionTab permissions={data}/>
                 </Box>
             </TabPanel>
 

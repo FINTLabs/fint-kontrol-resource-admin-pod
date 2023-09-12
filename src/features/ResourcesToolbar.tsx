@@ -5,14 +5,14 @@ import {Button, FormControl, InputLabel, MenuItem, Select, Tooltip} from "@mui/m
 import {Apartment} from "@mui/icons-material";
 import style from "../template/style";
 
-interface CustomTableToolbarProps {
-    onShowDialog: (event: React.MouseEvent<unknown>) => void;
+interface ToolbarProps {
+    selectedAccessRoleId: string;
+    setSelectedAccessRoleId: (value: string) => void;
+    setShowModal: (value: boolean) => void;
 }
 
-function CustomTableToolbar(props:CustomTableToolbarProps) {
-    const { onShowDialog } = props;
-    // const { isAggregate, setIsAggregate } = useContext(RolesContext);
-    // const [showLayers, setShowLayers] = useState(true);
+function ResourcesToolbar({ selectedAccessRoleId, setSelectedAccessRoleId, setShowModal }: ToolbarProps)  {
+
 
     return (
         <Toolbar id={'rolesToolbar'}
@@ -37,8 +37,8 @@ function CustomTableToolbar(props:CustomTableToolbarProps) {
                 </InputLabel>
                 <Select
                     id="accessRoleSelect"
-                    // value={selectedAccessRoleId}
-                    // onChange={(e) => setSelectedAccessRoleId(e.target.value as string)}
+                    //value={selectedAccessRoleId}
+                    onChange={(e) => setSelectedAccessRoleId(e.target.value as string)}
                     label={" role "}
                 >
                     <MenuItem value="">
@@ -56,7 +56,9 @@ function CustomTableToolbar(props:CustomTableToolbarProps) {
                     id={'selectUnitsIcon'}
                     variant="outlined"
                     endIcon={<Apartment/>}
-                    onClick={onShowDialog}
+                    onClick={() => {
+                        setShowModal(true)
+                    }}
                     sx={style.changeOrgButton}
                     style={{ fontSize: '1em' }}
                 >
@@ -67,4 +69,4 @@ function CustomTableToolbar(props:CustomTableToolbarProps) {
     );
 }
 
-export default CustomTableToolbar;
+export default ResourcesToolbar;

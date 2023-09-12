@@ -10,15 +10,41 @@ import {
     Checkbox,
 } from '@mui/material';
 import PermissionsToolbar from './PermissionsToolbar';
-import Data from '../data/types';
+import { Role } from '../data/types';
 
 interface Props {
-    permissions: Data[];
+    permissions: Role[];
 }
 
 interface Availability {
     [key: string]: boolean;
 }
+
+const BlankTable = () => {
+    // Create an array to generate 4 empty rows and 4 empty cells
+    const blankData = Array.from({ length: 5 }, (_, rowIdx) => (
+        <TableRow key={rowIdx} >
+            {Array.from({ length: 5 }, (_, colIdx) => (
+                <TableCell key={colIdx} sx={{padding:3.5}}></TableCell>
+            ))}
+        </TableRow>
+    ));
+
+    return (
+        <Table>
+            <TableHead>
+                <TableRow>
+                    <TableCell>Feature</TableCell>
+                    <TableCell>GET</TableCell>
+                    <TableCell>POST</TableCell>
+                    <TableCell>PUT</TableCell>
+                    <TableCell>DELETE</TableCell>
+                </TableRow>
+            </TableHead>
+            <TableBody>{blankData}</TableBody>
+        </Table>
+    );
+};
 
 const PermissionSelector = ({ permissions }: Props) => {
     const [selectedAccessRoleId, setSelectedAccessRoleId] = useState<string>('');
@@ -29,8 +55,8 @@ const PermissionSelector = ({ permissions }: Props) => {
         : [];
 
     // Extract unique features and operations
-    const features = Array.from(new Set(filteredPermissions.map((item: Data) => item.Feature)));
-    const operations = Array.from(new Set(filteredPermissions.map((item: Data) => item.Operation)));
+    const features = Array.from(new Set(filteredPermissions.map((item: Role) => item.Feature)));
+    const operations = Array.from(new Set(filteredPermissions.map((item: Role) => item.Operation)));
 
     // Create a data structure to store availability
     const availabilityData: { feature: string; availability: Availability }[] = features.map(
@@ -38,7 +64,7 @@ const PermissionSelector = ({ permissions }: Props) => {
             const availability: Availability = {};
             operations.forEach((operation: string) => {
                 availability[operation] = filteredPermissions.some(
-                    (item: Data) => item.Feature === feature && item.Operation === operation
+                    (item: Role) => item.Feature === feature && item.Operation === operation
                 );
             });
 
@@ -64,7 +90,7 @@ const PermissionSelector = ({ permissions }: Props) => {
                 hasUpdates={changeCount}
             />
 
-            {selectedAccessRoleId && (
+            {selectedAccessRoleId ? (
                 <Table>
                     <TableHead>
                         <TableRow>
@@ -95,6 +121,8 @@ const PermissionSelector = ({ permissions }: Props) => {
                         ))}
                     </TableBody>
                 </Table>
+            ) : (
+                <BlankTable /> // Render the blank table when no accessRoleId is selected
             )}
         </TableContainer>
     );
