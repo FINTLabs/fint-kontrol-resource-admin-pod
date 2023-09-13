@@ -3,14 +3,17 @@ import {FormControl, InputLabel, Select, MenuItem, IconButton, Button} from '@mu
 import Typography from "@mui/material/Typography";
 import SaveIcon from "@mui/icons-material/Save";
 import Toolbar from "@mui/material/Toolbar";
+import { useRole } from '../data/RoleContext'; // Replace with the actual import path to your data context
 
 interface ToolbarProps {
-    selectedAccessRoleId: string;
-    setSelectedAccessRoleId: (value: string) => void;
-    hasUpdates: number;
+    selectedAccessRoleId: string,
+    setSelectedAccessRoleId: (value: string) => void,
+    hasUpdates: number
 }
 
-const PermissionsToolbar = ({ selectedAccessRoleId, setSelectedAccessRoleId, hasUpdates }: ToolbarProps) => {
+const PermissionsToolbar = ({ selectedAccessRoleId, setSelectedAccessRoleId , hasUpdates }: ToolbarProps) => {
+    //const { selectedAccessRoleId, setSelectedAccessRoleId } = useRole();
+
     return (
         <Toolbar id={'rolesToolbar'}
                  sx={{
@@ -18,7 +21,6 @@ const PermissionsToolbar = ({ selectedAccessRoleId, setSelectedAccessRoleId, has
                      pr: { xs: 1, sm: 1 },
                  }}
         >
-
 
             {hasUpdates > 0 ? (
                 <Typography

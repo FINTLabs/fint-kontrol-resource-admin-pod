@@ -36,7 +36,7 @@ function UnitSelectDialog({ open, onClose }: DialogUnitProps) {
     };
 
     const handleSave = () => {
-        // Convert selected IDs into OrgUnit objects
+        // todo: use context here not the state
         const selectedOrgUnits = selected.map((id) =>
             orgUnitsData?.orgUnits.find((unit) => unit.organisationUnitId === id)
         ).filter(Boolean) as OrgUnit[];

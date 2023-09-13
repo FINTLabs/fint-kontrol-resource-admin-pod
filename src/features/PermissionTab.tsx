@@ -11,10 +11,9 @@ import {
 } from '@mui/material';
 import PermissionsToolbar from './PermissionsToolbar';
 import { Role } from '../data/types';
+import { useRole } from '../data/RoleContext'; // Replace with the actual import path to your data context
 
-interface Props {
-    permissions: Role[];
-}
+
 
 interface Availability {
     [key: string]: boolean;
@@ -46,12 +45,13 @@ const BlankTable = () => {
     );
 };
 
-const PermissionSelector = ({ permissions }: Props) => {
-    const [selectedAccessRoleId, setSelectedAccessRoleId] = useState<string>('');
+const PermissionSelector = () => {
     const [changeCount, setChangeCount] = useState<number>(0);
+    const [localSelectedAccessRoleId, setLocalSelectedAccessRoleId] = useState<string>('');
+    const { roles } = useRole();
 
-    const filteredPermissions = selectedAccessRoleId
-        ? permissions.filter((permission) => permission.AccessRoleId === selectedAccessRoleId)
+    const filteredPermissions = localSelectedAccessRoleId
+        ? roles.filter((roles) => roles.AccessRoleId === localSelectedAccessRoleId)
         : [];
 
     // Extract unique features and operations
@@ -85,12 +85,12 @@ const PermissionSelector = ({ permissions }: Props) => {
     return (
         <TableContainer component={Paper} sx={{ minWidth: 1040, maxWidth: 1536 }} id={'userTable'}>
             <PermissionsToolbar
-                selectedAccessRoleId={selectedAccessRoleId}
-                setSelectedAccessRoleId={setSelectedAccessRoleId}
+                selectedAccessRoleId={localSelectedAccessRoleId}
+                setSelectedAccessRoleId={setLocalSelectedAccessRoleId}
                 hasUpdates={changeCount}
             />
 
-            {selectedAccessRoleId ? (
+            {localSelectedAccessRoleId ? (
                 <Table>
                     <TableHead>
                         <TableRow>

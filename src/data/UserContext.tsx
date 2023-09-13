@@ -1,21 +1,19 @@
 import React, { createContext, useContext, useState, useEffect } from 'react';
-import { UserPage } from './types';
+import { UserPage, User } from './types';
 
-// Create a context
 interface UserContextType {
     UserData: UserPage | null;
-    selectedUser: UserPage | null;
+    selectedUser: User | null;
     setUser: (data: UserPage | null) => void;
-    setSelectedUser: (user: UserPage | null) => void;
+    setSelectedUser: (user: User | null) => void;
 }
 
 const UserContext = createContext<UserContextType | undefined>(undefined);
 
 export function UserProvider({ children }: { children: React.ReactNode }) {
     const [UserData, setUserData] = useState<UserPage | null>(null);
-    const [selectedUser, setSelectedUser] = useState<UserPage | null>(null);
+    const [selectedUser, setSelectedUser] = useState<User | null>(null);
 
-    // Function to set the UserData
     const setUser = (data: UserPage | null) => {
         setUserData(data);
     };

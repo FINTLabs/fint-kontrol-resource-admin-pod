@@ -4,16 +4,13 @@ import style from '../template/style';
 
 import PermissionTab from './PermissionTab';
 import ResourcesTab from './ResourcesTab';
-import { useData } from '../data/RoleContext';
-import { useUser } from '../data/UserContext';
 
 const Main = () => {
     const [selectedTab, setSelectedTab] = useState<number>(0);
-    const data = useData();
-
 
     const handleTabChange = (event: React.ChangeEvent<{}>, newValue: number) => {
         setSelectedTab(newValue);
+        //TODO: reset some values on tab change??
     };
 
     return (
@@ -49,7 +46,7 @@ const Main = () => {
             </TabPanel>
             <TabPanel value={selectedTab} index={1}>
                 <Box>
-                    <PermissionTab permissions={data}/>
+                    <PermissionTab />
                 </Box>
             </TabPanel>
 

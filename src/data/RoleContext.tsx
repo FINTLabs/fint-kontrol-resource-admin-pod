@@ -1,30 +1,30 @@
-import React, { createContext, useContext, ReactNode } from 'react';
+import React, { createContext, useContext, ReactNode, useState } from 'react';
 import initialData from './permissionsData'; // Import your Data type here
-import {Role} from "./types";
+import { Role } from "./types";
 
-// Define the data type and initial data
-type DataContextType = Role[];
-// const initialData: DataContextType = [...]; // Import your initialData here
+type RoleContextType = {
+    roles: Role[];
+    selectedAccessRoleId: String | null;
+    setSelectedAccessRoleId: (accessRoleId: String | null) => void;
+};
 
-// Create a context
-const RoleContext = createContext<DataContextType | undefined>(undefined);
+const RoleContext = createContext<RoleContextType | undefined>(undefined);
 
-// Create a data provider component
 interface DataProviderProps {
     children: ReactNode;
 }
 
 export const DataProvider: React.FC<DataProviderProps> = ({ children }) => {
-    console.log("jennifer")
+    const [selectedAccessRoleId, setSelectedAccessRoleId] = useState<String | null>(null);
+
     return (
-        <RoleContext.Provider value={initialData}>
+        <RoleContext.Provider value={{ roles: initialData, selectedAccessRoleId, setSelectedAccessRoleId }}>
             {children}
         </RoleContext.Provider>
     );
 };
 
-// Create a custom hook to access the data
-export const useData = (): DataContextType => {
+export const useRole = (): RoleContextType => {
     const data = useContext(RoleContext);
     if (data === undefined) {
         throw new Error('useData must be used within a DataProvider');
