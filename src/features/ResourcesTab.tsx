@@ -24,7 +24,8 @@ const ResourcesTab = () => {
     };
 
     return (
-        <Box component={Paper} sx={{ minWidth: 1040, maxWidth: 1536 }} id={'resourcesTab'} p={10}>
+        <Box component={Paper} sx={{ minWidth: 1040, maxWidth: 1536 }} id={'resourcesTab'} p={3}>
+            <Typography>Følg disse trinnene for å opprette en ny brukerrettighetsrolle</Typography>
             <Grid container>
                 <Grid item xs={12} md={6}>
                     <VerticalStepper />
@@ -75,7 +76,7 @@ const ResourcesTab = () => {
                 </Grid>
             </Grid>
 
-            <UnitSelectDialog open={showUnitModal} onClose={closeModal} />
+
         </Box>
     );
 };

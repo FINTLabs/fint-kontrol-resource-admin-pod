@@ -25,16 +25,16 @@ import {useRole} from '../data/RoleContext';
 
 const steps = [
     {
-        label: 'Select the user:',
+        label: 'Velg brukeren:',
         description: ``,
     },
     {
-        label: 'Select role',
+        label: 'Velg rolle:',
         description:
             '',
     },
     {
-        label: 'Select the org units',
+        label: 'Velg enhet:',
         description: ``,
     },
 ];
@@ -62,7 +62,9 @@ export default function VerticalStepper() {
 
     const handleReset = () => {
         setSelectedUser(null);
+        //TODO: this is not resetting the state selector
         setSelectedOrgUnits([]);
+
         setSelectedAccessRoleId('');
         setActiveStep(0);
     };
@@ -150,7 +152,6 @@ export default function VerticalStepper() {
 
                             <Box sx={{ mb: 2 }}>
                                 {index === steps.length - 1 ? (
-                                    <div>
                                         <Button
                                             // variant="contained"
                                             onClick={handleReset}
@@ -158,9 +159,7 @@ export default function VerticalStepper() {
                                         >
                                             Reset
                                         </Button>
-                                    </div>
                                 ) : (
-                                    <div>
                                         <Button
                                             // variant="contained"
                                             onClick={handleNext}
@@ -168,15 +167,15 @@ export default function VerticalStepper() {
                                         >
                                             Continue
                                         </Button>
-                                        <Button
-                                            disabled={index === 0}
-                                            onClick={handleBack}
-                                            sx={{ mt: 1, mr: 1 }}
-                                        >
-                                            Back
-                                        </Button>
-                                    </div>
+
                                 )}
+                                <Button
+                                    disabled={index === 0}
+                                    onClick={handleBack}
+                                    sx={{ mt: 1, mr: 1 }}
+                                >
+                                    Back
+                                </Button>
                             </Box>
                         </StepContent>
                     </Step>

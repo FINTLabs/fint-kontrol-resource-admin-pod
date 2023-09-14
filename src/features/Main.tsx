@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Typography, Box, Tab, Tabs } from '@mui/material';
+import {Typography, Box, Tab, Tabs, Grid, Paper} from '@mui/material';
 import style from '../template/style';
 
 import PermissionTab from './PermissionTab';
@@ -11,6 +11,26 @@ const Main = () => {
     const handleTabChange = (event: React.ChangeEvent<{}>, newValue: number) => {
         setSelectedTab(newValue);
         //TODO: reset some values on tab change??
+    };
+
+
+    function TabPanel(props: TabPanelProps) {
+        const { children, value, index } = props;
+
+        return (
+            <div
+                role="tabpanel"
+                hidden={value !== index}
+                id={`tabpanel-${index}`}
+                aria-labelledby={`tab-${index}`}
+            >
+                {value === index && (
+                    <Box p={3}>
+                        {children}
+                    </Box>
+                )}
+            </div>
+        );
     };
 
     return (
@@ -39,15 +59,10 @@ const Main = () => {
                 <Tab label="Definer rolle" />
             </Tabs>
             <TabPanel value={selectedTab} index={0} >
-                <Box>
-                    Follow the steps to create access rights for a user.
                     <ResourcesTab  />
-                </Box>
             </TabPanel>
             <TabPanel value={selectedTab} index={1}>
-                <Box>
                     <PermissionTab />
-                </Box>
             </TabPanel>
 
         </Box>
@@ -58,25 +73,6 @@ interface TabPanelProps {
     children?: React.ReactNode;
     index: number;
     value: number;
-}
-
-function TabPanel(props: TabPanelProps) {
-    const { children, value, index } = props;
-
-    return (
-        <div
-            role="tabpanel"
-            hidden={value !== index}
-            id={`tabpanel-${index}`}
-            aria-labelledby={`tab-${index}`}
-        >
-            {value === index && (
-                <Box p={3}>
-                    <Typography>{children}</Typography>
-                </Box>
-            )}
-        </div>
-    );
 }
 
 export default Main;

@@ -1,9 +1,8 @@
 import React from 'react';
-import {FormControl, InputLabel, Select, MenuItem, IconButton, Button} from '@mui/material';
+import {FormControl, InputLabel, Select, MenuItem, Button} from '@mui/material';
 import Typography from "@mui/material/Typography";
 import SaveIcon from "@mui/icons-material/Save";
 import Toolbar from "@mui/material/Toolbar";
-import { useRole } from '../data/RoleContext'; // Replace with the actual import path to your data context
 
 interface ToolbarProps {
     selectedAccessRoleId: string,
@@ -12,7 +11,6 @@ interface ToolbarProps {
 }
 
 const PermissionsToolbar = ({ selectedAccessRoleId, setSelectedAccessRoleId , hasUpdates }: ToolbarProps) => {
-    //const { selectedAccessRoleId, setSelectedAccessRoleId } = useRole();
 
     return (
         <Toolbar id={'rolesToolbar'}
@@ -59,7 +57,7 @@ const PermissionsToolbar = ({ selectedAccessRoleId, setSelectedAccessRoleId , ha
                 </InputLabel>
                 <Select
                     id="accessRoleSelect"
-                    value={selectedAccessRoleId}
+                    value={selectedAccessRoleId?selectedAccessRoleId:''}
                     onChange={(e) => setSelectedAccessRoleId(e.target.value as string)}
                     label={" role "}
                 >

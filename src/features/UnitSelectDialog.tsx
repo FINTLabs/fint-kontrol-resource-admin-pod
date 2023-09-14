@@ -12,16 +12,16 @@ import ChevronRightIcon from '@mui/icons-material/ChevronRight';
 import { TreeView } from '@mui/x-tree-view/TreeView';
 import { TreeItem } from '@mui/x-tree-view/TreeItem';
 import { useOrgUnits } from "../data/OrgUnitContext";
-import {OrgUnit} from "../data/types";
+import { OrgUnit } from "../data/types";
 
 interface DialogUnitProps {
     open: boolean;
-    onClose: () => void;
+    onClose: (selected: OrgUnit[]) => void;
 }
 
 function UnitSelectDialog({ open, onClose }: DialogUnitProps) {
-    const [selected, setSelected] = useState<string[]>([]);
-    const { orgUnitsData, setSelectedOrgUnits } = useOrgUnits();
+    // const [selected, setSelected] = useState<OrgUnit[]>([]); // Store OrgUnit objects
+    const { orgUnitsData, setSelectedOrgUnits, selectedOrgUnits } = useOrgUnits();
 
     const customDialogStyle: React.CSSProperties = {
         width: '600px',
@@ -32,22 +32,26 @@ function UnitSelectDialog({ open, onClose }: DialogUnitProps) {
     };
 
     const handleClose = () => {
-        onClose();
+        onClose([]);
     };
 
     const handleSave = () => {
-        // todo: use context here not the state
-        const selectedOrgUnits = selected.map((id) =>
-            orgUnitsData?.orgUnits.find((unit) => unit.organisationUnitId === id)
-        ).filter(Boolean) as OrgUnit[];
-
-        setSelectedOrgUnits(selectedOrgUnits);
-        onClose();
+        setSelectedOrgUnits(selectedOrgUnits); // Use the setSelectedOrgUnits function directly with OrgUnit objects
+        onClose(selectedOrgUnits);
 
         console.log('Selected OrgUnits:', selectedOrgUnits);
     };
 
-    const renderTree = (nodes: any) => {
+    const toggleOrgUnit = (orgUnit: OrgUnit) => {
+        const isSelected = selectedOrgUnits.some(unit => unit.organisationUnitId === orgUnit.organisationUnitId);
+        const newSelected = isSelected
+            ? selectedOrgUnits.filter(unit => unit.organisationUnitId !== orgUnit.organisationUnitId)
+            : [...selectedOrgUnits, orgUnit];
+
+        setSelectedOrgUnits(newSelected);
+    };
+
+    const renderTree = (nodes: OrgUnit) => {
         return (
             <TreeItem
                 key={nodes.organisationUnitId}
@@ -56,13 +60,10 @@ function UnitSelectDialog({ open, onClose }: DialogUnitProps) {
                     <React.Fragment>
                         <Checkbox
                             id={`node-${nodes.organisationUnitId}`}
-                            checked={selected.indexOf(nodes.organisationUnitId) !== -1}
+                            checked={selectedOrgUnits.some(unit => unit.organisationUnitId === nodes.organisationUnitId)}
                             onClick={(event) => {
                                 event.stopPropagation();
-                                const newSelected = selected.includes(nodes.organisationUnitId)
-                                    ? selected.filter((id) => id !== nodes.organisationUnitId)
-                                    : [...selected, nodes.organisationUnitId];
-                                setSelected(newSelected);
+                                toggleOrgUnit(nodes);
                             }}
                         />
                         {nodes.name}

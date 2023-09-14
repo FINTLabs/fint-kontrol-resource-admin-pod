@@ -11,7 +11,7 @@ import {
 } from '@mui/material';
 import PermissionsToolbar from './PermissionsToolbar';
 import { Role } from '../data/types';
-import { useRole } from '../data/RoleContext'; // Replace with the actual import path to your data context
+import { useRole } from '../data/RoleContext';
 
 
 
@@ -34,10 +34,10 @@ const BlankTable = () => {
             <TableHead>
                 <TableRow>
                     <TableCell>Feature</TableCell>
-                    <TableCell>GET</TableCell>
-                    <TableCell>POST</TableCell>
-                    <TableCell>PUT</TableCell>
-                    <TableCell>DELETE</TableCell>
+                    <TableCell>VISNING</TableCell>
+                    <TableCell>REDIGERE</TableCell>
+                    <TableCell>LAGE</TableCell>
+                    <TableCell>SLETTE</TableCell>
                 </TableRow>
             </TableHead>
             <TableBody>{blankData}</TableBody>
