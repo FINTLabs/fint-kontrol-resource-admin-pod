@@ -18,7 +18,7 @@ import { OrgUnit } from "../data/types";
 
 interface DialogUnitProps {
     open: boolean;
-    onClose: (selected: OrgUnit[]) => void;
+    onClose: () => void;
 }
 
 function UnitSelectDialog({ open, onClose }: DialogUnitProps) {
@@ -34,20 +34,31 @@ function UnitSelectDialog({ open, onClose }: DialogUnitProps) {
     };
 
     const handleClose = () => {
-        onClose([]);
+        onClose();
     };
 
-    const handleSave = () => {
-        setSelectedOrgUnits(selectedOrgUnits);
-        onClose(selectedOrgUnits);
-        console.log('Selected OrgUnits:', selectedOrgUnits);
-    };
+    // const handleSave = () => {
+    //     setSelectedOrgUnits(selectedOrgUnits);
+    //     onClose(selectedOrgUnits);
+    //     console.log('Selected OrgUnits:', selectedOrgUnits);
+    // };
 
     const toggleOrgUnit = (orgUnit: OrgUnit) => {
         const isSelected = selectedOrgUnits.some(unit => unit.organisationUnitId === orgUnit.organisationUnitId);
-        const newSelected = isSelected
-            ? selectedOrgUnits.filter(unit => unit.organisationUnitId !== orgUnit.organisationUnitId)
-            : [...selectedOrgUnits, orgUnit];
+        let newSelected;
+
+        if (isSelected) {
+            // If the orgUnit is already selected, remove it
+            newSelected = selectedOrgUnits.filter(unit => unit.organisationUnitId !== orgUnit.organisationUnitId);
+        } else {
+            // If the orgUnit is not selected, add it (if it doesn't already exist)
+            if (!selectedOrgUnits.some(unit => unit.organisationUnitId === orgUnit.organisationUnitId)) {
+                newSelected = [...selectedOrgUnits, orgUnit];
+            } else {
+                // It's already in the selectedOrgUnits array, no need to do anything
+                newSelected = selectedOrgUnits;
+            }
+        }
 
         setSelectedOrgUnits(newSelected);
     };
@@ -67,20 +78,26 @@ function UnitSelectDialog({ open, onClose }: DialogUnitProps) {
 
     const toggleOrgUnitAndChildren = (orgUnit: OrgUnit) => {
         const isSelected = selectedOrgUnits.some(unit => unit.organisationUnitId === orgUnit.organisationUnitId);
-        const newSelected = isSelected
-            ? selectedOrgUnits.filter(unit => unit.organisationUnitId !== orgUnit.organisationUnitId)
-            : [...selectedOrgUnits, orgUnit];
+        let newSelected = [...selectedOrgUnits];
 
+        // Toggle the selectedOrgUnit
+        if (isSelected) {
+            newSelected = selectedOrgUnits.filter(unit => unit.organisationUnitId !== orgUnit.organisationUnitId);
+        } else {
+            if (!selectedOrgUnits.some(unit => unit.organisationUnitId === orgUnit.organisationUnitId)) {
+                newSelected.push(orgUnit);
+            }
+        }
+
+        // Toggle the children
         const childrenOrgUnits = findChildrenOrgUnits(orgUnit);
-
         for (const childOrgUnit of childrenOrgUnits) {
             if (isSelected) {
-                const index = newSelected.findIndex(unit => unit.organisationUnitId === childOrgUnit.organisationUnitId);
-                if (index !== -1) {
-                    newSelected.splice(index, 1);
-                }
+                newSelected = newSelected.filter(unit => unit.organisationUnitId !== childOrgUnit.organisationUnitId);
             } else {
-                newSelected.push(childOrgUnit);
+                if (!newSelected.some(unit => unit.organisationUnitId === childOrgUnit.organisationUnitId)) {
+                    newSelected.push(childOrgUnit);
+                }
             }
         }
 
@@ -105,7 +122,6 @@ function UnitSelectDialog({ open, onClose }: DialogUnitProps) {
         findChildren(orgUnit);
         return childrenOrgUnits;
     };
-
 
     const renderTree = (nodes: OrgUnit) => {
         return (
@@ -170,8 +186,7 @@ function UnitSelectDialog({ open, onClose }: DialogUnitProps) {
                 </TreeView>
             </DialogContent>
             <DialogActions>
-                <Button id={'regretDialog'} onClick={handleClose}>Avbryt</Button>
-                <Button id={'closeDialog'} onClick={handleSave}>Lagre</Button>
+                <Button id={'closeDialog'} onClick={onClose}>Ferdig</Button>
             </DialogActions>
         </Dialog>
     );

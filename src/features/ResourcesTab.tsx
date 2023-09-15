@@ -14,14 +14,9 @@ import { useUser } from '../data/UserContext';
 import { useRole } from '../data/RoleContext';
 
 const ResourcesTab = () => {
-    const [showUnitModal, setShowUnitModal] = useState(false);
     const { selectedOrgUnits } = useOrgUnits();
     const { selectedUser } = useUser();
     const { selectedAccessRoleId } = useRole();
-
-    const closeModal = () => {
-        setShowUnitModal(false);
-    };
 
     return (
         <Box component={Paper} sx={{ minWidth: 1040, maxWidth: 1536 }} id={'resourcesTab'} p={3}>
@@ -53,8 +48,8 @@ const ResourcesTab = () => {
                         )}
 
                         {selectedOrgUnits.length > 0 &&  (
-                            <Box sx={{ display: 'flex', alignItems: 'center', marginBottom:'20px'  }}>
-                                <Apartment sx={{ fontSize: 40 }} />
+                            <Box sx={{ display: 'flex', marginBottom:'20px' }}>
+                                <Apartment sx={{ fontSize: 40, mt:2 }} />
 
                                 <ul>
                                     {selectedOrgUnits.map((orgUnit) => (
