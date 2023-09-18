@@ -46,8 +46,8 @@ export default function VerticalStepper() {
     const [showUnitModal, setShowUnitModal] = useState(false);
     const userPage = useUser();
     const members: readonly User[] = userPage.UserData?.members || [];
-    const { setSelectedOrgUnits, selectedOrgUnits } = useOrgUnits();
-    const { setSelectedUser } = useUser();
+    const { setSelectedOrgUnits } = useOrgUnits();
+    const { selectedUser, setSelectedUser } = useUser();
     const {selectedAccessRoleId, setSelectedAccessRoleId } = useRole();
 
     const handleNext = () => {
@@ -62,7 +62,6 @@ export default function VerticalStepper() {
 
     const handleReset = () => {
         setSelectedUser(null);
-        //TODO: this is not resetting the state selector
         setSelectedOrgUnits([]);
 
         setSelectedAccessRoleId('');
@@ -95,6 +94,7 @@ export default function VerticalStepper() {
                         <StepContent>
                             {activeStep === 0 && (
                                 <Autocomplete
+                                    defaultValue={selectedUser?`${selectedUser.firstName} ${selectedUser.lastName}`:''}
                                     disablePortal
                                     id="combo-box-demo"
                                     options={members.map((member) => `${member.firstName} ${member.lastName}`)}
