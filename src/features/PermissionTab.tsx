@@ -7,11 +7,12 @@ import {
     TableBody,
     TableRow,
     TableHead,
-    Checkbox,
+    Checkbox, Alert,
 } from '@mui/material';
 import PermissionsToolbar from './PermissionsToolbar';
 import { Role } from '../data/types';
 import { useRole } from '../data/RoleContext';
+import Snackbar from "@mui/material/Snackbar";
 
 
 
@@ -24,7 +25,7 @@ const BlankTable = () => {
     const blankData = Array.from({ length: 5 }, (_, rowIdx) => (
         <TableRow key={rowIdx} >
             {Array.from({ length: 5 }, (_, colIdx) => (
-                <TableCell key={colIdx} sx={{padding:3.5}}></TableCell>
+                <TableCell key={colIdx} sx={{padding:3.5}}> </TableCell>
             ))}
         </TableRow>
     ));
@@ -46,8 +47,10 @@ const BlankTable = () => {
 };
 
 const PermissionSelector = () => {
-    const [changeCount, setChangeCount] = useState<number>(0);
     const [localSelectedAccessRoleId, setLocalSelectedAccessRoleId] = useState<string>('');
+    const [snackbarOpen, setSnackbarOpen] = useState(false); // State for Snackbar
+    const [snackbarMessage, setSnackbarMessage] = useState(''); // Message for Snackbar
+
     const { roles } = useRole();
 
     const filteredPermissions = localSelectedAccessRoleId
@@ -78,8 +81,19 @@ const PermissionSelector = () => {
 
         if (targetFeature) {
             targetFeature.availability[operation] = isChecked;
-            setChangeCount((prevCount) => prevCount + 1);
+
+            // Show Snackbar with a message
+            setSnackbarMessage(`Checkbox for ${feature} - ${operation} ${isChecked ? 'checked' : 'unchecked'}`);
+            setSnackbarOpen(true);
         }
+    };
+
+    const handleCloseSnackbar = (event: React.SyntheticEvent | Event, reason?: string) => {
+        if (reason === 'clickaway') {
+            return;
+        }
+
+        setSnackbarOpen(false);
     };
 
     return (
@@ -87,7 +101,6 @@ const PermissionSelector = () => {
             <PermissionsToolbar
                 selectedAccessRoleId={localSelectedAccessRoleId}
                 setSelectedAccessRoleId={setLocalSelectedAccessRoleId}
-                hasUpdates={changeCount}
             />
 
             {localSelectedAccessRoleId ? (
@@ -124,6 +137,18 @@ const PermissionSelector = () => {
             ) : (
                 <BlankTable /> // Render the blank table when no accessRoleId is selected
             )}
+
+            <Snackbar
+                open={snackbarOpen}
+                autoHideDuration={6000}
+                onClose={handleCloseSnackbar}
+                anchorOrigin={{ vertical: 'top', horizontal: 'right' }}
+            >
+                <Alert onClose={handleCloseSnackbar} severity="success" sx={{ width: '100%' }}>
+                    {snackbarMessage}
+                </Alert>
+            </Snackbar>
+
         </TableContainer>
     );
 };

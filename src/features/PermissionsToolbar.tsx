@@ -1,16 +1,14 @@
 import React from 'react';
-import {FormControl, InputLabel, Select, MenuItem, Button} from '@mui/material';
+import {FormControl, InputLabel, Select, MenuItem} from '@mui/material';
 import Typography from "@mui/material/Typography";
-import SaveIcon from "@mui/icons-material/Save";
 import Toolbar from "@mui/material/Toolbar";
 
 interface ToolbarProps {
     selectedAccessRoleId: string,
-    setSelectedAccessRoleId: (value: string) => void,
-    hasUpdates: number
+    setSelectedAccessRoleId: (value: string) => void
 }
 
-const PermissionsToolbar = ({ selectedAccessRoleId, setSelectedAccessRoleId , hasUpdates }: ToolbarProps) => {
+const PermissionsToolbar = ({ selectedAccessRoleId, setSelectedAccessRoleId }: ToolbarProps) => {
 
     return (
         <Toolbar id={'rolesToolbar'}
@@ -20,33 +18,14 @@ const PermissionsToolbar = ({ selectedAccessRoleId, setSelectedAccessRoleId , ha
                  }}
         >
 
-            {hasUpdates > 0 ? (
-                <Typography
-                    sx={{ flex: '1 1 100%' }}
-                    variant="h6"
-                    id="tableTitle"
-                    component="div"
-                >{hasUpdates} records changed.
-                    <Button
-                        component="label"
-                        variant="outlined"
-                        startIcon={<SaveIcon />}
-                        sx={{ marginLeft: '16px' }}
-                    >
-                       Save Changes
-                    </Button>
-                </Typography>
-            ) : (
-                <Typography
-                    sx={{ flex: '1 1 100%' }}
-                    variant="h6"
-                    id="tableTitle"
-                    component="div"
-                >
-                    Choose a type to view:
-                </Typography>
-            )}
-
+            <Typography
+                sx={{ flex: '1 1 100%' }}
+                variant="h6"
+                id="tableTitle"
+                component="div"
+            >
+                {selectedAccessRoleId?selectedAccessRoleId:'Choose a type to view:'}
+            </Typography>
 
 
             <FormControl style={{minWidth: 220}} sx={{mx: '2rem', my: '1rem'}}>
