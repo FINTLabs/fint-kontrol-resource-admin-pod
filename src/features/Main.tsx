@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import {Typography, Box, Tab, Tabs, Grid, Paper} from '@mui/material';
+import {Typography, Box, Tab, Tabs} from '@mui/material';
 import style from '../template/style';
 
 import PermissionTab from './PermissionTab';
@@ -31,7 +31,7 @@ const Main = () => {
                 )}
             </div>
         );
-    };
+    }
 
     return (
         <Box sx={style.content}>

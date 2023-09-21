@@ -134,7 +134,7 @@ export default function VerticalStepper() {
                                 </FormControl>
                             )}
 
-                            {activeStep == 2 && (
+                            {activeStep === 2 && (
                                 <Button
                                     id={'selectUnitsIcon'}
                                     variant="outlined"

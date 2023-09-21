@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React from 'react';
 import {
     Typography,
     Box,
@@ -6,8 +6,6 @@ import {
     Grid, Button
 } from "@mui/material";
 import {Person, AddModerator, Apartment} from '@mui/icons-material';
-
-import UnitSelectDialog from './UnitSelectDialog';
 import VerticalStepper from "./VerticalStepper";
 import { useOrgUnits } from '../data/OrgUnitContext';
 import { useUser } from '../data/UserContext';
@@ -40,7 +38,7 @@ const ResourcesTab = () => {
                             <Box sx={{ display: 'flex', alignItems: 'center', marginBottom:'30px'  }}>
                                 <AddModerator sx={{ fontSize: 40, marginRight: '20px' }} />
                                 <Typography>
-                                    {selectedAccessRoleId == 'aa'?
+                                    {selectedAccessRoleId === 'aa'?
                                         'Applikasjonsadministrator' :
                                         'Applikasjonstilgangsadministrator'}
                                 </Typography>
