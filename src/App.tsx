@@ -1,6 +1,7 @@
 // App.tsx
 import React from 'react';
 import theme from './template/theme';
+import {Route, Routes} from 'react-router-dom';
 
 import { DataProvider } from './data/RoleContext';
 import Main from './features/Main';
@@ -14,7 +15,9 @@ function AppWrapper() {
             <DataProvider>
                 <UserProvider>
                 <OrgUnitsProvider>
-                    <Main />
+                    <Routes>
+                        <Route path={`/beta/fintlabs-no/grupper/`} element={<Main />}/>
+                    </Routes>
                 </OrgUnitsProvider>
                 </UserProvider>
             </DataProvider>
