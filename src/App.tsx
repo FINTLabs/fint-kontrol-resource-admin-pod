@@ -16,7 +16,7 @@ function AppWrapper() {
                 <UserProvider>
                 <OrgUnitsProvider>
                     <Routes>
-                        <Route path={`/beta/fintlabs-no/grupper/`} element={<Main />}/>
+                        <Route path={`/beta/fintlabs-no/ressurser-admin/`} element={<Main />}/>
                     </Routes>
                 </OrgUnitsProvider>
                 </UserProvider>
