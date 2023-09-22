@@ -5,7 +5,7 @@ import App from './App';
 import reportWebVitals from './reportWebVitals';
 
 const root = ReactDOM.createRoot(
-  document.getElementById('fint-kontrol-resource-admin-pod') as HTMLElement
+  document.getElementById('fint-kontroll-resource-admin-pod') as HTMLElement
 );
 root.render(
   <React.StrictMode>

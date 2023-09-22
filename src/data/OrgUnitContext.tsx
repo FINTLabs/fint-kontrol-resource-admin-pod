@@ -4,7 +4,7 @@ import { OrgUnit, OrgUnits } from './types';
 // Create a context
 interface OrgUnitsContextType {
     orgUnitsData: OrgUnits | null;
-    setOrgUnits: (data: OrgUnits | null) => void;
+    setOrgUnitsData: (data: OrgUnits | null) => void;
     selectedOrgUnits: OrgUnit[]; // Store selected orgUnits in an array
     setSelectedOrgUnits: (orgUnits: OrgUnit[]) => void; // Function to set selected orgUnits
 }
@@ -16,17 +16,13 @@ export function OrgUnitsProvider({ children }: { children: React.ReactNode }) {
     const [orgUnitsData, setOrgUnitsData] = useState<OrgUnits | null>(null);
     const [selectedOrgUnits, setSelectedOrgUnits] = useState<OrgUnit[]>([]);
 
-    const setOrgUnits = (data: OrgUnits | null) => {
-        setOrgUnitsData(data);
-    };
-
     useEffect(() => {
         // Load data from a local JSON file (for testing)
         const fetchData = async () => {
             try {
                 const response = await fetch(`./test.json`);
                 const data: OrgUnits = await response.json();
-                setOrgUnits(data);
+                setOrgUnitsData(data);
             } catch (error) {
                 console.error('Error loading org units data:', error);
             }
@@ -37,7 +33,7 @@ export function OrgUnitsProvider({ children }: { children: React.ReactNode }) {
 
     return (
         <OrgUnitsContext.Provider
-            value={{ orgUnitsData, setOrgUnits, selectedOrgUnits, setSelectedOrgUnits }}
+            value={{ orgUnitsData, setOrgUnitsData, selectedOrgUnits, setSelectedOrgUnits }}
         >
             {children}
         </OrgUnitsContext.Provider>
