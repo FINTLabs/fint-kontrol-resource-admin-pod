@@ -1,4 +1,5 @@
-import React from 'react';
+import React, {useEffect, useState} from 'react';
+import axios from "axios";
 import theme from './template/theme';
 import {Route, Routes} from 'react-router-dom';
 import { DataProvider } from './data/RoleContext';
@@ -6,11 +7,26 @@ import Main from './features/Main';
 import {ThemeProvider} from "@mui/material";
 import {OrgUnitsProvider} from "./data/OrgUnitContext";
 import {UserProvider} from "./data/UserContext";
-import {getBasePath} from "./data/basePathUtils";
+
 
 
 function AppWrapper() {
-    const basePath = getBasePath();
+    const [basePath, setBasePath] = useState('/');
+
+    useEffect(() => {
+        const configUrl = '/api/layout/configuration';
+
+        axios
+            .get(configUrl)
+            .then((response) => {
+                const newBasePath = response.data.basePath;
+                setBasePath(newBasePath);
+            })
+            .catch((error) => {
+                console.error('API Local?:', error);
+                // throw error;
+            });
+    }, []);
 
     return (
         <ThemeProvider theme={theme}>
