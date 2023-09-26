@@ -11,7 +11,7 @@ import {UserProvider} from "./data/UserContext";
 
 
 function AppWrapper() {
-    const [basePath, setBasePath] = useState('/');
+    const [basePath, setBasePath] = useState('');
 
     useEffect(() => {
         const configUrl = '/api/layout/configuration';
@@ -34,7 +34,7 @@ function AppWrapper() {
                 <UserProvider>
                 <OrgUnitsProvider>
                     <Routes>
-                        <Route path={`${basePath}ressurser-admin/`} element={<Main />}/>
+                        <Route path={`${basePath}/ressurser-admin/`} element={<Main />}/>
                     </Routes>
                 </OrgUnitsProvider>
                 </UserProvider>
