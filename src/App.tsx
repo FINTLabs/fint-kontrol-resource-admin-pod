@@ -6,11 +6,11 @@ import Main from './features/Main';
 import {ThemeProvider} from "@mui/material";
 import {OrgUnitsProvider} from "./data/OrgUnitContext";
 import {UserProvider} from "./data/UserContext";
-import {useBasePath} from "./data/useBasePath";
+import {getBasePath} from "./data/basePathUtils";
 
 
 function AppWrapper() {
-    const basePath = useBasePath();
+    const basePath = getBasePath();
 
     return (
         <ThemeProvider theme={theme}>
