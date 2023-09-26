@@ -20,9 +20,9 @@ export function OrgUnitsProvider({ children }: { children: React.ReactNode }) {
         // Load data from a local JSON file (for testing)
         const fetchData = async () => {
             try {
-                const response = await fetch(`./test.json`);
-                const data: OrgUnits = await response.json();
-                setOrgUnitsData(data);
+                // const response = await fetch(`./test.json`);
+                // const data: OrgUnits = await response.json();
+                // setOrgUnitsData(data);
             } catch (error) {
                 console.error('Error loading org units data:', error);
             }

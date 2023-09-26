@@ -22,9 +22,9 @@ export function UserProvider({ children }: { children: React.ReactNode }) {
         // Load data from a local JSON file (for testing)
         const fetchData = async () => {
             try {
-                const response = await fetch(`./usersTest.json`);
-                const data: UserPage = await response.json();
-                setUser(data);
+                // const response = await fetch(`./usersTest.json`);
+                // const data: UserPage = await response.json();
+                // setUser(data);
             } catch (error) {
                 console.error('Error loading users data:', error);
             }
