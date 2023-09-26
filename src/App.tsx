@@ -14,20 +14,19 @@ function AppWrapper() {
     const [basePath, setBasePath] = useState('');
 
     useEffect(() => {
-        const configUrl = '/api/layout/configuration';
-
-        axios
-            .get(configUrl)
-            .then((response) => {
-                const newBasePath = response.data.basePath;
-                setBasePath(newBasePath);
-            })
-            .catch((error) => {
-                console.error('API Local?:', error);
-                // throw error;
-            });
-    }, []);
-
+        const getBasePath = () => {
+            axios.get('api/layout/configuration')
+                .then(response => {
+                        setBasePath(response.data.basePath)
+                        console.log("basePath i context", response.data.basePath)
+                    }
+                )
+                .catch((err) => {
+                    console.error(err);
+                })
+        }
+        getBasePath()
+    }, [])
     return (
         <ThemeProvider theme={theme}>
             <DataProvider>
