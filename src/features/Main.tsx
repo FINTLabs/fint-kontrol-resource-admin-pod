@@ -25,7 +25,7 @@ const Main = () => {
                 aria-labelledby={`tab-${index}`}
             >
                 {value === index && (
-                    <Box p={3}>
+                    <Box>
                         {children}
                     </Box>
                 )}
