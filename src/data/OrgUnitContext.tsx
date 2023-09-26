@@ -1,7 +1,7 @@
 import React, { createContext, useContext, useState, useEffect } from 'react';
-import { OrgUnit, OrgUnits } from './types';
+import {OrgUnit, OrgUnits} from './types';
+import {fetchUnitTreeData} from "./api";
 
-// Create a context
 interface OrgUnitsContextType {
     orgUnitsData: OrgUnits | null;
     setOrgUnitsData: (data: OrgUnits | null) => void;
@@ -11,20 +11,18 @@ interface OrgUnitsContextType {
 
 const OrgUnitsContext = createContext<OrgUnitsContextType | undefined>(undefined);
 
-// Create a provider component to wrap your app
 export function OrgUnitsProvider({ children }: { children: React.ReactNode }) {
     const [orgUnitsData, setOrgUnitsData] = useState<OrgUnits | null>(null);
     const [selectedOrgUnits, setSelectedOrgUnits] = useState<OrgUnit[]>([]);
 
     useEffect(() => {
-        // Load data from a local JSON file (for testing)
         const fetchData = async () => {
             try {
-                // const response = await fetch(`./test.json`);
-                // const data: OrgUnits = await response.json();
-                // setOrgUnitsData(data);
+                const newUnitTree = await fetchUnitTreeData();
+                console.log("Returned tree data: ", newUnitTree);
+                setOrgUnitsData(newUnitTree);
             } catch (error) {
-                console.error('Error loading org units data:', error);
+                console.error(error);
             }
         };
 
@@ -40,7 +38,6 @@ export function OrgUnitsProvider({ children }: { children: React.ReactNode }) {
     );
 }
 
-// Create a custom hook to access the context
 export function useOrgUnits() {
     const context = useContext(OrgUnitsContext);
     if (!context) {
