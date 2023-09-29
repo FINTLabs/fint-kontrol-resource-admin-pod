@@ -107,7 +107,7 @@ jobs:
 
       ## Beta cluster ##
       - name: Bake beta manifests with Kustomize
-        uses: azure/k8s-bake@v2.2
+        uses: azure/k8s-bake@v2.4
         with:
           renderEngine: 'kustomize'
           kustomizationPath: 'kustomize/overlays/beta'
