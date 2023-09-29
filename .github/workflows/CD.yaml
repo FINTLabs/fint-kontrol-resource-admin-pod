@@ -83,6 +83,14 @@ jobs:
           kustomizationPath: 'kustomize/overlays/beta'
         id: bake-beta
 
+      - uses: azure/login@v1
+        with:
+          creds: '${{ secrets.AKS_<ENV>_FINT_GITHUB }}'
+
+      - uses: azure/use-kubelogin@v1.1
+        with:
+          kubelogin-version: 'v0.0.26'
+
       - name: Set the target Beta cluster.
         uses: azure/aks-set-context@v3
         with:
@@ -90,13 +98,6 @@ jobs:
           resource-group: ${{ env.BETA_CLUSTER_RESOURCE_GROUP }}
           admin: 'true'
           use-kubelogin: 'true'
-          - uses: azure/login@v1
-            with:
-              creds: '${{ secrets.AKS_<ENV>_FINT_GITHUB }}'
-
-          - uses: azure/use-kubelogin@v1.1
-            with:
-              kubelogin-version: 'v0.0.26'
 
       - name: Deploy to Beta
         uses: azure/k8s-deploy@v4.4
