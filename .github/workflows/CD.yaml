@@ -59,7 +59,7 @@ jobs:
             $GITHUB_WORKSPACE/upload-assets.sh ${{ github.event.repository.name }}
 
       - name: Log in to the Container registry
-        uses: docker/login-action@f054a8b539a109f9f41c372932f1ae047eff08c9
+        uses: docker/login-action@v2
         with:
           registry: ${{ env.REGISTRY }}
           username: ${{ github.actor }}
@@ -67,7 +67,7 @@ jobs:
 
       - name: Extract metadata (tags, labels) for Docker
         id: meta
-        uses: docker/metadata-action@98669ae865ea3cffbcbaa878cf57c20bbf1c6c38
+        uses: docker/metadata-action@v4
         with:
           images: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}
           tags: |
@@ -107,18 +107,24 @@ jobs:
 
       ## Beta cluster ##
       - name: Bake beta manifests with Kustomize
-        uses: azure/k8s-bake@v2.2
+        uses: azure/k8s-bake@v2.4
         with:
           renderEngine: 'kustomize'
           kustomizationPath: 'kustomize/overlays/beta'
         id: bake-beta
-      - name: Set the target Alpha cluster.
-        uses: azure/aks-set-context@v1
+      - name: Set the target beta cluster.
+        uses: azure/aks-set-context@v3
         with:
-          creds: '${{ secrets.AKS_BETA_FINT_GITHUB }}'
           cluster-name: ${{ env.BETA_CLUSTER_NAME }}
           resource-group: ${{ env.BETA_CLUSTER_RESOURCE_GROUP }}
-
+          admin: 'true'
+          use-kubelogin: 'true'
+        - uses: azure/login@v1
+          with:
+            creds: '${{ secrets.AKS_BETA_FINT_GITHUB }}'
+        - uses: azure/use-kubelogin@v1.1
+          with:
+            kubelogin-version: 'v0.0.26'
       - name: Deploy to Beta
         uses: azure/k8s-deploy@v4.4
         with:
