@@ -51,6 +51,13 @@ jobs:
           inlineScript: |
             chmod +x $GITHUB_WORKSPACE/upload-assets.sh
             $GITHUB_WORKSPACE/upload-assets.sh ${{ github.event.repository.name }}
+      - name: Azure AKS Login and Kubelogin
+        run: |
+          az login --service-principal -u ${{ secrets.AKS_<ENV>_FINT_GITHUB_CLIENT_ID }} -p ${{ secrets.AKS_<ENV>_FINT_GITHUB_CLIENT_SECRET }} --tenant ${{ secrets.AKS_<ENV>_FINT_GITHUB_TENANT_ID }}
+          az aks get-credentials --resource-group rg-aks-beta --name aks-beta-fint-2021-11-23 -f /home/runner/work/_temp/kubeconfig_1695988157117 --admin
+          kubelogin --version 'v0.0.26'
+        env:
+          KUBECONFIG: /home/runner/work/_temp/kubeconfig_1695988157117
 
       - name: Log in to the Container registry
         uses: docker/login-action@v2
