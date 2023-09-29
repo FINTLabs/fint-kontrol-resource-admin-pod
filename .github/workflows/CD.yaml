@@ -89,9 +89,9 @@ jobs:
           creds: '${{ secrets.AKS_<ENV>_FINT_GITHUB }}'
 
       - name: Kubelogin
-          uses: azure/use-kubelogin@v1.1
-          with:
-            kubelogin-version: 'v0.0.26'
+        uses: azure/use-kubelogin@v1.1
+        with:
+          kubelogin-version: 'v0.0.26'
 
       - name: Set the target Beta cluster.
         uses: azure/aks-set-context@v3
