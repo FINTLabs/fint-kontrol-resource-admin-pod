@@ -90,13 +90,13 @@ jobs:
           resource-group: ${{ env.BETA_CLUSTER_RESOURCE_GROUP }}
           admin: 'true'
           use-kubelogin: 'true'
-      - uses: azure/login@v1
-        with:
-          creds: '${{ secrets.AKS_<ENV>_FINT_GITHUB }}'
+          - uses: azure/login@v1
+            with:
+              creds: '${{ secrets.AKS_<ENV>_FINT_GITHUB }}'
 
-      - uses: azure/use-kubelogin@v1.1
-        with:
-          kubelogin-version: 'v0.0.26'
+          - uses: azure/use-kubelogin@v1.1
+            with:
+              kubelogin-version: 'v0.0.26'
 
       - name: Deploy to Beta
         uses: azure/k8s-deploy@v4.4
