@@ -119,7 +119,7 @@ jobs:
 
       - uses: azure/use-kubelogin@v1.1
         with:
-        kubelogin-version: 'v0.0.26'
+          kubelogin-version: 'v0.0.26'
 
       - name: Set the target Beta cluster.
         uses: azure/aks-set-context@v3
