@@ -84,9 +84,9 @@ jobs:
         id: bake-beta
 
       - name: Azure AKS Login
-          uses: azure/login@v1
-          with:
-            creds: '${{ secrets.AKS_<ENV>_FINT_GITHUB }}'
+        uses: azure/login@v1
+        with:
+          creds: '${{ secrets.AKS_<ENV>_FINT_GITHUB }}'
 
       - name: Kubelogin
           uses: azure/use-kubelogin@v1.1
