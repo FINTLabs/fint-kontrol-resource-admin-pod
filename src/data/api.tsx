@@ -1,9 +1,9 @@
 import axios from 'axios';
-import {OrgUnits} from './types';
+import {IOrgUnits} from './types';
 
 const configUrl = 'api/layout/configuration';
 
-export const fetchUnitTreeData = async (): Promise<OrgUnits> => {
+export const fetchUnitTreeData = async (): Promise<IOrgUnits> => {
     try {
         let newBasePath = '';
         try {
@@ -16,7 +16,7 @@ export const fetchUnitTreeData = async (): Promise<OrgUnits> => {
 
         let baseUrl = `${newBasePath}/api/orgunits`;
 
-        const response = await axios.get<OrgUnits>(baseUrl);
+        const response = await axios.get<IOrgUnits>(baseUrl);
         return response.data;
     } catch (error) {
         console.error('API Error:', error);

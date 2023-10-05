@@ -1,76 +1,133 @@
-import React from 'react';
+import React, {useState} from 'react';
+import {useOrgUnits} from '../data/OrgUnitContext';
+import {useUser} from '../data/UserContext';
+import {useRole} from '../data/RoleContext';
+import {Select, HStack, VStack, Button, Heading} from "@navikt/ds-react";
+import {IUser} from "../data/types";
+import UnitSelectDialog from './UnitSelectDialog';
 import {
-    Typography,
-    Box,
-    Paper,
-    Grid, Button
-} from "@mui/material";
-import {Person, AddModerator, Apartment} from '@mui/icons-material';
-import VerticalStepper from "./VerticalStepper";
-import { useOrgUnits } from '../data/OrgUnitContext';
-import { useUser } from '../data/UserContext';
-import { useRole } from '../data/RoleContext';
+    ShieldLockIcon,
+    PersonIcon,
+    Buldings3Icon
+} from "@navikt/aksel-icons";
+
 
 const ResourcesTab = () => {
-    const { selectedOrgUnits } = useOrgUnits();
-    const { selectedUser } = useUser();
-    const { selectedAccessRoleId } = useRole();
+    const {selectedOrgUnits} = useOrgUnits();
+    const {selectedUser, setSelectedUser} = useUser();
+    const {selectedAccessRoleId, setSelectedAccessRoleId} = useRole();
+
+    const testUser: IUser = {
+        id: 1,
+        firstName: "John",
+        lastName: "Doe",
+        userType: "Regular",
+        userName: "johndoe",
+    };
+
+    // const userPage = useUser();
+    // const members: readonly IUser[] = userPage.UserData?.members || [];
+
+    const [showUnitModal, setShowUnitModal] = useState(false);
+
+    const closeModal = () => {
+        setShowUnitModal(false);
+    };
 
     return (
-        <Box component={Paper} sx={{ minWidth: 1040, maxWidth: 1536 }} id={'resourcesTab'} p={3}>
-            <Typography>Følg disse trinnene for å opprette en ny brukerrettighetsrolle</Typography>
-            <Grid container>
-                <Grid item xs={12} md={6}>
-                    <VerticalStepper />
-                </Grid>
+        <HStack gap={"10"}>
+            <VStack gap="4">
 
-                <Grid item xs={12} md={6}>
-                    <Box p={2}>
-
-                        {selectedUser && (
-                            <Box sx={{ display: 'flex', alignItems: 'center', marginBottom:'30px' }}>
-                                <Person sx={{ fontSize: 40, marginRight: '20px' }} />
-                                <Typography>{selectedUser.firstName} {selectedUser.lastName}</Typography>
-                            </Box>
-                        )}
-
-                        {selectedAccessRoleId  && (
-                            <Box sx={{ display: 'flex', alignItems: 'center', marginBottom:'30px'  }}>
-                                <AddModerator sx={{ fontSize: 40, marginRight: '20px' }} />
-                                <Typography>
-                                    {selectedAccessRoleId === 'aa'?
-                                        'Applikasjonsadministrator' :
-                                        'Applikasjonstilgangsadministrator'}
-                                </Typography>
-                            </Box>
-                        )}
-
-                        {selectedOrgUnits.length > 0 &&  (
-                            <Box sx={{ display: 'flex', marginBottom:'20px' }}>
-                                <Apartment sx={{ fontSize: 40, mt:2 }} />
-
-                                <ul>
-                                    {selectedOrgUnits.map((orgUnit) => (
-                                        <li key={orgUnit.id}>{orgUnit.name}</li>
-                                    ))}
-                                </ul>
-                            </Box>
-                        )}
-                        {selectedUser && selectedAccessRoleId && selectedOrgUnits.length > 0 && (
-                            <Button
-                                variant="contained"
-                                sx={{ mt: 1, mr: 1 }}
-                            >
-                                Save Access Role
-                            </Button>
-                        )}
-
-                    </Box>
-                </Grid>
-            </Grid>
+                <UnitSelectDialog
+                    open={showUnitModal}
+                    onClose={closeModal}
+                />
 
 
-        </Box>
+                <Select
+                    label="Velg brukeren"
+                    //children={members.map((member) => `${member.firstName} ${member.lastName}`)}
+                    id={"brukeren"}
+                    onChange={() => setSelectedUser(testUser)}
+                >
+                    <option value="">Velg brukeren</option>
+                    <option value="1">John Doe</option>
+                </Select>
+
+                <Select
+                    label="Velg rolle"
+                    size={"medium"}
+                    onChange={(e) => setSelectedAccessRoleId(e.target.value as string)}
+                    id={"rolle"}
+                    defaultValue={""}
+                >
+                    <option value="">Velg rolle</option>
+                    <option value="aa">Applikasjonsadministrator</option>
+                    <option value="ata">Applikasjonstilgangsadministrator</option>
+                    <option value="e">Enhetsleder</option>
+                    <option value="s">Sluttbruker</option>
+                </Select>
+
+
+                <Heading size={"small"}>Choose org units</Heading>
+                <Button
+                    iconPosition="right"
+                    icon={<Buldings3Icon aria-hidden/>}
+                    id={'selectUnitsIcon'}
+                    // variant="outlined"
+                    variant={"secondary"}
+                    onClick={() => {
+                        setShowUnitModal(true)
+                    }}
+                >
+                    Velg enhet
+                </Button>
+
+            </VStack>
+            <VStack>
+                {selectedUser && (
+                    <HStack align="center" gap={"5"}>
+                        <PersonIcon title="a11y-title" fontSize="1.5rem"/>
+                        <Heading size={"small"}>{selectedUser.firstName} {selectedUser.lastName}</Heading>
+                    </HStack>
+                )}
+
+                {selectedAccessRoleId && (
+                    <HStack align="center" gap={"5"}>
+                        <ShieldLockIcon title="a11y-title" fontSize="1.5rem"/>
+                        <Heading size={"small"}>
+                            {selectedAccessRoleId === 'aa' ?
+                                'Applikasjonsadministrator' :
+                                'Applikasjonstilgangsadministrator'}
+                        </Heading>
+                    </HStack>
+
+                )}
+
+                {selectedOrgUnits.length > 0 && (
+                    <HStack align="center">
+                        <Buldings3Icon title="a11y-title" fontSize="1.5rem"/>
+                        <ul>
+                            {selectedOrgUnits.map((orgUnit) => (
+                                <li key={orgUnit.id}>{orgUnit.name}</li>
+                            ))}
+                        </ul>
+                    </HStack>
+                )}
+                {selectedUser && selectedAccessRoleId && selectedOrgUnits.length > 0 && (
+                    <Button
+                        // variant="contained"
+                        variant={"primary"}
+                        // sx={{ mt: 1, mr: 1 }}
+                    >
+                        Save Access Role
+                    </Button>
+                )}
+
+
+            </VStack>
+        </HStack>
+
     );
 };
 

@@ -1,6 +1,6 @@
-import {Role} from "./types";
+import {IRole} from "./types";
 
-const initialData: Role[] = [
+const initialData: IRole[] = [
     {
         Id: 1,
         Feature: "users",

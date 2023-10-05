@@ -1,20 +1,20 @@
 import React, { createContext, useContext, useState, useEffect } from 'react';
-import { UserPage, User } from './types';
+import { IUserPage, IUser } from './types';
 
 interface UserContextType {
-    UserData: UserPage | null;
-    selectedUser: User | null;
-    setUser: (data: UserPage | null) => void;
-    setSelectedUser: (user: User | null) => void;
+    UserData: IUserPage | null;
+    selectedUser: IUser | null;
+    setUser: (data: IUserPage | null) => void;
+    setSelectedUser: (user: IUser | null) => void;
 }
 
 const UserContext = createContext<UserContextType | undefined>(undefined);
 
 export function UserProvider({ children }: { children: React.ReactNode }) {
-    const [UserData, setUserData] = useState<UserPage | null>(null);
-    const [selectedUser, setSelectedUser] = useState<User | null>(null);
+    const [UserData, setUserData] = useState<IUserPage | null>(null);
+    const [selectedUser, setSelectedUser] = useState<IUser | null>(null);
 
-    const setUser = (data: UserPage | null) => {
+    const setUser = (data: IUserPage | null) => {
         setUserData(data);
     };
 

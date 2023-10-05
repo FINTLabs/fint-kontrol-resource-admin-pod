@@ -1,11 +1,11 @@
 import React, { createContext, useContext, ReactNode, useState } from 'react';
 import initialData from './permissionsData'; // Import your Data type here
-import { Role } from "./types";
+import { IRole } from './types';
 
 type RoleContextType = {
-    roles: Role[];
-    selectedAccessRoleId: String | null;
-    setSelectedAccessRoleId: (accessRoleId: String | null) => void;
+    roles: IRole[];
+    selectedAccessRoleId: string;
+    setSelectedAccessRoleId: (accessRoleId: string) => void;
 };
 
 const RoleContext = createContext<RoleContextType | undefined>(undefined);
@@ -15,7 +15,7 @@ interface DataProviderProps {
 }
 
 export const DataProvider: React.FC<DataProviderProps> = ({ children }) => {
-    const [selectedAccessRoleId, setSelectedAccessRoleId] = useState<String | null>(null);
+    const [selectedAccessRoleId, setSelectedAccessRoleId] = useState<string>(''); // Set the default value to an empty string
 
     return (
         <RoleContext.Provider value={{ roles: initialData, selectedAccessRoleId, setSelectedAccessRoleId }}>

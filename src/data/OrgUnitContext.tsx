@@ -1,19 +1,19 @@
 import React, { createContext, useContext, useState, useEffect } from 'react';
-import {OrgUnit, OrgUnits} from './types';
+import {IOrgUnit, IOrgUnits} from './types';
 import {fetchUnitTreeData} from "./api";
 
 interface OrgUnitsContextType {
-    orgUnitsData: OrgUnits | null;
-    setOrgUnitsData: (data: OrgUnits | null) => void;
-    selectedOrgUnits: OrgUnit[]; // Store selected orgUnits in an array
-    setSelectedOrgUnits: (orgUnits: OrgUnit[]) => void; // Function to set selected orgUnits
+    orgUnitsData: IOrgUnits | null;
+    setOrgUnitsData: (data: IOrgUnits | null) => void;
+    selectedOrgUnits: IOrgUnit[]; // Store selected orgUnits in an array
+    setSelectedOrgUnits: (orgUnits: IOrgUnit[]) => void; // Function to set selected orgUnits
 }
 
 const OrgUnitsContext = createContext<OrgUnitsContextType | undefined>(undefined);
 
 export function OrgUnitsProvider({ children }: { children: React.ReactNode }) {
-    const [orgUnitsData, setOrgUnitsData] = useState<OrgUnits | null>(null);
-    const [selectedOrgUnits, setSelectedOrgUnits] = useState<OrgUnit[]>([]);
+    const [orgUnitsData, setOrgUnitsData] = useState<IOrgUnits | null>(null);
+    const [selectedOrgUnits, setSelectedOrgUnits] = useState<IOrgUnit[]>([]);
 
     useEffect(() => {
         const fetchData = async () => {

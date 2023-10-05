@@ -10,7 +10,7 @@ import {
     Checkbox, Alert,
 } from '@mui/material';
 import PermissionsToolbar from './PermissionsToolbar';
-import { Role } from '../data/types';
+import { IRole } from '../data/types';
 import { useRole } from '../data/RoleContext';
 import Snackbar from "@mui/material/Snackbar";
 
@@ -58,8 +58,8 @@ const PermissionSelector = () => {
         : [];
 
     // Extract unique features and operations
-    const features = Array.from(new Set(filteredPermissions.map((item: Role) => item.Feature)));
-    const operations = Array.from(new Set(filteredPermissions.map((item: Role) => item.Operation)));
+    const features = Array.from(new Set(filteredPermissions.map((item: IRole) => item.Feature)));
+    const operations = Array.from(new Set(filteredPermissions.map((item: IRole) => item.Operation)));
 
     // Create a data structure to store availability
     const availabilityData: { feature: string; availability: Availability }[] = features.map(
@@ -67,7 +67,7 @@ const PermissionSelector = () => {
             const availability: Availability = {};
             operations.forEach((operation: string) => {
                 availability[operation] = filteredPermissions.some(
-                    (item: Role) => item.Feature === feature && item.Operation === operation
+                    (item: IRole) => item.Feature === feature && item.Operation === operation
                 );
             });
 
