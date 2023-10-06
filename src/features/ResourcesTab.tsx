@@ -5,6 +5,8 @@ import {useRole} from '../data/RoleContext';
 import {Select, HStack, VStack, Button, Heading} from "@navikt/ds-react";
 import {IUser} from "../data/types";
 import UnitSelectDialog from './UnitSelectDialog';
+import { MessageBus } from '@podium/browser';
+
 import {
     ShieldLockIcon,
     PersonIcon,
@@ -16,6 +18,7 @@ const ResourcesTab = () => {
     const {selectedOrgUnits} = useOrgUnits();
     const {selectedUser, setSelectedUser} = useUser();
     const {selectedAccessRoleId, setSelectedAccessRoleId} = useRole();
+    const messageBus = new MessageBus();
 
     const testUser: IUser = {
         id: 1,
@@ -33,6 +36,11 @@ const ResourcesTab = () => {
     const closeModal = () => {
         setShowUnitModal(false);
     };
+
+    function handleSaveRole() {
+        messageBus.publish('testChannel', 'testTopic', "Save Role Clicked");
+        return undefined;
+    }
 
     return (
         <HStack gap={"10"}>
@@ -119,6 +127,7 @@ const ResourcesTab = () => {
                         // variant="contained"
                         variant={"primary"}
                         // sx={{ mt: 1, mr: 1 }}
+                        onClick={handleSaveRole()}
                     >
                         Save Access Role
                     </Button>
