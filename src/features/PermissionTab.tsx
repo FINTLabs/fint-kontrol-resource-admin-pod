@@ -14,8 +14,6 @@ import { IRole } from '../data/types';
 import { useRole } from '../data/RoleContext';
 import Snackbar from "@mui/material/Snackbar";
 
-
-
 interface Availability {
     [key: string]: boolean;
 }

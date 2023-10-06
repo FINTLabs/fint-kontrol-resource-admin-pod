@@ -39,6 +39,7 @@ const ResourcesTab = () => {
 
     function handleSaveRole() {
         messageBus.publish('testChannel', 'testTopic', "Save Role Clicked");
+        console.log("published a message to test channel");
         return undefined;
     }
 
