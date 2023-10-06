@@ -45,7 +45,6 @@ const Main = () => {
                     <PermissionTab />
                 </Tabs.Panel>
             </Tabs>
-
         </Box>
     );
 };

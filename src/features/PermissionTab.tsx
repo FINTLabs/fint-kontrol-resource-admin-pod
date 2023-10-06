@@ -21,7 +21,7 @@ interface Availability {
 }
 
 const BlankTable = () => {
-    // Create an array to generate 4 empty rows and 4 empty cells
+    // Create an array to generate 4 empty rows and 4 empty cells for user display
     const blankData = Array.from({ length: 5 }, (_, rowIdx) => (
         <TableRow key={rowIdx} >
             {Array.from({ length: 5 }, (_, colIdx) => (
