@@ -2,24 +2,23 @@ const { createProxyMiddleware } = require('http-proxy-middleware');
 
 module.exports = function(app) {
 
+
+    let baseUrl = 'http://localhost:8081';
+
+    // when using lens for a backend
+    if (process.env.NODE_ENV === 'development') {
+        const devUrl = '/beta/fintlabs-no';
+        baseUrl += devUrl;
+    }
+
     app.use(
         createProxyMiddleware('/api/orgunits', {
-            target: 'http://localhost:8081/beta/fintlabs-no',
-            // target: 'http://localhost:8081',
+            target: baseUrl, // Use the updated baseUrl
             changeOrigin: true,
-            //pathRewrite: {"^/api5": ""},
             headers: {
-                Connection: "keep-alive"
-            }
+                Connection: 'keep-alive',
+            },
         })
     );
-    //
-    // app.use(
-    //     createProxyMiddleware('/api/layout/configuration',{
-    //     // target: 'http://localhost:8080/beta/fintlabs-no',
-    //         target: 'http://localhost:8080',
-    //         changeOrigin: true,
-    //     })
-    // );
 
 };

@@ -22,8 +22,9 @@ export function UserProvider({ children }: { children: React.ReactNode }) {
         // Load data from a local JSON file (for testing)
         const fetchData = async () => {
             try {
-                // const response = await fetch(`./usersTest.json`);
-                // const data: UserPage = await response.json();
+                console.log("next step is to try the mock server...");
+                // const response = await fetch('/api/roles/members');
+                // const data = await response.json();
                 // setUser(data);
             } catch (error) {
                 console.error('Error loading users data:', error);

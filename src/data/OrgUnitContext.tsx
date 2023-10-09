@@ -5,20 +5,20 @@ import {fetchUnitTreeData} from "./api";
 interface OrgUnitsContextType {
     orgUnitsData: IOrgUnits | null;
     setOrgUnitsData: (data: IOrgUnits | null) => void;
-    selectedOrgUnits: IOrgUnit[]; // Store selected orgUnits in an array
-    setSelectedOrgUnits: (orgUnits: IOrgUnit[]) => void; // Function to set selected orgUnits
+    selectedOrgUnits: IOrgUnit[];
+    setSelectedOrgUnits: (orgUnits: IOrgUnit[]) => void;
 }
 
 const OrgUnitsContext = createContext<OrgUnitsContextType | undefined>(undefined);
 
-export function OrgUnitsProvider({ children }: { children: React.ReactNode }) {
+export function OrgUnitsProvider({ children, basePath }: { children: React.ReactNode, basePath: string }) {
     const [orgUnitsData, setOrgUnitsData] = useState<IOrgUnits | null>(null);
     const [selectedOrgUnits, setSelectedOrgUnits] = useState<IOrgUnit[]>([]);
 
     useEffect(() => {
         const fetchData = async () => {
             try {
-                const newUnitTree = await fetchUnitTreeData();
+                const newUnitTree = await fetchUnitTreeData(basePath);
                 console.log("Returned tree data: ", newUnitTree);
                 setOrgUnitsData(newUnitTree);
             } catch (error) {
@@ -27,7 +27,7 @@ export function OrgUnitsProvider({ children }: { children: React.ReactNode }) {
         };
 
         fetchData();
-    }, []);
+    }, [basePath]);
 
     return (
         <OrgUnitsContext.Provider

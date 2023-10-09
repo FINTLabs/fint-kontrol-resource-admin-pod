@@ -2,7 +2,7 @@ import React, {useEffect, useState} from 'react';
 import axios from "axios";
 import theme from './template/theme';
 import {Route, Routes} from 'react-router-dom';
-import { DataProvider } from './data/RoleContext';
+import { RoleProvider } from './data/RoleContext';
 import Main from './features/Main';
 import {ThemeProvider} from "@mui/material";
 import {OrgUnitsProvider} from "./data/OrgUnitContext";
@@ -25,19 +25,23 @@ function AppWrapper() {
                     console.error(err);
                 })
         }
-        getBasePath()
+
+        if (process.env.NODE_ENV === 'production') {
+            getBasePath();
+        }
     }, [])
+
     return (
         <ThemeProvider theme={theme}>
-            <DataProvider>
+            <RoleProvider>
                 <UserProvider>
-                <OrgUnitsProvider>
+                <OrgUnitsProvider basePath={basePath}>
                     <Routes>
                         <Route path={`${basePath}/ressurser-admin/`} element={<Main />}/>
                     </Routes>
                 </OrgUnitsProvider>
                 </UserProvider>
-            </DataProvider>
+            </RoleProvider>
         </ThemeProvider>
     );
 }

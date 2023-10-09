@@ -14,8 +14,8 @@ interface DataProviderProps {
     children: ReactNode;
 }
 
-export const DataProvider: React.FC<DataProviderProps> = ({ children }) => {
-    const [selectedAccessRoleId, setSelectedAccessRoleId] = useState<string>(''); // Set the default value to an empty string
+export const RoleProvider: React.FC<DataProviderProps> = ({ children }) => {
+    const [selectedAccessRoleId, setSelectedAccessRoleId] = useState<string>('');
     console.log("What is my env:", process.env.NODE_ENV);
 
     return (

@@ -128,7 +128,7 @@ const ResourcesTab = () => {
                         // variant="contained"
                         variant={"primary"}
                         // sx={{ mt: 1, mr: 1 }}
-                        onClick={handleSaveRole()}
+                        onClick={handleSaveRole}
                     >
                         Save Access Role
                     </Button>
