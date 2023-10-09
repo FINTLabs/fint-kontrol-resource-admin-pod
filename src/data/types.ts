@@ -24,15 +24,14 @@ export interface IOrgUnits {
 
 export interface IUserPage {
     totalItems: number;
-    members: IUser[];
+    users: IUser[];
     totalPages: number;
     currentPage: number;
 }
 
 export interface IUser {
     id: number,
-    firstName: string,
-    lastName: string,
+    fullName: string,
     userType: string,
     userName: string,
 

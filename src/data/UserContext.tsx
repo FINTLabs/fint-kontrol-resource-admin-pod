@@ -2,7 +2,7 @@ import React, { createContext, useContext, useState, useEffect } from 'react';
 import { IUserPage, IUser } from './types';
 
 interface UserContextType {
-    UserData: IUserPage | null;
+    userData: IUserPage | null;
     selectedUser: IUser | null;
     setUser: (data: IUserPage | null) => void;
     setSelectedUser: (user: IUser | null) => void;
@@ -11,7 +11,7 @@ interface UserContextType {
 const UserContext = createContext<UserContextType | undefined>(undefined);
 
 export function UserProvider({ children }: { children: React.ReactNode }) {
-    const [UserData, setUserData] = useState<IUserPage | null>(null);
+    const [userData, setUserData] = useState<IUserPage | null>(null);
     const [selectedUser, setSelectedUser] = useState<IUser | null>(null);
 
     const setUser = (data: IUserPage | null) => {
@@ -19,13 +19,12 @@ export function UserProvider({ children }: { children: React.ReactNode }) {
     };
 
     useEffect(() => {
-        // Load data from a local JSON file (for testing)
         const fetchData = async () => {
             try {
                 console.log("next step is to try the mock server...");
-                // const response = await fetch('/api/roles/members');
-                // const data = await response.json();
-                // setUser(data);
+                const response = await fetch('/mock-data/roles/members');
+                const data = await response.json();
+                setUser(data);
             } catch (error) {
                 console.error('Error loading users data:', error);
             }
@@ -35,7 +34,7 @@ export function UserProvider({ children }: { children: React.ReactNode }) {
     }, []);
 
     return (
-        <UserContext.Provider value={{ UserData, selectedUser, setUser, setSelectedUser }}>
+        <UserContext.Provider value={{ userData, selectedUser, setUser, setSelectedUser }}>
             {children}
         </UserContext.Provider>
     );

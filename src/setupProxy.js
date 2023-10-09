@@ -13,7 +13,7 @@ module.exports = function(app) {
 
     app.use(
         createProxyMiddleware('/api/orgunits', {
-            target: baseUrl, // Use the updated baseUrl
+            target: baseUrl,
             changeOrigin: true,
             headers: {
                 Connection: 'keep-alive',

@@ -3,7 +3,6 @@ import {useOrgUnits} from '../data/OrgUnitContext';
 import {useUser} from '../data/UserContext';
 import {useRole} from '../data/RoleContext';
 import {Select, HStack, VStack, Button, Heading} from "@navikt/ds-react";
-import {IUser} from "../data/types";
 import UnitSelectDialog from './UnitSelectDialog';
 import { MessageBus } from '@podium/browser';
 
@@ -16,20 +15,9 @@ import {
 
 const ResourcesTab = () => {
     const {selectedOrgUnits} = useOrgUnits();
-    const {selectedUser, setSelectedUser} = useUser();
+    const {selectedUser, setSelectedUser, userData} = useUser();
     const {selectedAccessRoleId, setSelectedAccessRoleId} = useRole();
     const messageBus = new MessageBus();
-
-    const testUser: IUser = {
-        id: 1,
-        firstName: "John",
-        lastName: "Doe",
-        userType: "Regular",
-        userName: "johndoe",
-    };
-
-    // const userPage = useUser();
-    // const members: readonly IUser[] = userPage.UserData?.members || [];
 
     const [showUnitModal, setShowUnitModal] = useState(false);
 
@@ -43,6 +31,18 @@ const ResourcesTab = () => {
         return undefined;
     }
 
+    const handleSelectUser = (e: React.ChangeEvent<HTMLSelectElement>) => {
+        const userId = parseInt(e.target.value, 10);
+        if (userId === 0) {
+            setSelectedUser(null);
+        } else {
+            const selectedUser = userData?.users.find((user) => user.id === userId);
+            if (selectedUser) {
+                setSelectedUser(selectedUser);
+            }
+        }
+    };
+
     return (
         <HStack gap={"10"}>
             <VStack gap="4">
@@ -55,14 +55,17 @@ const ResourcesTab = () => {
 
                 <Select
                     label="Velg brukeren"
-                    //children={members.map((member) => `${member.firstName} ${member.lastName}`)}
+                    // children={userData?.users?.map((member) => `${member.firstName} ${member.lastName}`)}
                     id={"brukeren"}
-                    onChange={() => setSelectedUser(testUser)}
+                    onChange={(e) => handleSelectUser(e)}
                 >
                     <option value="">Velg brukeren</option>
-                    <option value="1">John Doe</option>
+                    {userData?.users.map((user) => (
+                        <option key={user.id} value={user.id}>
+                            {user.fullName}
+                        </option>
+                    ))}
                 </Select>
-
                 <Select
                     label="Velg rolle"
                     size={"medium"}
@@ -97,7 +100,7 @@ const ResourcesTab = () => {
                 {selectedUser && (
                     <HStack align="center" gap={"5"}>
                         <PersonIcon title="a11y-title" fontSize="1.5rem"/>
-                        <Heading size={"small"}>{selectedUser.firstName} {selectedUser.lastName}</Heading>
+                        <Heading size={"small"}>{selectedUser.fullName}</Heading>
                     </HStack>
                 )}
 
