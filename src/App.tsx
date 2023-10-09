@@ -27,9 +27,14 @@ function AppWrapper() {
         }
 
         if (process.env.NODE_ENV === 'production') {
+
             getBasePath();
         }
     }, [])
+
+    if (process.env.NODE_ENV === 'production' && !basePath) {
+        return <div>Loading...</div>;
+    }
 
     return (
         <ThemeProvider theme={theme}>
