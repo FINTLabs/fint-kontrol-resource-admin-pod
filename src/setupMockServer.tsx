@@ -6,7 +6,7 @@ export function setupMockServer() {
     new Server({
         routes() {
             this.passthrough('/api/orgunits/');
-            this.passthrough('api/layout/configuration');
+            this.passthrough('/api/layout/configuration');
 
             // Mock the members endpoint
             this.get('/mock-data/roles/members', () => {
