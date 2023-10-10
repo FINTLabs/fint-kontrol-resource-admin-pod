@@ -12,11 +12,29 @@ import {
 import { Accordion } from "@navikt/ds-react";
 import { useOrgUnits } from "../data/OrgUnitContext";
 import { IOrgUnit } from "../data/types";
+import styled from "styled-components";
 
 interface DialogUnitProps {
     open: boolean;
     onClose: () => void;
 }
+const StyledAccordion = styled(Accordion)`
+  border: none !important;
+  box-shadow: none !important;
+  padding: 1px;
+`;
+
+const StyledAccordionHeader = styled(Accordion.Header)`
+  border: none !important;
+  box-shadow: none !important;
+  padding: 1px !important;
+`;
+
+const StyledAccordionContent = styled(Accordion.Content)`
+  border: none !important;
+  box-shadow: none !important;
+  padding-top: 1px;
+`;
 
 function UnitSelectDialog({ open, onClose }: DialogUnitProps) {
     const { orgUnitsData, setSelectedOrgUnits, selectedOrgUnits } = useOrgUnits();
@@ -122,9 +140,9 @@ function UnitSelectDialog({ open, onClose }: DialogUnitProps) {
 
     const renderTree = (nodes: IOrgUnit) => {
         return (
-            <Accordion key={nodes.organisationUnitId}>
+            <StyledAccordion key={nodes.organisationUnitId}>
                 <Accordion.Item>
-                    <Accordion.Header>
+                    <StyledAccordionHeader>
                         <Checkbox
                             id={`node-${nodes.organisationUnitId}`}
                             checked={selectedOrgUnits.some(
@@ -136,8 +154,8 @@ function UnitSelectDialog({ open, onClose }: DialogUnitProps) {
                             }}
                         />
                         {nodes.name}
-                    </Accordion.Header>
-                    <Accordion.Content>
+                    </StyledAccordionHeader>
+                    <StyledAccordionContent>
                         {Array.isArray(nodes.childrenRef)
                             ? nodes.childrenRef.map((nodeId: string) => {
                                 const node = orgUnitsData?.orgUnits.find(
@@ -149,11 +167,12 @@ function UnitSelectDialog({ open, onClose }: DialogUnitProps) {
                                 return null;
                             })
                             : null}
-                    </Accordion.Content>
+                    </StyledAccordionContent>
                 </Accordion.Item>
-            </Accordion>
+            </StyledAccordion>
         );
     };
+
 
     return (
         <Dialog id={"unitsSelectDialog"} open={open} onClose={handleClose} sx={{ '& .MuiPaper-root': customDialogStyle }}>
