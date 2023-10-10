@@ -7,12 +7,12 @@ import Main from './features/Main';
 import {ThemeProvider} from "@mui/material";
 import {OrgUnitsProvider} from "./data/OrgUnitContext";
 import {UserProvider} from "./data/UserContext";
-import { setupMockServer } from './setupMockServer';
+// import { setupMockServer } from './setupMockServer';
 
 
 function AppWrapper() {
     const [basePath, setBasePath] = useState('');
-    setupMockServer();
+    // setupMockServer();
 
     useEffect(() => {
         const getBasePath = () => {
