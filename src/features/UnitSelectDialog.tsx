@@ -19,22 +19,29 @@ interface DialogUnitProps {
     onClose: () => void;
 }
 const StyledAccordion = styled(Accordion)`
+*{
   border: none !important;
   box-shadow: none !important;
-  padding: 1px;
+  padding-top: 0 !important;
+  padding-bottom: 0 !important;
+}
 `;
 
 const StyledAccordionHeader = styled(Accordion.Header)`
+*{
   border: none !important;
   box-shadow: none !important;
-  padding: 1px !important;
-`;
+  //padding: 0 !important;
+  font-weight: normal !important;
+  font-size: 1.1rem !important;
+}`;
 
 const StyledAccordionContent = styled(Accordion.Content)`
+{
   border: none !important;
   box-shadow: none !important;
-  padding-top: 1px;
-`;
+  //padding: 0 !important;
+}`;
 
 function UnitSelectDialog({ open, onClose }: DialogUnitProps) {
     const { orgUnitsData, setSelectedOrgUnits, selectedOrgUnits } = useOrgUnits();
