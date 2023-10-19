@@ -4,6 +4,7 @@ import './index.css';
 import App from './App';
 import reportWebVitals from './reportWebVitals';
 import {BrowserRouter} from 'react-router-dom';
+import {GlobalStyle} from "./global-styles";
 
 
 const root = ReactDOM.createRoot(
@@ -12,6 +13,7 @@ const root = ReactDOM.createRoot(
 root.render(
   <React.StrictMode>
       <BrowserRouter>
+          <GlobalStyle />
           <App/>
       </BrowserRouter>
   </React.StrictMode>
