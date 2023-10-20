@@ -1,5 +1,4 @@
 import React from 'react';
-import Typography from "@mui/material/Typography";
 import {Select} from "@navikt/ds-react";
 import styled from "styled-components";
 

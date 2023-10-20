@@ -7,6 +7,7 @@ import {Tabs} from "@navikt/ds-react";
 
 import ResourcesTab from './ResourcesTab';
 import {PermissionMainComponent} from "./permission-tab/permission-main.component";
+import {UsersRolesMainComponent} from "./users-roles-tab/users-roles-main.component";
 
 const Main = () => {
     return (
@@ -27,14 +28,25 @@ const Main = () => {
                         label="Definer rolle"
                         icon={<PersonCheckmarkIcon title="inbox" />}
                     />
+                    <Tabs.Tab
+                        value="usersWithRoles"
+                        label="Se brukere med roller"
+                        icon={<PersonCheckmarkIcon title="inbox" />}
+                    />
                 </Tabs.List>
-                <Tabs.Panel value="tildel" className="h-24 w-full bg-gray-50 p-4">
 
+
+
+                <Tabs.Panel value="tildel" className="h-24 w-full bg-gray-50 p-4">
                     <ResourcesTab  />
                 </Tabs.Panel>
-                <Tabs.Panel value="inbox" className="h-24 w-full bg-gray-50 p-4">
 
+                <Tabs.Panel value="inbox" className="h-24 w-full bg-gray-50 p-4">
                     <PermissionMainComponent />
+                </Tabs.Panel>
+
+                <Tabs.Panel value="usersWithRoles" className="h-24 w-full bg-gray-50 p-4">
+                    <UsersRolesMainComponent />
                 </Tabs.Panel>
             </Tabs>
         </div>
