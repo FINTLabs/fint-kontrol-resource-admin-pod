@@ -5,8 +5,8 @@ import {
 } from "@navikt/aksel-icons";
 import {Tabs} from "@navikt/ds-react";
 
-import PermissionTab from './PermissionTab';
 import ResourcesTab from './ResourcesTab';
+import {PermissionMainComponent} from "./permission-tab/permission-main.component";
 
 const Main = () => {
     return (
@@ -34,7 +34,7 @@ const Main = () => {
                 </Tabs.Panel>
                 <Tabs.Panel value="inbox" className="h-24 w-full bg-gray-50 p-4">
 
-                    <PermissionTab />
+                    <PermissionMainComponent />
                 </Tabs.Panel>
             </Tabs>
         </div>
