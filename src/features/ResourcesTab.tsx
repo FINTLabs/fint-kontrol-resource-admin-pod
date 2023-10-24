@@ -1,7 +1,7 @@
 import React, {useState} from 'react';
-import {useOrgUnits} from '../data/OrgUnitContext';
-import {useUser} from '../data/UserContext';
-import {useRole} from '../data/RoleContext';
+import {useOrgUnits} from '../api/OrgUnitContext';
+import {useUser} from '../api/UserContext';
+import {useRole} from '../api/RoleContext';
 import {Select, HStack, VStack, Button, Heading} from "@navikt/ds-react";
 import UnitSelectDialog from './UnitSelectDialog';
 import { MessageBus } from '@podium/browser';
@@ -15,7 +15,7 @@ import {
 
 const ResourcesTab = () => {
     const {selectedOrgUnits} = useOrgUnits();
-    const {selectedUser, setSelectedUser, userData} = useUser();
+    const {selectedUser, setSelectedUser} = useUser();
     const {selectedAccessRoleId, setSelectedAccessRoleId} = useRole();
     const messageBus = new MessageBus();
 
@@ -36,12 +36,14 @@ const ResourcesTab = () => {
         if (userId === 0) {
             setSelectedUser(null);
         } else {
-            const selectedUser = userData?.users.find((user) => user.id === userId);
-            if (selectedUser) {
-                setSelectedUser(selectedUser);
-            }
+            // const selectedUser = usersPage?.users.find((user) => user.id === userId);
+            // if (selectedUser) {
+            //     setSelectedUser(selectedUser);
+            // }
         }
     };
+
+    console.log(selectedUser)
 
     return (
         <HStack gap={"10"}>
@@ -55,17 +57,17 @@ const ResourcesTab = () => {
 
                 <Select
                     label="Velg brukeren"
-                    // children={userData?.users?.map((member) => `${member.firstName} ${member.lastName}`)}
+                    // children={usersPage?.users?.map((member) => `${member.firstName} ${member.lastName}`)}
                     id={"brukeren"}
                     onChange={(e) => handleSelectUser(e)}
+                    defaultValue={""}
                 >
-                    <option value="">Velg brukeren</option>
-                    {userData?.users.map((user) => (
-                        <option key={user.id} value={user.id}>
-                            {user.fullName}
-                        </option>
-                    ))}
+                    <option value="" disabled>Velg brukeren</option>
+                    <option>
+                        "userfullName"
+                    </option>
                 </Select>
+
                 <Select
                     label="Velg rolle"
                     size={"medium"}

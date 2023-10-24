@@ -10,7 +10,7 @@ export function setupMockServer() {
 
             // Mock the members endpoint
             this.get('/mock-data/roles/members', () => {
-                // Define mock data for IMemberPage
+                // Define mock api for IMemberPage
                 const memberData = {
                     "users": [
                     {

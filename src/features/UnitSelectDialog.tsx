@@ -10,8 +10,8 @@ import {
     Switch,
 } from "@mui/material";
 import { Accordion } from "@navikt/ds-react";
-import { useOrgUnits } from "../data/OrgUnitContext";
-import { IOrgUnit } from "../data/types";
+import { useOrgUnits } from "../api/OrgUnitContext";
+import { IOrgUnit } from "../api/types";
 import styled from "styled-components";
 
 interface DialogUnitProps {

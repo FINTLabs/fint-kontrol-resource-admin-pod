@@ -2,8 +2,8 @@ import React, {useState} from "react";
 import {PermissionsToolbarComponent} from "./permissions-toolbar.component";
 import {PermissionsTableComponent} from "./permissions-table.component";
 import {Table, Checkbox} from "@navikt/ds-react";
-import {useRole} from "../../data/RoleContext";
-import {IRole} from "../../data/types";
+import {useRole} from "../../api/RoleContext";
+import {IRole} from "../../api/types";
 import styled from "styled-components";
 
 export interface Availability {
@@ -35,7 +35,7 @@ export const PermissionMainComponent = () => {
     const features = Array.from(new Set(filteredPermissions.map((item: IRole) => item.Feature)));
     const operations = Array.from(new Set(filteredPermissions.map((item: IRole) => item.Operation)));
 
-    // Create a data structure to store availability
+    // Create a api structure to store availability
     const availabilityData: { feature: string; availability: Availability }[] = features.map(
         (feature: string) => {
             const availability: Availability = {};
