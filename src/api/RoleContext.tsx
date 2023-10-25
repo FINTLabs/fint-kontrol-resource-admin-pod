@@ -16,7 +16,6 @@ interface DataProviderProps {
 
 export const RoleProvider: React.FC<DataProviderProps> = ({ children }) => {
     const [selectedAccessRoleId, setSelectedAccessRoleId] = useState<string>('');
-    console.log("What is my env:", process.env.NODE_ENV);
 
     return (
         <RoleContext.Provider value={{ roles: initialData, selectedAccessRoleId, setSelectedAccessRoleId }}>

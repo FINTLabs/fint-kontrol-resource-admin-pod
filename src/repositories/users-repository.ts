@@ -1,4 +1,4 @@
-import {IUserPage} from "../api/types";
+import {IUserListToBeReplaced, IUserPage} from "../api/types";
 import axios from "axios";
 
 const getUsersPage =
@@ -16,10 +16,7 @@ const getUsersPage =
 
         const url = `${baseUrl}${queryParams.length > 0 ? '?' : ''}${queryParams.join('&')}`;
 
-        console.log(url)
-        console.log("OMAGAOJGPAOJGPADIOS")
-
-        return axios.get<IUserPage>(url);
+        return axios.get<IUserListToBeReplaced>(url);
     }
 
 const UsersRepository = {

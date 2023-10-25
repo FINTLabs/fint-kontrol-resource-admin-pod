@@ -43,8 +43,6 @@ const ResourcesTab = () => {
         }
     };
 
-    console.log(selectedUser)
-
     return (
         <HStack gap={"10"}>
             <VStack gap="4">

@@ -29,6 +29,10 @@ export interface IUserPage {
     currentPage: number;
 }
 
+export interface IUserListToBeReplaced {
+    users: IUser[]
+}
+
 export interface IUser {
     id: number,
     resourceId: string,
@@ -45,25 +49,25 @@ export type UsersContextState = {
     itemsPerPage: number,
     getUsersPage: () => void,
     selected: number[],
+    setCurrentPage: (currentPageNumber: number) => void,
     setIsLoading: (isLoading: boolean) => void,
     setItemsPerPage: (paginationSize: number) => void,
     setSelected: (selected: number[]) => void,
-    usersPage: IUserPage | null,
-    updateCurrentPage: (currentPage: number) => void;
+    usersPage: IUserListToBeReplaced | null,
 };
 
 export const contextDefaultValues: UsersContextState = {
     basePath: "/",
     currentPage: 1,
     isAggregate: false,
-    isLoading: true,
+    isLoading: false,
     itemsPerPage: 5,
+    setCurrentPage: (currentPageNumber: number) => void {},
     getUsersPage(): void {},
     setIsLoading(isLoading: boolean): void {},
     selected: [],
-    setItemsPerPage: (paginationSize: number) => void{},
+    setItemsPerPage: (paginationSize: number) => void {},
     setSelected(selected: number[]): void {
     },
     usersPage: null,
-    updateCurrentPage(): void {}
 };
