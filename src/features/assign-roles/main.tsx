@@ -1,9 +1,9 @@
 import React, {useState} from 'react';
-import {useOrgUnits} from '../api/OrgUnitContext';
-import {useUser} from '../api/UserContext';
-import {useRole} from '../api/RoleContext';
+import {useOrgUnits} from '../../api/OrgUnitContext';
+import {useUser} from '../../api/UserContext';
+import {useRole} from '../../api/RoleContext';
 import {Select, HStack, VStack, Button, Heading} from "@navikt/ds-react";
-import UnitSelectDialog from './UnitSelectDialog';
+import UnitSelectDialog from '../UnitSelectDialog';
 import { MessageBus } from '@podium/browser';
 
 import {
@@ -13,7 +13,7 @@ import {
 } from "@navikt/aksel-icons";
 
 
-const ResourcesTab = () => {
+const Main = () => {
     const {selectedOrgUnits} = useOrgUnits();
     const {selectedUser, setSelectedUser} = useUser();
     const {selectedAccessRoleId, setSelectedAccessRoleId} = useRole();
@@ -144,4 +144,4 @@ const ResourcesTab = () => {
     );
 };
 
-export default ResourcesTab;
+export default Main;

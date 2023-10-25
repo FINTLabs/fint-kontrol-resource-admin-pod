@@ -1,5 +1,5 @@
 import React from "react";
-import {Availability, TableStyled} from "./permission-main.component";
+import {Availability, TableStyled} from "./main";
 import { Checkbox, Table } from "@navikt/ds-react";
 
 
@@ -7,7 +7,7 @@ interface PermissionsTableComponentProps {
     operations: string[]
     availabilityData: {feature: string, availability: Availability}[]
 }
-export const PermissionsTableComponent = ({operations, availabilityData}: PermissionsTableComponentProps) => {
+export const PermissionsTable = ({operations, availabilityData}: PermissionsTableComponentProps) => {
 
     const handleCheckboxChange = (feature: string, operation: string, isChecked: boolean) => {
         const updatedAvailabilityData = [...availabilityData];

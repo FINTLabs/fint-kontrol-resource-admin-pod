@@ -38,7 +38,7 @@ const PaginationWrapper = styled.div`
     margin-top: 1rem;
 `
 
-export const UsersRolesMainComponent = () => {
+export const UsersRolesMain = () => {
     const {
         currentPage,
         isLoading,

@@ -2,7 +2,7 @@ import React, {useEffect, useState} from 'react';
 import theme from './template/theme';
 import {ErrorResponse, Route, Routes} from 'react-router-dom';
 import { RoleProvider } from './api/RoleContext';
-import Main from './features/Main';
+import LandingComponent from './features';
 import {ThemeProvider} from "@mui/material";
 import {OrgUnitsProvider} from "./api/OrgUnitContext";
 import {UserProvider} from "./api/UserContext";
@@ -38,7 +38,7 @@ function App() {
                 <UserProvider basePath={basePath}>
                 <OrgUnitsProvider basePath={basePath}>
                     <Routes>
-                        <Route path={`${basePath}/ressurser-admin/`} element={<Main />}/>
+                        <Route path={`${basePath}/ressurser-admin/`} element={<LandingComponent />}/>
                     </Routes>
                 </OrgUnitsProvider>
                 </UserProvider>

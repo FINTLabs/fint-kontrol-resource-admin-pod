@@ -1,15 +1,15 @@
-import React, {useState} from 'react';
+import React from 'react';
 import {
     PersonCheckmarkIcon,
     PersonPlusIcon,
 } from "@navikt/aksel-icons";
 import {Tabs} from "@navikt/ds-react";
 
-import ResourcesTab from './ResourcesTab';
-import {PermissionMainComponent} from "./permission-tab/permission-main.component";
-import {UsersRolesMainComponent} from "./users-roles-tab/users-roles-main.component";
+import Main from './assign-roles/main';
+import {PermissionMain} from "./permission-tab/main";
+import {UsersRolesMain} from "./users-roles-tab/main";
 
-const Main = () => {
+const LandingComponent = () => {
     return (
         <div>
             <h2 id="tableTitle">
@@ -36,19 +36,19 @@ const Main = () => {
                 </Tabs.List>
 
                 <Tabs.Panel value="tildel" className="h-24 w-full bg-gray-50 p-4">
-                    <ResourcesTab  />
+                    <Main  />
                 </Tabs.Panel>
 
                 <Tabs.Panel value="inbox" className="h-24 w-full bg-gray-50 p-4">
-                    <PermissionMainComponent />
+                    <PermissionMain />
                 </Tabs.Panel>
 
                 <Tabs.Panel value="usersWithRoles" className="h-24 w-full bg-gray-50 p-4">
-                    <UsersRolesMainComponent />
+                    <UsersRolesMain />
                 </Tabs.Panel>
             </Tabs>
         </div>
     );
 };
 
-export default Main;
+export default LandingComponent;

@@ -1,6 +1,6 @@
 import React, {useState} from "react";
-import {PermissionsToolbarComponent} from "./permissions-toolbar.component";
-import {PermissionsTableComponent} from "./permissions-table.component";
+import {PermissionsToolbar} from "./toolbar";
+import {PermissionsTable} from "./table";
 import {Table, Checkbox} from "@navikt/ds-react";
 import {useRole} from "../../api/RoleContext";
 import {IRole} from "../../api/types";
@@ -22,7 +22,7 @@ export const TableStyled = styled(Table)`
         }
     }
 `
-export const PermissionMainComponent = () => {
+export const PermissionMain = () => {
     const [localSelectedAccessRoleId, setLocalSelectedAccessRoleId] = useState<string>('');
 
     const { roles } = useRole(); // Retrieves all roles the user can administer
@@ -51,12 +51,12 @@ export const PermissionMainComponent = () => {
 
     return (
         <>
-            <PermissionsToolbarComponent
+            <PermissionsToolbar
                 selectedAccessRoleId={localSelectedAccessRoleId}
                 setSelectedAccessRoleId={setLocalSelectedAccessRoleId}
             />
             {localSelectedAccessRoleId
-                ? <PermissionsTableComponent operations={operations} availabilityData={availabilityData} />
+                ? <PermissionsTable operations={operations} availabilityData={availabilityData} />
                 : <BlankTable /> // Render the blank table when no accessRoleId is selected
             }
         </>

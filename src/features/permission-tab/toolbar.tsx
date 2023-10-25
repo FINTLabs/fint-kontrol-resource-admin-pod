@@ -13,7 +13,7 @@ interface ToolbarProps {
     setSelectedAccessRoleId: (value: string) => void
 }
 
-export const PermissionsToolbarComponent = ({ selectedAccessRoleId, setSelectedAccessRoleId }: ToolbarProps) => {
+export const PermissionsToolbar = ({ selectedAccessRoleId, setSelectedAccessRoleId }: ToolbarProps) => {
 
     return (
         <ToolbarContainer>
