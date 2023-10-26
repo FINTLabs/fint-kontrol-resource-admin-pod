@@ -3,14 +3,22 @@ import {useOrgUnits} from '../../api/OrgUnitContext';
 import {useUser} from '../../api/UserContext';
 import {useRole} from '../../api/RoleContext';
 import {Select, HStack, VStack, Button, Heading} from "@navikt/ds-react";
-import UnitSelectDialog from '../UnitSelectDialog';
+import UnitSelectDialog from './unit-select-dialog';
 import { MessageBus } from '@podium/browser';
-
 import {
     ShieldLockIcon,
     PersonIcon,
     Buldings3Icon
 } from "@navikt/aksel-icons";
+import RolesToolbar from "./roles-toolbar";
+import styled from "styled-components";
+import AssignUserRoleTable from "./assign-user-role-table";
+import AssignUserToOrgUnit from "./assign-user-to-org-unit";
+import {IOrgUnit} from "../../api/types";
+
+const HStackStyled = styled(HStack)`
+    margin-top: 1rem;
+`
 
 
 const Main = () => {
@@ -18,14 +26,9 @@ const Main = () => {
     const {selectedUser, setSelectedUser} = useUser();
     const {selectedAccessRoleId, setSelectedAccessRoleId} = useRole();
     const messageBus = new MessageBus();
+    const [orgUnitsForUser, setOrgUnitsForUser] = useState<IOrgUnit[]>([])
 
-    const [showUnitModal, setShowUnitModal] = useState(false);
-
-    const closeModal = () => {
-        setShowUnitModal(false);
-    };
-
-    function handleSaveRole() {
+    const handleSaveRole = () => {
         messageBus.publish('testChannel', 'testTopic', "Save Role Clicked");
         console.log("published a message to test channel");
         return undefined;
@@ -43,59 +46,14 @@ const Main = () => {
         }
     };
 
+    console.log(selectedUser + "-" + selectedAccessRoleId + "-" + selectedOrgUnits.length + ".")
+
     return (
-        <HStack gap={"10"}>
-            <VStack gap="4">
+        <HStackStyled gap={"10"}>
+            <RolesToolbar setSelectedAccessRoleId={setSelectedAccessRoleId} handleSelectUser={handleSelectUser} />
 
-                <UnitSelectDialog
-                    open={showUnitModal}
-                    onClose={closeModal}
-                />
+            <AssignUserRoleTable />
 
-
-                <Select
-                    label="Velg brukeren"
-                    // children={usersPage?.users?.map((member) => `${member.firstName} ${member.lastName}`)}
-                    id={"brukeren"}
-                    onChange={(e) => handleSelectUser(e)}
-                    defaultValue={""}
-                >
-                    <option value="" disabled>Velg brukeren</option>
-                    <option>
-                        "userfullName"
-                    </option>
-                </Select>
-
-                <Select
-                    label="Velg rolle"
-                    size={"medium"}
-                    onChange={(e) => setSelectedAccessRoleId(e.target.value as string)}
-                    id={"rolle"}
-                    defaultValue={""}
-                >
-                    <option value="">Velg rolle</option>
-                    <option value="aa">Applikasjonsadministrator</option>
-                    <option value="ata">Applikasjonstilgangsadministrator</option>
-                    <option value="e">Enhetsleder</option>
-                    <option value="s">Sluttbruker</option>
-                </Select>
-
-
-                <Heading size={"small"}>Choose org units</Heading>
-                <Button
-                    iconPosition="right"
-                    icon={<Buldings3Icon aria-hidden/>}
-                    id={'selectUnitsIcon'}
-                    // variant="outlined"
-                    variant={"secondary"}
-                    onClick={() => {
-                        setShowUnitModal(true)
-                    }}
-                >
-                    Velg enhet
-                </Button>
-
-            </VStack>
             <VStack>
                 {selectedUser && (
                     <HStack align="center" gap={"5"}>
@@ -116,30 +74,36 @@ const Main = () => {
 
                 )}
 
-                {selectedOrgUnits.length > 0 && (
-                    <HStack align="center">
-                        <Buldings3Icon title="a11y-title" fontSize="1.5rem"/>
-                        <ul>
-                            {selectedOrgUnits.map((orgUnit) => (
-                                <li key={orgUnit.id}>{orgUnit.name}</li>
-                            ))}
-                        </ul>
-                    </HStack>
-                )}
-                {selectedUser && selectedAccessRoleId && selectedOrgUnits.length > 0 && (
-                    <Button
-                        // variant="contained"
-                        variant={"primary"}
-                        // sx={{ mt: 1, mr: 1 }}
-                        onClick={handleSaveRole}
-                    >
-                        Save Access Role
-                    </Button>
-                )}
+                <AssignUserToOrgUnit setOrgUnitsForUser={setOrgUnitsForUser}  />
 
+                <div>
+                    <p>
+                        Valgte orgenheter brukeren skal ha: {orgUnitsForUser.map(unit => unit.name)}
+                    </p>
+                </div>
 
+                {/*{selectedOrgUnits.length > 0 && (*/}
+                {/*    <HStack align="center">*/}
+                {/*        <Buldings3Icon title="a11y-title" fontSize="1.5rem"/>*/}
+                {/*        <ul>*/}
+                {/*            {selectedOrgUnits.map((orgUnit) => (*/}
+                {/*                <li key={orgUnit.id}>{orgUnit.name}</li>*/}
+                {/*            ))}*/}
+                {/*        </ul>*/}
+                {/*    </HStack>*/}
+                {/*)}*/}
+                {/*{selectedUser && selectedAccessRoleId && selectedOrgUnits.length > 0 && (*/}
+                {/*    <Button*/}
+                {/*        // variant="contained"*/}
+                {/*        variant={"primary"}*/}
+                {/*        // sx={{ mt: 1, mr: 1 }}*/}
+                {/*        onClick={handleSaveRole}*/}
+                {/*    >*/}
+                {/*        Save Access Role*/}
+                {/*    </Button>*/}
+                {/*)}*/}
             </VStack>
-        </HStack>
+        </HStackStyled>
 
     );
 };

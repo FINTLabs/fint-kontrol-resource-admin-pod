@@ -49,7 +49,7 @@ export const UsersRolesMain = () => {
     } = useUser()
 
     //Temporary list with any-type because of missing API specifications and fields.
-    let obsoloteList: any = usersPage
+    let obsoleteList: any = usersPage
 
 
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
@@ -59,6 +59,7 @@ export const UsersRolesMain = () => {
         setItemsPerPage((parseInt(event.target.value, 10)))
         setCurrentPage(1);
     };
+
 
     if(!usersPage) {
         return <BlankTable />
@@ -83,7 +84,7 @@ export const UsersRolesMain = () => {
                         </Table.Row>
                         :
 
-                        obsoloteList.map((user: any, i: number) => {
+                        obsoleteList.map((user: any, i: number) => {
                             if(i < 50) { // Remove when pagination support is added to api. Also verify that required data is displayed
                                 return (
                                     <Table.Row key={i}>
