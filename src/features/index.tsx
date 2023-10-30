@@ -6,7 +6,7 @@ import {
 import {Tabs} from "@navikt/ds-react";
 
 import Main from './assign-roles/main';
-import {PermissionMain} from "./permission-tab/main";
+import {PermissionMain} from "./define-role-tab/main";
 import {UsersRolesMain} from "./users-roles-tab/main";
 import styled from "styled-components";
 
