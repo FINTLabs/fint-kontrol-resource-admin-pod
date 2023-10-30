@@ -1,9 +1,7 @@
 // types.ts
 export interface IRole {
-    Id: number,
-    Feature: string,
-    Operation: string,
-    AccessRoleId: string
+    name: string,
+    accessRoleId: string
 }
 
 export interface IOrgUnit {

@@ -5,7 +5,7 @@ import {
 } from "@navikt/aksel-icons";
 import {Tabs} from "@navikt/ds-react";
 
-import Main from './assign-roles/main';
+import Main from './assign-roles-tab/main';
 import {PermissionMain} from "./define-role-tab/main";
 import {UsersRolesMain} from "./users-roles-tab/main";
 import styled from "styled-components";

@@ -35,7 +35,7 @@ export const PermissionMain = () => {
     const features = Array.from(new Set(filteredPermissions.map((item: IRole) => item.Feature)));
     const operations = Array.from(new Set(filteredPermissions.map((item: IRole) => item.Operation)));
 
-    // Create a api structure to store availability
+    // Create an api structure to store availability
     const availabilityData: { feature: string; availability: Availability }[] = features.map(
         (feature: string) => {
             const availability: Availability = {};
