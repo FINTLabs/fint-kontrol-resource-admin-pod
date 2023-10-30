@@ -1,9 +1,12 @@
-import {BodyLong, Button, Modal} from "@navikt/ds-react";
-import {useRef, useState} from "react";
+import {Accordion, BodyLong, Button, Modal} from "@navikt/ds-react";
+import React, {useRef, useState} from "react";
 import {useOrgUnits} from "../../api/OrgUnitContext";
+import {IOrgUnit} from "../../api/types";
+import {Checkbox} from "@mui/material";
+import OrgUnitTree from "./org-unit-tree";
 
 interface OrgUnitModal{
-    setOrgUnitsForUser: () => void
+    setOrgUnitsForUser: (newSelected: any) => void
 }
 
 const OrgUnitModal = ({setOrgUnitsForUser}: OrgUnitModal) => {
@@ -16,7 +19,7 @@ const OrgUnitModal = ({setOrgUnitsForUser}: OrgUnitModal) => {
             <Modal ref={ref} header={{ heading: "Knytt brukerrollen til orgenhet" }}>
                 <Modal.Body>
                     <BodyLong>
-                        <OrgUnitTree />
+                        <OrgUnitTree setOrgUnitsForUser={setOrgUnitsForUser} />
                     </BodyLong>
                 </Modal.Body>
                 <Modal.Footer>
@@ -38,17 +41,6 @@ const OrgUnitModal = ({setOrgUnitsForUser}: OrgUnitModal) => {
 }
 
 
-const OrgUnitTree = () => {
-    const { orgUnitsData} = useOrgUnits();
-    const [aggregated, setAggregated] = useState(false);
 
-    console.log(orgUnitsData)
-
-    return (
-        <>
-            tree
-        </>
-    )
-}
 
 export default OrgUnitModal

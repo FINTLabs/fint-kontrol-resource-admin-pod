@@ -79,10 +79,10 @@ const BlankTable = () => {
             <Table.Header>
                 <Table.Row>
                     <Table.HeaderCell>Feature</Table.HeaderCell>
-                    <Table.HeaderCell>VISNING</Table.HeaderCell>
-                    <Table.HeaderCell>REDIGERE</Table.HeaderCell>
-                    <Table.HeaderCell>LAGE</Table.HeaderCell>
-                    <Table.HeaderCell>SLETTE</Table.HeaderCell>
+                    <Table.HeaderCell>Visning</Table.HeaderCell>
+                    <Table.HeaderCell>Redigere</Table.HeaderCell>
+                    <Table.HeaderCell>Opprette</Table.HeaderCell>
+                    <Table.HeaderCell>Slette</Table.HeaderCell>
                 </Table.Row>
             </Table.Header>
             <Table.Body>{blankData}</Table.Body>
