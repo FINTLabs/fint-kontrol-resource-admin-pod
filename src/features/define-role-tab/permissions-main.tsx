@@ -3,7 +3,6 @@ import { PermissionsToolbar } from "./permissions-toolbar"
 import { PermissionsTable } from "./permissions-table"
 import { Table, Checkbox } from "@navikt/ds-react"
 import { useRole } from "../../api/RoleContext"
-import { IFeature, IRole } from "../../api/types"
 import styled from "styled-components"
 
 export interface Availability {

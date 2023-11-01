@@ -1,7 +1,7 @@
 import React, { useState } from "react"
-import { Availability, TableStyled } from "./permissions-main"
+import { TableStyled } from "./permissions-main"
 import { Checkbox, Table } from "@navikt/ds-react"
-import { IFeature, IFeatureOperation, IPermissionData, roleContextDefaultValues } from "../../api/types"
+import { IPermissionData } from "../../api/types"
 
 interface PermissionsTableProps {
 	permissionDataForRole: IPermissionData

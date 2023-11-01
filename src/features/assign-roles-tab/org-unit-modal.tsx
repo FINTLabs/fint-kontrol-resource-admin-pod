@@ -1,8 +1,5 @@
-import { Accordion, BodyLong, Button, Modal } from "@navikt/ds-react"
-import React, { useRef, useState } from "react"
-import { useOrgUnits } from "../../api/OrgUnitContext"
-import { IOrgUnit } from "../../api/types"
-import { Checkbox } from "@mui/material"
+import { Button, Modal } from "@navikt/ds-react"
+import React, { useRef } from "react"
 import OrgUnitTree from "./org-unit-tree"
 
 interface OrgUnitModal {
