@@ -16,7 +16,7 @@ export const PermissionsTable = ({ permissionDataForRole }: PermissionsTableProp
 		)
 
 		// if (selectedFeatureWithOperations) {
-		// 	selectedFeatureWithOperations = roleContextDefaultValues.permissionDataForRole.featureOperations
+		// 		selectedFeatureWithOperations = roleContextDefaultValues.permissionDataForRole.featureOperations
 		// }
 
 		if (selectedFeatureWithOperations?.operations.includes(operation)) {
@@ -36,17 +36,14 @@ export const PermissionsTable = ({ permissionDataForRole }: PermissionsTableProp
 		// setUpdatedPermissionDataForRoleToUpdate(featuresToUpdate)
 	}
 
-	if (!permissionDataForRole) {
-		return <>permissionData is empty.</>
-	}
-
+	const availableOperations = ["GET", "PUT", "POST", "DELETE"]
 	return (
 		<TableStyled>
 			<Table.Header>
 				<Table.Row>
 					<Table.HeaderCell>Feature</Table.HeaderCell>
-					{permissionDataForRole.featureOperations.map((operation) => (
-						<Table.HeaderCell key={operation.name}>{operation.name}</Table.HeaderCell>
+					{availableOperations.map((operation, index) => (
+						<Table.HeaderCell key={operation + index}>{operation}</Table.HeaderCell>
 					))}
 				</Table.Row>
 			</Table.Header>
@@ -54,21 +51,17 @@ export const PermissionsTable = ({ permissionDataForRole }: PermissionsTableProp
 				{permissionDataForRole.featureOperations.map((feature, index) => (
 					<Table.Row key={feature.name + index}>
 						<Table.DataCell>{feature.name}</Table.DataCell>
-						{feature.operations.map((operation: string) => (
+						{availableOperations.map((operation: string, index) => (
 							<Table.DataCell key={operation}>
-								{feature.operations.includes(operation) && (
-									// TODO: Determine how checkboxes should be visible and editable.
-									<Checkbox
-										hideLabel={true}
-										checked={feature.operations.includes(operation)}
-										color={"primary"}
-										onChange={(e) =>
-											handleCheckboxChange(feature.name, operation, e.target.checked)
-										}
-									>
-										{operation}
-									</Checkbox>
-								)}
+								{/*TODO: Determine how checkboxes should be visible and editable.*/}
+								<Checkbox
+									hideLabel={true}
+									checked={feature.operations.includes(operation)}
+									color={"primary"}
+									onChange={(e) => handleCheckboxChange(feature.name, operation, e.target.checked)}
+								>
+									{operation}
+								</Checkbox>
 							</Table.DataCell>
 						))}
 					</Table.Row>

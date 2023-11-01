@@ -14,6 +14,8 @@ export const TableStyled = styled(Table)`
 		th:first-child {
 			width: 250px;
 		}
+		td {
+		}
 	}
 	.loading-table {
 		td {
@@ -23,12 +25,13 @@ export const TableStyled = styled(Table)`
 `
 export const PermissionsMain = () => {
 	const [localSelectedAccessRoleId, setLocalSelectedAccessRoleId] = useState<string>("")
-	const { roles, featuresInRole, fetchFeaturesInRole, permissionDataForRole, fetchPermissionDataForRole } = useRole() // Retrieves all roles the user can administer
+	const { roles, featuresInRole, fetchFeaturesInRole, permissionDataForRole, fetchPermissionDataForRole } = useRole()
 
 	useEffect(() => {
-		if (localSelectedAccessRoleId) {
-			fetchFeaturesInRole(localSelectedAccessRoleId)
-			fetchPermissionDataForRole(localSelectedAccessRoleId)
+		fetchPermissionDataForRole(localSelectedAccessRoleId)
+		// fetchFeaturesInRole(localSelectedAccessRoleId)
+		if (localSelectedAccessRoleId === undefined || localSelectedAccessRoleId === "") {
+			return
 		}
 	}, [localSelectedAccessRoleId])
 
@@ -43,8 +46,6 @@ export const PermissionsMain = () => {
 	// const operations = Array.from(
 	// 	new Set(filteredPermissions.map((item: IRole) => item.operations))
 	// )
-
-	const availableOperationsInFeature = ["GET", "POST", "PUT", "DELETE"]
 
 	// Create an api structure to store availability
 	// const availabilityData: { featureName: IFeature; availability: Availability }[] = featuresInRole.map(
@@ -61,11 +62,12 @@ export const PermissionsMain = () => {
 	return (
 		<>
 			<PermissionsToolbar
+				roleName={permissionDataForRole.name}
 				selectedAccessRoleId={localSelectedAccessRoleId}
 				setSelectedAccessRoleId={setLocalSelectedAccessRoleId}
 			/>
 			{
-				permissionDataForRole ? (
+				permissionDataForRole.accessRoleId ? (
 					<PermissionsTable permissionDataForRole={permissionDataForRole} />
 				) : (
 					<BlankTable />
