@@ -47,12 +47,14 @@ export interface IUserPage {
 
 export interface IUserListToBeReplaced {
 	users: IUser[]
+	totalItems: number
 }
 
 export interface IUser {
 	id: number
 	resourceId: string
-	fullName: string
+	firstName: string
+	lastName: string
 	userType: string
 	userName: string
 }

@@ -23,7 +23,9 @@ const AssignRoleToUserConfirmation = ({ selectedUser, selectedAccessRoleId }: As
 			{selectedUser && (
 				<HStack align="center" gap={"5"}>
 					<PersonIcon title="a11y-title" fontSize="1.5rem" />
-					<Heading size={"small"}>{selectedUser.fullName}</Heading>
+					<Heading size={"small"}>
+						{selectedUser.firstName} {selectedUser.lastName}
+					</Heading>
 				</HStack>
 			)}
 

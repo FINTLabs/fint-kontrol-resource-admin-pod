@@ -15,19 +15,19 @@ const HStackStyled = styled(HStack)`
 
 const Main = () => {
 	const { selectedOrgUnits } = useOrgUnits()
-	const { selectedUser, setOrgUnitIds, usersPage } = useUser()
+	const { selectedUser, setOrgUnitIds } = useUser()
 	const { selectedAccessRoleId, setSelectedAccessRoleId } = useRole()
 
 	console.log(selectedUser + "-" + selectedAccessRoleId + "-" + selectedOrgUnits.length + ".")
 
 	return (
-		<HStackStyled gap={"10"}>
+		<div>
 			<RolesToolbar setSelectedAccessRoleId={setSelectedAccessRoleId} setOrgUnitIdsFilter={setOrgUnitIds} />
 
-			<AssignUserRoleTable fetchedUsers={usersPage} />
+			<AssignUserRoleTable />
 
 			<AssignRoleToUserConfirmation selectedUser={selectedUser} selectedAccessRoleId={selectedAccessRoleId} />
-		</HStackStyled>
+		</div>
 	)
 }
 
