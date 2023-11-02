@@ -1,6 +1,11 @@
 import { Table } from "@navikt/ds-react"
+import { IUserListToBeReplaced } from "../../api/types"
 
-const AssignUserRoleTable = () => {
+interface AssignUserRoleTableProps {
+	fetchedUsers: IUserListToBeReplaced | null
+}
+const AssignUserRoleTable = ({ fetchedUsers }: AssignUserRoleTableProps) => {
+	console.log(fetchedUsers)
 	return (
 		<Table>
 			<Table.Header>

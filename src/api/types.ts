@@ -57,17 +57,21 @@ export interface IUser {
 	userName: string
 }
 
+// -----------------------
+
 export type UsersContextState = {
 	basePath: string
 	currentPage: number
 	isAggregate: boolean
 	isLoading: boolean
 	itemsPerPage: number
+	orgUnitIds: string[]
 	getUsersPage: () => void
 	selected: number[]
 	setCurrentPage: (currentPageNumber: number) => void
 	setIsLoading: (isLoading: boolean) => void
 	setItemsPerPage: (paginationSize: number) => void
+	setOrgUnitIds: (orgUnitIds: string[]) => void
 	setSelected: (selected: number[]) => void
 	usersPage: IUserListToBeReplaced | null
 }
@@ -78,14 +82,18 @@ export const userContextDefaultValues: UsersContextState = {
 	isAggregate: false,
 	isLoading: false,
 	itemsPerPage: 5,
+	orgUnitIds: [],
 	setCurrentPage: (currentPageNumber: number) => void {},
 	getUsersPage(): void {},
 	setIsLoading(isLoading: boolean): void {},
 	selected: [],
 	setItemsPerPage: (paginationSize: number) => void {},
+	setOrgUnitIds(orgUnits: string[]): void {},
 	setSelected(selected: number[]): void {},
 	usersPage: null
 }
+
+// ------------------------
 
 export type RoleContextState = {
 	basePath: string

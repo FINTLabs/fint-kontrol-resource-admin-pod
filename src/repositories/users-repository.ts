@@ -1,26 +1,29 @@
-import {IUserListToBeReplaced, IUserPage} from "../api/types";
-import axios from "axios";
+import { IUserListToBeReplaced, IUserPage } from "../api/types"
+import axios from "axios"
 
-const getUsersPage =
-    (basePath: string, currentPage: number, itemsPerPage: number) => {
-        const baseUrl = `${basePath === '/' ? '' : basePath}/api/accessmanagement/v1/user`;
-        let queryParams = [];
+const getUsersPage = (basePath: string, currentPage: number, itemsPerPage: number, orgUnitIds: string[]) => {
+	const baseUrl = `${basePath === "/" ? "" : basePath}/api/accessmanagement/v1/user`
+	let queryParams = []
 
-        if (currentPage) {
-            queryParams.push(`page=${currentPage-1}`);
-        }
+	if (currentPage) {
+		queryParams.push(`page=${currentPage - 1}`)
+	}
 
-        if (itemsPerPage) {
-            queryParams.push(`size=${itemsPerPage}`);
-        }
+	if (itemsPerPage) {
+		queryParams.push(`size=${itemsPerPage}`)
+	}
 
-        const url = `${baseUrl}${queryParams.length > 0 ? '?' : ''}${queryParams.join('&')}`;
+	if (orgUnitIds) {
+		orgUnitIds.map((orgUnitId) => queryParams.push(`orgUnitId=${orgUnitId}`))
+	}
 
-        return axios.get<IUserListToBeReplaced>(url);
-    }
+	const url = `${baseUrl}${queryParams.length > 0 ? "?" : ""}${queryParams.join("&")}`
+
+	return axios.get<IUserListToBeReplaced>(url)
+}
 
 const UsersRepository = {
-    getUsersPage
-};
+	getUsersPage
+}
 
-export default UsersRepository;
+export default UsersRepository
