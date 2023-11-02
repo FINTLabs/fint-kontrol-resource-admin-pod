@@ -1,6 +1,6 @@
 import React, { createContext, useContext, useState, useEffect } from 'react';
 import {IOrgUnit, IOrgUnits} from './types';
-import {fetchUnitTreeData} from "./api";
+import {fetchUnitTreeData} from "./";
 
 interface OrgUnitsContextType {
     orgUnitsData: IOrgUnits | null;
@@ -19,7 +19,6 @@ export function OrgUnitsProvider({ children, basePath }: { children: React.React
         const fetchData = async () => {
             try {
                 const newUnitTree = await fetchUnitTreeData(basePath);
-                console.log("Returned tree data: ", newUnitTree);
                 setOrgUnitsData(newUnitTree);
             } catch (error) {
                 console.error(error);
