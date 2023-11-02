@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react"
 import { PermissionsToolbar } from "./permissions-toolbar"
 import { PermissionsTable } from "./permissions-table"
-import { Table, Checkbox } from "@navikt/ds-react"
+import { Table, Checkbox, Button } from "@navikt/ds-react"
 import { useRole } from "../../api/RoleContext"
 import styled from "styled-components"
 
@@ -41,7 +41,9 @@ export const PermissionsMain = () => {
 			/>
 			{
 				permissionDataForRole.accessRoleId ? (
-					<PermissionsTable permissionDataForRole={permissionDataForRole} />
+					<>
+						<PermissionsTable permissionDataForRole={permissionDataForRole} />
+					</>
 				) : (
 					<BlankTable />
 				) // Render the blank table when no accessRoleId is selected
@@ -70,10 +72,10 @@ const BlankTable = () => {
 			<Table.Header>
 				<Table.Row>
 					<Table.HeaderCell>Feature</Table.HeaderCell>
-					<Table.HeaderCell>Visning</Table.HeaderCell>
-					<Table.HeaderCell>Redigere</Table.HeaderCell>
-					<Table.HeaderCell>Opprette</Table.HeaderCell>
-					<Table.HeaderCell>Slette</Table.HeaderCell>
+					<Table.HeaderCell>GET</Table.HeaderCell>
+					<Table.HeaderCell>POST</Table.HeaderCell>
+					<Table.HeaderCell>PUT</Table.HeaderCell>
+					<Table.HeaderCell>DELETE</Table.HeaderCell>
 				</Table.Row>
 			</Table.Header>
 			<Table.Body>{blankData}</Table.Body>

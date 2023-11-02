@@ -52,7 +52,7 @@ export const PermissionsTable = ({ permissionDataForRole }: PermissionsTableProp
 		}
 	}
 
-	const availableOperations = ["GET", "PUT", "POST", "DELETE"]
+	const availableOperations = ["GET", "POST", "PUT", "DELETE"]
 
 	return (
 		<TableStyled>
