@@ -10,7 +10,7 @@ import styled from "styled-components"
 const LandingComponent = () => {
 	return (
 		<div>
-			<h2 id="tableTitle">Applikasjonsadministrator</h2>
+			<h2 id="tableTitle">Rettighetsstyring</h2>
 
 			<Tabs defaultValue="tildel">
 				<Tabs.List>
