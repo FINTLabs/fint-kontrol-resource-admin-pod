@@ -1,6 +1,6 @@
-import React, { useEffect, useState } from "react"
+import React, { useState } from "react"
 import { TableStyled } from "./permissions-main"
-import { Checkbox, Table } from "@navikt/ds-react"
+import { Table } from "@navikt/ds-react"
 import { IPermissionData } from "../../api/types"
 import PermissionsTableCheckbox from "./permissions-table-checkbox"
 
@@ -8,15 +8,18 @@ interface PermissionsTableProps {
 	permissionDataForRole: IPermissionData
 }
 export const PermissionsTable = ({ permissionDataForRole }: PermissionsTableProps) => {
-	const [updatedPermissionDataForRoleToUpdate, setUpdatedPermissionDataForRoleToUpdate] =
-		useState<IPermissionData>(permissionDataForRole)
-	const [isUpdated, setIsUpdated] = useState(false)
+	const [updatedPermissionDataForRoleToUpdate] = useState<IPermissionData>(permissionDataForRole)
+	// const [isUpdated, setIsUpdated] = useState(false)
 	// const [listOfChanges, updateListOfChanges] = useState([]) // This is the list of all changes done. Will be displayed on save-prompt
 
-	useEffect(() => {
-		setIsUpdated(!isUpdated)
-		console.log(isUpdated)
-	}, [updatedPermissionDataForRoleToUpdate])
+	// useEffect(() => {
+	// 	setIsUpdated(!isUpdated)
+	// 	console.log(isUpdated)
+	// }, [updatedPermissionDataForRoleToUpdate, isUpdated])
+
+	// if (updatedPermissionDataForRoleToUpdate.accessRoleId !== "baaa") {
+	// 	setUpdatedPermissionDataForRoleToUpdate(updatedPermissionDataForRoleToUpdate) // Remove later, this is done to ensure allowed publish to beta
+	// }
 
 	// const handleCheckboxChange = (featureName: string, operation: string, isChecked: boolean) => {
 	// 	const permissionDataForRoleToUpdate = updatedPermissionDataForRoleToUpdate

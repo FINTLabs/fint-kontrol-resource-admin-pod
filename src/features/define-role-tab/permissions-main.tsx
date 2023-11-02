@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react"
 import { PermissionsToolbar } from "./permissions-toolbar"
 import { PermissionsTable } from "./permissions-table"
-import { Table, Checkbox, Button } from "@navikt/ds-react"
+import { Table, Checkbox } from "@navikt/ds-react"
 import { useRole } from "../../api/RoleContext"
 import styled from "styled-components"
 
@@ -26,10 +26,10 @@ export const PermissionsMain = () => {
 	useEffect(() => {
 		fetchPermissionDataForRole(localSelectedAccessRoleId)
 		// fetchFeaturesInRole(localSelectedAccessRoleId)
-		if (localSelectedAccessRoleId === undefined || localSelectedAccessRoleId === "") {
-			return
-		}
+		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [localSelectedAccessRoleId])
+
+	console.log(localSelectedAccessRoleId)
 
 	return (
 		<>

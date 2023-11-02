@@ -1,6 +1,5 @@
 import { Checkbox } from "@navikt/ds-react"
 import React, { useState } from "react"
-import { IFeatureOperation } from "../../api/types"
 
 interface IPermissionTableCheckbox {
 	featureNameProp: string

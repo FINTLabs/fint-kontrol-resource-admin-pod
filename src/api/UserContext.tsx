@@ -1,5 +1,5 @@
 import React, { createContext, useContext, useState, useEffect } from "react"
-import { IUserPage, IUser, UsersContextState, userContextDefaultValues, IUserListToBeReplaced } from "./types"
+import { IUserPage, IUser, userContextDefaultValues, IUserListToBeReplaced } from "./types"
 import UsersRepository from "../repositories/users-repository"
 import { ErrorResponse } from "react-router-dom"
 

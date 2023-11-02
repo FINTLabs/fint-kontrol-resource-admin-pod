@@ -117,7 +117,7 @@ export const roleContextDefaultValues: RoleContextState = {
 	isAggregate: false,
 	isLoading: false,
 	itemsPerPage: 5,
-	permissionDataForRole: { accessRoleId: "", name: "", featureOperations: [{ name: "", operations: ["GET"] }] },
+	permissionDataForRole: { accessRoleId: "", name: "", featureOperations: [{ name: "", operations: [] }] },
 	setCurrentPage: (currentPageNumber: number) => void {},
 	setIsLoading(isLoading: boolean): void {},
 	selected: [],

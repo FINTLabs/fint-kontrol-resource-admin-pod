@@ -1,13 +1,14 @@
 import { Button, Modal } from "@navikt/ds-react"
-import React, { useRef } from "react"
+import React, { useRef, useState } from "react"
 import OrgUnitTree from "./org-unit-tree"
 
-interface OrgUnitModal {
+interface OrgUnitModalProps {
 	setOrgUnitsForUser: (newSelected: any) => void
 }
 
-const OrgUnitModal = ({ setOrgUnitsForUser }: OrgUnitModal) => {
+const OrgUnitModal = ({ setOrgUnitsForUser }: OrgUnitModalProps) => {
 	const ref = useRef<HTMLDialogElement>(null)
+	const [aggregated, setAggregated] = useState(false)
 
 	return (
 		<div className="py-16">
@@ -15,7 +16,8 @@ const OrgUnitModal = ({ setOrgUnitsForUser }: OrgUnitModal) => {
 
 			<Modal ref={ref} header={{ heading: "Knytt brukerrollen til orgenhet" }}>
 				<Modal.Body>
-					<OrgUnitTree setOrgUnitsForUser={setOrgUnitsForUser} />
+					<Button onClick={() => setAggregated(!aggregated)}>Aggregert?</Button>
+					<OrgUnitTree setOrgUnitsForUser={setOrgUnitsForUser} aggregated={aggregated} />
 				</Modal.Body>
 				<Modal.Footer>
 					<Button type="button" onClick={() => ref.current?.close()}>

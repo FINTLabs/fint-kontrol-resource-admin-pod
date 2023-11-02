@@ -28,14 +28,18 @@ export const PermissionsToolbar = ({
 
 			<Select
 				value={selectedAccessRoleId ? selectedAccessRoleId : ""}
-				onChange={(e) => setSelectedAccessRoleId(e.target.value as string)}
+				onChange={(e) => setSelectedAccessRoleId(e.target.value)}
 				label={"Rolle"}
 			>
 				<option value="" disabled>
 					Velg aksessrolle
 				</option>
-				{roles.map((role) => {
-					return <option value={role.accessRoleId}>{role.name}</option>
+				{roles.map((role, index) => {
+					return (
+						<option key={index} value={role.accessRoleId}>
+							{role.name}
+						</option>
+					)
 				})}
 			</Select>
 		</ToolbarContainer>

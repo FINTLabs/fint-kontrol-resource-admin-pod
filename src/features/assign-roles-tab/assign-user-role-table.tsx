@@ -1,5 +1,4 @@
 import { Loader, Pagination, Select, Table } from "@navikt/ds-react"
-import { IUserListToBeReplaced } from "../../api/types"
 import React from "react"
 import styled from "styled-components"
 import { useUser } from "../../api/UserContext"
@@ -58,8 +57,8 @@ const AssignUserRoleTable = () => {
 					</Table.Row>
 				</Table.Header>
 				<Table.Body>
-					{usersPage?.users.map((user) => (
-						<Table.Row>
+					{usersPage?.users.map((user, index) => (
+						<Table.Row key={index}>
 							<Table.DataCell>{user.firstName + " " + user.lastName}</Table.DataCell>
 							<Table.DataCell>Eksisterende rolletilknytning</Table.DataCell>
 							<Table.DataCell>OrgEnhettilknytning</Table.DataCell>

@@ -5,7 +5,6 @@ import { Tabs } from "@navikt/ds-react"
 import Main from "./assign-roles-tab/main"
 import { PermissionsMain } from "./define-role-tab/permissions-main"
 import { UsersRolesMain } from "./users-roles-tab/main"
-import styled from "styled-components"
 
 const LandingComponent = () => {
 	return (

@@ -1,12 +1,11 @@
 import React, { createContext, useContext, useState, useEffect } from "react"
 import initialData from "./testData/permissionsData" // Import your Data type here - THIS must be removed when API has operations: [] support
-import { IFeature, IPermissionData, IRole, roleContextDefaultValues } from "./types"
+import { IPermissionData, IRole, roleContextDefaultValues } from "./types"
 import { ErrorResponse } from "react-router-dom"
 import RolesRepository from "../repositories/roles-repository"
 
 type RoleContextType = {
 	isLoading: boolean
-	featuresInRole: IFeature[]
 	fetchFeaturesInRole: (roleId: string) => void
 	fetchPermissionDataForRole: (roleId: string) => void
 	permissionDataForRole: IPermissionData
@@ -19,7 +18,6 @@ type RoleContextType = {
 const RoleContext = createContext<RoleContextType | undefined>(undefined)
 
 export const RoleProvider = ({ children, basePath }: { children: React.ReactNode; basePath: string }) => {
-	const [featuresInRole, setFeaturesInRole] = useState<IFeature[]>([])
 	const [isLoading, setIsLoading] = useState<boolean>(false)
 	const [permissionDataForRole, setPermissionDataForRole] = useState<IPermissionData>(
 		roleContextDefaultValues.permissionDataForRole
@@ -80,7 +78,6 @@ export const RoleProvider = ({ children, basePath }: { children: React.ReactNode
 		<RoleContext.Provider
 			value={{
 				isLoading,
-				featuresInRole,
 				fetchFeaturesInRole,
 				fetchPermissionDataForRole,
 				permissionDataForRole,

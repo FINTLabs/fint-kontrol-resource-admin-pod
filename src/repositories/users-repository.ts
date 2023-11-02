@@ -1,4 +1,4 @@
-import { IUserListToBeReplaced, IUserPage } from "../api/types"
+import { IUserListToBeReplaced } from "../api/types"
 import axios from "axios"
 
 const getUsersPage = (basePath: string, currentPage: number, itemsPerPage: number, orgUnitIds: string[]) => {

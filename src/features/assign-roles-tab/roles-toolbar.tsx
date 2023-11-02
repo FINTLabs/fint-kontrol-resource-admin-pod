@@ -13,8 +13,6 @@ const ToolbarContainer = styled.div`
 	width: 100%;
 `
 
-interface RolesToolbarProps {}
-
 const RolesToolbar = ({ setSelectedAccessRoleId }: any) => {
 	const [showUnitModal, setShowUnitModal] = useState(false)
 
