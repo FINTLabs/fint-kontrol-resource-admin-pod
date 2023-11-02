@@ -7,7 +7,7 @@ const initialData: IPermissionData[] = [
 		featureOperations: [
 			{
 				name: "users",
-				operations: ["GET", "POST"]
+				operations: ["GET"]
 			},
 			{
 				name: "users-details",
@@ -19,7 +19,7 @@ const initialData: IPermissionData[] = [
 			},
 			{
 				name: "roles-details",
-				operations: ["GET", "POST"]
+				operations: ["GET"]
 			},
 			{
 				name: "resources",
@@ -31,7 +31,7 @@ const initialData: IPermissionData[] = [
 			},
 			{
 				name: "assignments",
-				operations: ["GET", "POST"]
+				operations: ["GET"]
 			},
 			{
 				name: "assignments-details",
@@ -72,12 +72,12 @@ const initialData: IPermissionData[] = [
 	},
 
 	{
-		accessRoleId: "e",
+		accessRoleId: "al",
 		name: "Enhetsleder",
 		featureOperations: [
 			{
 				name: "assignments",
-				operations: ["GET", "POST", "DELETE"]
+				operations: ["GET"]
 			},
 			{
 				name: "assignments-details",
@@ -103,7 +103,7 @@ const initialData: IPermissionData[] = [
 	},
 
 	{
-		accessRoleId: "s",
+		accessRoleId: "sb",
 		name: "Sluttbruker",
 		featureOperations: [
 			{
@@ -112,7 +112,7 @@ const initialData: IPermissionData[] = [
 			},
 			{
 				name: "assignments-details",
-				operations: ["GET", "POST", "DELETE"]
+				operations: ["GET", "POST"]
 			},
 			{
 				name: "resources",
@@ -124,7 +124,7 @@ const initialData: IPermissionData[] = [
 			},
 			{
 				name: "orgunits",
-				operations: ["GET", "POST"]
+				operations: ["GET"]
 			},
 			{
 				name: "orgunits-details",

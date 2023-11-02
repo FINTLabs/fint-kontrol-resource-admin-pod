@@ -5,10 +5,6 @@ import { Table, Checkbox } from "@navikt/ds-react"
 import { useRole } from "../../api/RoleContext"
 import styled from "styled-components"
 
-export interface Availability {
-	[key: string]: boolean
-}
-
 export const TableStyled = styled(Table)`
 	thead {
 		th:first-child {
@@ -25,7 +21,7 @@ export const TableStyled = styled(Table)`
 `
 export const PermissionsMain = () => {
 	const [localSelectedAccessRoleId, setLocalSelectedAccessRoleId] = useState<string>("")
-	const { roles, featuresInRole, fetchFeaturesInRole, permissionDataForRole, fetchPermissionDataForRole } = useRole()
+	const { roles, permissionDataForRole, fetchPermissionDataForRole } = useRole()
 
 	useEffect(() => {
 		fetchPermissionDataForRole(localSelectedAccessRoleId)
@@ -35,34 +31,11 @@ export const PermissionsMain = () => {
 		}
 	}, [localSelectedAccessRoleId])
 
-	const filteredPermissions = localSelectedAccessRoleId
-		? roles.filter((roles) => roles.accessRoleId === localSelectedAccessRoleId)
-		: []
-
-	// Extract unique features and operations
-	// const features = Array.from(
-	// 	new Set(filteredPermissions.map((item: IRole) => item.name))
-	// )
-	// const operations = Array.from(
-	// 	new Set(filteredPermissions.map((item: IRole) => item.operations))
-	// )
-
-	// Create an api structure to store availability
-	// const availabilityData: { featureName: IFeature; availability: Availability }[] = featuresInRole.map(
-	// 	(feature: IFeature) => {
-	// 		const availability: Availability = {}
-	// 		feature.operations.forEach((operation: string) => {
-	// 			availability[operation] = filteredPermissions.some((item: IRole) => item.name === feature)
-	// 		})
-	//
-	// 		return { feature, availability }
-	// 	}
-	// )
-
 	return (
 		<>
 			<PermissionsToolbar
 				roleName={permissionDataForRole.name}
+				roles={roles}
 				selectedAccessRoleId={localSelectedAccessRoleId}
 				setSelectedAccessRoleId={setLocalSelectedAccessRoleId}
 			/>
