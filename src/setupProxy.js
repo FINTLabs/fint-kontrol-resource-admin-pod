@@ -46,7 +46,7 @@ module.exports = function (app) {
 	)
 
 	app.use(
-		createProxyMiddleware("/api/accessmanagement/v1/accessrole/:id", {
+		createProxyMiddleware("/api/accessmanagement/v1/accesspermission/accessrole/id", {
 			// Target port number must be equal to the port forwarded
 			target: "http://localhost:53989/beta/fintlabs-no",
 			changeOrigin: true,

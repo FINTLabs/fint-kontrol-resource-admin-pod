@@ -55,23 +55,23 @@ export const RoleProvider = ({ children, basePath }: { children: React.ReactNode
 
 	const fetchPermissionDataForRole = async (roleId: string) => {
 		// This must be changed when API is ready
-		const foundEle = initialData.find((initDataEle) => initDataEle.accessRoleId === roleId)
-		if (foundEle) {
-			setPermissionDataForRole(foundEle)
-		} else {
-			setPermissionDataForRole(roleContextDefaultValues.permissionDataForRole)
-		}
+		// const foundEle = initialData.find((initDataEle) => initDataEle.accessRoleId === roleId)
+		// if (foundEle) {
+		// 	setPermissionDataForRole(foundEle)
+		// } else {
+		// 	setPermissionDataForRole(roleContextDefaultValues.permissionDataForRole)
+		// }
 
 		// The code below is to be used when the API for permissionData is created
-		// if (basePath) {
-		// 	setIsLoading(true)
-		// 	await RolesRepository.getPermissionDataForRole(basePath, roleId)
-		// 		.then((response) => {
-		// 			setRoles(response.data)
-		// 		})
-		// 		.catch((err: ErrorResponse) => console.error(err))
-		// 		.finally(() => setIsLoading(false))
-		// }
+		if (basePath) {
+			setIsLoading(true)
+			await RolesRepository.getPermissionDataForRole(basePath, roleId)
+				.then((response) => {
+					setRoles(response.data)
+				})
+				.catch((err: ErrorResponse) => console.error(err))
+				.finally(() => setIsLoading(false))
+		}
 	}
 
 	return (

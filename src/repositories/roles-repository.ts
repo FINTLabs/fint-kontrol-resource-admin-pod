@@ -14,7 +14,7 @@ const getFeaturesInRole = (basePath: string, roleId: string) => {
 }
 
 const getPermissionDataForRole = (basePath: string, roleId: string) => {
-	const baseUrl = `${basePath === "/" ? "" : basePath}/api/accessmanagement/v1/permissionData/${roleId}`
+	const baseUrl = `${basePath === "/" ? "" : basePath}/api/accessmanagement/v1/accesspermission/accessrole/${roleId}`
 	const url = `${baseUrl}`
 	return axios.get<IPermissionData[]>(url)
 }

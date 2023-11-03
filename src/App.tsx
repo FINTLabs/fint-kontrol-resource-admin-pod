@@ -1,5 +1,4 @@
 import React, { useEffect, useState } from "react"
-import theme from "./template/theme"
 import { ErrorResponse, Route, Routes } from "react-router-dom"
 import { RoleProvider } from "./api/RoleContext"
 import LandingComponent from "./features"
@@ -34,17 +33,15 @@ function App() {
 	}
 
 	return (
-		<ThemeProvider theme={theme}>
-			<RoleProvider basePath={basePath}>
-				<UserProvider basePath={basePath}>
-					<OrgUnitsProvider basePath={basePath}>
-						<Routes>
-							<Route path={`${basePath}/ressurser-admin/`} element={<LandingComponent />} />
-						</Routes>
-					</OrgUnitsProvider>
-				</UserProvider>
-			</RoleProvider>
-		</ThemeProvider>
+		<RoleProvider basePath={basePath}>
+			<UserProvider basePath={basePath}>
+				<OrgUnitsProvider basePath={basePath}>
+					<Routes>
+						<Route path={`${basePath}/ressurser-admin/`} element={<LandingComponent />} />
+					</Routes>
+				</OrgUnitsProvider>
+			</UserProvider>
+		</RoleProvider>
 	)
 }
 
