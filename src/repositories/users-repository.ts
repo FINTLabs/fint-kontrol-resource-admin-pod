@@ -5,10 +5,6 @@ const getUsersPage = (basePath: string, currentPage: number, itemsPerPage: numbe
 	const baseUrl = `${basePath === "/" ? "" : basePath}/api/accessmanagement/v1/user`
 	let queryParams = []
 
-	if (currentPage) {
-		queryParams.push(`page=${currentPage - 1}`)
-	}
-
 	if (itemsPerPage) {
 		queryParams.push(`size=${itemsPerPage}`)
 	}
