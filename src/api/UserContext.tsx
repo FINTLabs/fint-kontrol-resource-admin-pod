@@ -1,5 +1,5 @@
 import React, { createContext, useContext, useState, useEffect } from "react"
-import { IUserPage, IUser, userContextDefaultValues, IUserListToBeReplaced } from "./types"
+import { IUser, userContextDefaultValues, IUserPage } from "./types"
 import UsersRepository from "../repositories/users-repository"
 import { ErrorResponse } from "react-router-dom"
 
@@ -8,7 +8,7 @@ interface UserContextType {
 	isLoading: boolean
 	itemsPerPage: number
 	orgUnitIds: string[]
-	usersPage: IUserListToBeReplaced | null
+	usersPage: IUserPage | null
 	selectedUser: IUser | null
 	setCurrentPage: (currentPage: number) => void
 	setIsLoading: (isLoading: boolean) => void
@@ -26,9 +26,9 @@ export function UserProvider({ children, basePath }: { children: React.ReactNode
 	const [itemsPerPage, setItemsPerPage] = useState<number>(5)
 	const [orgUnitIds, setOrgUnitIds] = useState<string[]>(userContextDefaultValues.orgUnitIds)
 	const [selectedUser, setSelectedUser] = useState<IUser | null>(null)
-	const [usersPage, setUsersPage] = useState<IUserListToBeReplaced | null>(null)
+	const [usersPage, setUsersPage] = useState<IUserPage | null>(null)
 
-	const setUser = (data: IUserListToBeReplaced | null) => {
+	const setUser = (data: IUserPage | null) => {
 		setUsersPage(data)
 	}
 

@@ -45,11 +45,6 @@ export interface IUserPage {
 	currentPage: number
 }
 
-export interface IUserListToBeReplaced {
-	users: IUser[]
-	totalItems: number
-}
-
 export interface IUser {
 	id: number
 	resourceId: string
@@ -75,7 +70,7 @@ export type UsersContextState = {
 	setItemsPerPage: (paginationSize: number) => void
 	setOrgUnitIds: (orgUnitIds: string[]) => void
 	setSelected: (selected: number[]) => void
-	usersPage: IUserListToBeReplaced | null
+	usersPage: IUserPage | null
 }
 
 export const userContextDefaultValues: UsersContextState = {

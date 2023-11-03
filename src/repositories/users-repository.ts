@@ -1,4 +1,4 @@
-import { IUserListToBeReplaced } from "../api/types"
+import { IUserPage } from "../api/types"
 import axios from "axios"
 
 const getUsersPage = (basePath: string, currentPage: number, itemsPerPage: number, orgUnitIds: string[]) => {
@@ -19,7 +19,7 @@ const getUsersPage = (basePath: string, currentPage: number, itemsPerPage: numbe
 
 	const url = `${baseUrl}${queryParams.length > 0 ? "?" : ""}${queryParams.join("&")}`
 
-	return axios.get<IUserListToBeReplaced>(url)
+	return axios.get<IUserPage>(url)
 }
 
 const UsersRepository = {
