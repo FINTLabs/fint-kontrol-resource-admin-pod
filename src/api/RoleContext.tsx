@@ -1,11 +1,11 @@
 import React, { createContext, useContext, useState, useEffect } from "react"
-import initialData from "./testData/permissionsData" // Import your Data type here - THIS must be removed when API has operations: [] support
 import { IPermissionData, IRole, roleContextDefaultValues } from "./types"
 import { ErrorResponse } from "react-router-dom"
 import RolesRepository from "../repositories/roles-repository"
 
 type RoleContextType = {
 	isLoading: boolean
+	getRoleNameFromId: (roleId: string) => string
 	fetchFeaturesInRole: (roleId: string) => void
 	fetchPermissionDataForRole: (roleId: string) => void
 	permissionDataForRole: IPermissionData
@@ -13,6 +13,8 @@ type RoleContextType = {
 	selectedAccessRoleId: string
 	setIsLoading: (isLoading: boolean) => void
 	setSelectedAccessRoleId: (accessRoleId: string) => void
+	resetPermissionData: () => void
+	updatePermissionDataForRole: (updatedPermissionData: IPermissionData) => void
 }
 
 const RoleContext = createContext<RoleContextType | undefined>(undefined)
@@ -54,37 +56,51 @@ export const RoleProvider = ({ children, basePath }: { children: React.ReactNode
 	}
 
 	const fetchPermissionDataForRole = async (roleId: string) => {
-		// This must be changed when API is ready
-		// const foundEle = initialData.find((initDataEle) => initDataEle.accessRoleId === roleId)
-		// if (foundEle) {
-		// 	setPermissionDataForRole(foundEle)
-		// } else {
-		// 	setPermissionDataForRole(roleContextDefaultValues.permissionDataForRole)
-		// }
-
-		// The code below is to be used when the API for permissionData is created
 		if (basePath) {
 			setIsLoading(true)
 			await RolesRepository.getPermissionDataForRole(basePath, roleId)
 				.then((response) => {
-					setRoles(response.data)
+					setPermissionDataForRole(response.data)
 				})
 				.catch((err: ErrorResponse) => console.error(err))
 				.finally(() => setIsLoading(false))
 		}
 	}
 
+	const updatePermissionDataForRole = async (updatedPermissionRole: IPermissionData) => {
+		if (basePath) {
+			setIsLoading(true)
+			await RolesRepository.putPermissionDataForRole(basePath, updatedPermissionRole)
+				.then((response) => {
+					fetchPermissionDataForRole(updatedPermissionRole.accessRoleId)
+				})
+				.catch((err: ErrorResponse) => console.error(err))
+		}
+	}
+
+	const getRoleNameFromId = (roleId: string) => {
+		const nameFromId = roles.find((role) => role.accessRoleId === roleId)
+		return nameFromId ? nameFromId.name : ""
+	}
+
+	const resetPermissionData = () => {
+		setPermissionDataForRole(roleContextDefaultValues.permissionDataForRole)
+	}
+
 	return (
 		<RoleContext.Provider
 			value={{
 				isLoading,
+				getRoleNameFromId,
 				fetchFeaturesInRole,
 				fetchPermissionDataForRole,
 				permissionDataForRole,
 				roles,
 				selectedAccessRoleId,
 				setIsLoading,
-				setSelectedAccessRoleId
+				setSelectedAccessRoleId,
+				resetPermissionData,
+				updatePermissionDataForRole
 			}}
 		>
 			{children}

@@ -16,13 +16,21 @@ const getFeaturesInRole = (basePath: string, roleId: string) => {
 const getPermissionDataForRole = (basePath: string, roleId: string) => {
 	const baseUrl = `${basePath === "/" ? "" : basePath}/api/accessmanagement/v1/accesspermission/accessrole/${roleId}`
 	const url = `${baseUrl}`
-	return axios.get<IPermissionData[]>(url)
+	return axios.get<IPermissionData>(url)
+}
+
+const putPermissionDataForRole = (basePath: string, updatedPermissionRole: IPermissionData) => {
+	const tempFix: IPermissionData[] = [updatedPermissionRole] // THIS MUST BE CHANGED BACK TO NOT BE [] ANYMORE. Should only be one Object wrapper.
+	const baseUrl = `${basePath === "/" ? "" : basePath}/api/accessmanagement/v1/accesspermission`
+	const url = `${baseUrl}`
+	return axios.put(url, tempFix)
 }
 
 const RolesRepository = {
 	getAllRoles,
 	getFeaturesInRole,
-	getPermissionDataForRole
+	getPermissionDataForRole,
+	putPermissionDataForRole
 }
 
 export default RolesRepository

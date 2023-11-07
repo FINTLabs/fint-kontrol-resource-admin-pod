@@ -8,12 +8,12 @@ export interface IRole {
 // PermissionData is a role and its subsequent mapping to features and operation sets
 export interface IPermissionData {
 	accessRoleId: string
-	name: string
-	featureOperations: IFeatureOperation[]
+	features: IFeatureOperation[]
 }
 
 export interface IFeatureOperation {
-	name: string
+	featureId: number
+	featureName: string
 	operations: string[]
 }
 
@@ -112,7 +112,10 @@ export const roleContextDefaultValues: RoleContextState = {
 	isAggregate: false,
 	isLoading: false,
 	itemsPerPage: 5,
-	permissionDataForRole: { accessRoleId: "", name: "", featureOperations: [{ name: "", operations: [] }] },
+	permissionDataForRole: {
+		accessRoleId: "",
+		features: [{ featureId: 1, featureName: "", operations: [] }]
+	},
 	setCurrentPage: (currentPageNumber: number) => void {},
 	setIsLoading(isLoading: boolean): void {},
 	selected: [],

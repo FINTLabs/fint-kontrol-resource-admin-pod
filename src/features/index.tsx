@@ -1,10 +1,16 @@
 import React from "react"
 import { PersonCheckmarkIcon, PersonPlusIcon } from "@navikt/aksel-icons"
-import { Tabs } from "@navikt/ds-react"
+import { Loader, Tabs } from "@navikt/ds-react"
 
 import Main from "./assign-roles-tab/main"
 import { PermissionsMain } from "./define-role-tab/permissions-main"
 import { UsersRolesMain } from "./users-roles-tab/main"
+import styled from "styled-components"
+
+export const LoaderStyled = styled(Loader)`
+	display: flex;
+	margin: auto;
+`
 
 const LandingComponent = () => {
 	return (

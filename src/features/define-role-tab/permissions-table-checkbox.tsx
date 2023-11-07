@@ -2,21 +2,23 @@ import { Checkbox } from "@navikt/ds-react"
 import React, { useState } from "react"
 
 interface IPermissionTableCheckbox {
-	featureNameProp: string
+	indexForOperationsList: number
 	isCheckedProp: boolean
+	featureId: number
 	operationProp: string
-	notifyOperationsChanged: (featureName: string, operationProp: string, isChecked: boolean) => void
+	notifyOperationsChanged: (indexForOperationsList: number, featureId: number, operationProp: string) => void
 }
 const PermissionsTableCheckbox = ({
-	featureNameProp,
+	indexForOperationsList,
 	isCheckedProp,
+	featureId,
 	operationProp,
 	notifyOperationsChanged
 }: IPermissionTableCheckbox) => {
 	const [isChecked, setIsChecked] = useState(isCheckedProp)
 	const handleCheckboxChange = () => {
 		setIsChecked(!isChecked)
-		notifyOperationsChanged(featureNameProp, operationProp, isChecked)
+		notifyOperationsChanged(indexForOperationsList, featureId, operationProp)
 	}
 
 	return (

@@ -1,9 +1,11 @@
 import React, { useEffect, useState } from "react"
 import { PermissionsToolbar } from "./permissions-toolbar"
 import { PermissionsTable } from "./permissions-table"
-import { Table, Checkbox } from "@navikt/ds-react"
+import { Table, Checkbox, Button } from "@navikt/ds-react"
 import { useRole } from "../../api/RoleContext"
 import styled from "styled-components"
+import { IPermissionData } from "../../api/types"
+import { LoaderStyled } from "../index"
 
 export const TableStyled = styled(Table)`
 	thead {
@@ -19,35 +21,59 @@ export const TableStyled = styled(Table)`
 		}
 	}
 `
+
+const PermissionDataContainer = styled.div`
+	display: flex;
+	gap: 1rem;
+	flex-direction: column;
+	align-items: flex-end;
+`
 export const PermissionsMain = () => {
 	const [localSelectedAccessRoleId, setLocalSelectedAccessRoleId] = useState<string>("")
-	const { roles, permissionDataForRole, fetchPermissionDataForRole } = useRole()
+	const {
+		isLoading,
+		roles,
+		permissionDataForRole,
+		fetchPermissionDataForRole,
+		getRoleNameFromId,
+		resetPermissionData,
+		updatePermissionDataForRole
+	} = useRole()
+	const [modifiedPermissionDataObject, setModifiedPermissionDataObject] =
+		useState<IPermissionData>(permissionDataForRole)
 
 	useEffect(() => {
-		fetchPermissionDataForRole(localSelectedAccessRoleId)
-		// fetchFeaturesInRole(localSelectedAccessRoleId)
+		if (localSelectedAccessRoleId && localSelectedAccessRoleId.length > 0) {
+			fetchPermissionDataForRole(localSelectedAccessRoleId)
+		} else {
+			resetPermissionData()
+		}
 		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [localSelectedAccessRoleId])
-
-	console.log(localSelectedAccessRoleId)
 
 	return (
 		<>
 			<PermissionsToolbar
-				roleName={permissionDataForRole.name}
+				roleName={getRoleNameFromId(localSelectedAccessRoleId)}
 				roles={roles}
 				selectedAccessRoleId={localSelectedAccessRoleId}
 				setSelectedAccessRoleId={setLocalSelectedAccessRoleId}
 			/>
-			{
-				permissionDataForRole.accessRoleId ? (
-					<>
-						<PermissionsTable permissionDataForRole={permissionDataForRole} />
-					</>
-				) : (
-					<BlankTable />
-				) // Render the blank table when no accessRoleId is selected
-			}
+			{isLoading ? (
+				<LoaderStyled size={"3xlarge"} />
+			) : permissionDataForRole.accessRoleId ? (
+				<PermissionDataContainer>
+					<PermissionsTable
+						modifiedPermissionDataForRole={permissionDataForRole}
+						setModifiedPermissionDataForRole={setModifiedPermissionDataObject}
+					/>
+					<Button onClick={() => updatePermissionDataForRole(modifiedPermissionDataObject)}>
+						Lagre rolle
+					</Button>
+				</PermissionDataContainer>
+			) : (
+				<BlankTable /> // Render the blank table when no accessRoleId is selected
+			)}
 		</>
 	)
 }

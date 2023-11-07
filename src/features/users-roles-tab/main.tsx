@@ -1,7 +1,8 @@
 import React from "react"
 import styled from "styled-components"
-import { Loader, Pagination, Select, Table } from "@navikt/ds-react"
+import { Pagination, Select, Table } from "@navikt/ds-react"
 import { useUser } from "../../api/UserContext"
+import { LoaderStyled } from "../index"
 
 const TableStyled = styled(Table)`
 	thead {
@@ -23,11 +24,6 @@ const TableStyled = styled(Table)`
 			border-bottom: none;
 		}
 	}
-`
-
-const LoaderStyled = styled(Loader)`
-	display: flex;
-	margin: auto;
 `
 
 const PaginationWrapper = styled.div`

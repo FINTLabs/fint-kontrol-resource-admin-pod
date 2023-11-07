@@ -1,58 +1,49 @@
-import React, { useState } from "react"
+import React, { useEffect, useState } from "react"
 import { TableStyled } from "./permissions-main"
 import { Table } from "@navikt/ds-react"
 import { IPermissionData } from "../../api/types"
 import PermissionsTableCheckbox from "./permissions-table-checkbox"
 
 interface PermissionsTableProps {
-	permissionDataForRole: IPermissionData
+	modifiedPermissionDataForRole: IPermissionData
+	setModifiedPermissionDataForRole: (updatedPermissionData: IPermissionData) => void
 }
-export const PermissionsTable = ({ permissionDataForRole }: PermissionsTableProps) => {
-	const [updatedPermissionDataForRoleToUpdate] = useState<IPermissionData>(permissionDataForRole)
-	// const [isUpdated, setIsUpdated] = useState(false)
-	// const [listOfChanges, updateListOfChanges] = useState([]) // This is the list of all changes done. Will be displayed on save-prompt
+export const PermissionsTable = ({
+	modifiedPermissionDataForRole,
+	setModifiedPermissionDataForRole
+}: PermissionsTableProps) => {
+	const [currentOperations, setCurrentOperations] = useState<string[][]>([])
 
-	// useEffect(() => {
-	// 	setIsUpdated(!isUpdated)
-	// 	console.log(isUpdated)
-	// }, [updatedPermissionDataForRoleToUpdate, isUpdated])
+	useEffect(() => {
+		const operationsList: string[][] = []
+		modifiedPermissionDataForRole.features.map((feature) => operationsList.push(feature.operations))
+		setCurrentOperations(operationsList)
+	}, [modifiedPermissionDataForRole.features])
 
-	// if (updatedPermissionDataForRoleToUpdate.accessRoleId !== "baaa") {
-	// 	setUpdatedPermissionDataForRoleToUpdate(updatedPermissionDataForRoleToUpdate) // Remove later, this is done to ensure allowed publish to beta
-	// }
+	// Handles local update of new permissionData
+	useEffect(() => {
+		let newFeatureOperations: IPermissionData = modifiedPermissionDataForRole
+		currentOperations.forEach((featureOperation, index) => {
+			newFeatureOperations.features[index].operations = featureOperation
+		})
+		setModifiedPermissionDataForRole(newFeatureOperations)
+	}, [currentOperations, modifiedPermissionDataForRole, setModifiedPermissionDataForRole])
 
-	// const handleCheckboxChange = (featureName: string, operation: string, isChecked: boolean) => {
-	// 	const permissionDataForRoleToUpdate = updatedPermissionDataForRoleToUpdate
-	// 	let selectedFeatureWithOperations = permissionDataForRoleToUpdate.featureOperations.find(
-	// 		(feature) => feature.name === featureName
-	// 	)
-	//
-	// 	// if (selectedFeatureWithOperations) {
-	// 	// 		selectedFeatureWithOperations = roleContextDefaultValues.permissionDataForRole.featureOperations
-	// 	// }
-	//
-	// 	if (selectedFeatureWithOperations?.operations.includes(operation)) {
-	// 		selectedFeatureWithOperations.operations = selectedFeatureWithOperations.operations.filter(
-	// 			(operationElement: string) => operationElement === operation
-	// 		)
-	// 	}
-	//
-	// 	permissionDataForRoleToUpdate.featureOperations.map((feature) => {
-	// 		if (feature.name === featureName) {
-	// 			feature.operations = selectedFeatureWithOperations?.operations ?? []
-	// 		}
-	//
-	// 		return []
-	// 	})
-	// 	// setUpdatedPermissionDataForRoleToUpdate(featuresToUpdate)
-	// }
-	const notifyOperationsChanged = (featureName: string, operationProp: string, isChecked: boolean) => {
-		console.log("Change notified")
-		let permissionDataTemporary = updatedPermissionDataForRoleToUpdate
-		let operationsList = permissionDataTemporary.featureOperations.find((feature) => feature.name === featureName)
-		if (operationsList) {
-			// performUpdateOn
+	const notifyOperationsChanged = (indexForOperationsList: number, featureId: number, operationProp: string) => {
+		let changedList: string[] = currentOperations[indexForOperationsList]
+
+		if (changedList.includes(operationProp)) {
+			changedList = changedList.filter((operation) => operation !== operationProp)
+		} else {
+			changedList.push(operationProp)
 		}
+		// Now, replace the featureOperation in the permission's list of operations
+		const newOperationsList: string[][] = [
+			...currentOperations.slice(0, indexForOperationsList),
+			changedList,
+			...currentOperations.slice(indexForOperationsList + 1)
+		]
+		setCurrentOperations(newOperationsList)
 	}
 
 	const availableOperations = ["GET", "POST", "PUT", "DELETE"]
@@ -68,26 +59,18 @@ export const PermissionsTable = ({ permissionDataForRole }: PermissionsTableProp
 				</Table.Row>
 			</Table.Header>
 			<Table.Body>
-				{permissionDataForRole.featureOperations.map((feature, index) => (
-					<Table.Row key={feature.name + index}>
-						<Table.DataCell>{feature.name}</Table.DataCell>
+				{modifiedPermissionDataForRole.features.map((feature, indexForFeature) => (
+					<Table.Row key={feature.featureName + indexForFeature}>
+						<Table.DataCell>{feature.featureName}</Table.DataCell>
 						{availableOperations.map((operation: string, index) => (
 							<Table.DataCell key={operation}>
-								{/*TODO: Determine how checkboxes should be visible and editable.*/}
 								<PermissionsTableCheckbox
-									featureNameProp={feature.name}
+									featureId={feature.featureId}
+									indexForOperationsList={indexForFeature}
 									isCheckedProp={feature.operations.includes(operation)}
 									operationProp={operation}
 									notifyOperationsChanged={notifyOperationsChanged}
 								/>
-								{/*<Checkbox*/}
-								{/*	hideLabel={true}*/}
-								{/*	checked={feature.operations.includes(operation)}*/}
-								{/*	color={"primary"}*/}
-								{/*	onChange={(e) => handleCheckboxChange(feature.name, operation, e.target.checked)}*/}
-								{/*>*/}
-								{/*	{operation}*/}
-								{/*</Checkbox>*/}
 							</Table.DataCell>
 						))}
 					</Table.Row>

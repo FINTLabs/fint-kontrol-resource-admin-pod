@@ -3,38 +3,45 @@ import { IPermissionData } from "../types"
 const initialData: IPermissionData[] = [
 	{
 		accessRoleId: "ata",
-		name: "Applikasjonstilgangadministrator",
-		featureOperations: [
+		features: [
 			{
-				name: "users",
+				featureId: 1,
+				featureName: "users",
 				operations: ["GET"]
 			},
 			{
-				name: "users-details",
+				featureId: 2,
+				featureName: "users-details",
 				operations: ["GET", "POST"]
 			},
 			{
-				name: "roles",
+				featureId: 3,
+				featureName: "roles",
 				operations: ["GET", "POST", "PUT", "DELETE"]
 			},
 			{
-				name: "roles-details",
+				featureId: 4,
+				featureName: "roles-details",
 				operations: ["GET"]
 			},
 			{
-				name: "resources",
+				featureId: 5,
+				featureName: "resources",
 				operations: ["GET", "POST"]
 			},
 			{
-				name: "resources-details",
+				featureId: 6,
+				featureName: "resources-details",
 				operations: ["GET", "POST"]
 			},
 			{
-				name: "assignments",
+				featureId: 7,
+				featureName: "assignments",
 				operations: ["GET"]
 			},
 			{
-				name: "assignments-details",
+				featureId: 8,
+				featureName: "assignments-details",
 				operations: ["GET", "POST"]
 			}
 		]
@@ -42,30 +49,35 @@ const initialData: IPermissionData[] = [
 
 	{
 		accessRoleId: "aa",
-		name: "Applikasjonsadministrator",
-		featureOperations: [
+		features: [
 			{
-				name: "assignments",
+				featureId: 1,
+				featureName: "assignments",
 				operations: ["GET", "POST", "DELETE"]
 			},
 			{
-				name: "assignments-details",
+				featureId: 2,
+				featureName: "assignments-details",
 				operations: ["GET", "POST", "DELETE"]
 			},
 			{
-				name: "resources",
+				featureId: 3,
+				featureName: "resources",
 				operations: ["GET", "POST", "DELETE"]
 			},
 			{
-				name: "resources-details",
+				featureId: 4,
+				featureName: "resources-details",
 				operations: ["GET", "POST", "PUT", "DELETE"]
 			},
 			{
-				name: "orgunits",
+				featureId: 5,
+				featureName: "orgunits",
 				operations: ["GET", "POST"]
 			},
 			{
-				name: "orgunits-details",
+				featureId: 6,
+				featureName: "orgunits-details",
 				operations: ["GET", "POST", "PUT"]
 			}
 		]
@@ -73,30 +85,35 @@ const initialData: IPermissionData[] = [
 
 	{
 		accessRoleId: "al",
-		name: "Enhetsleder",
-		featureOperations: [
+		features: [
 			{
-				name: "assignments",
+				featureId: 1,
+				featureName: "assignments",
 				operations: ["GET"]
 			},
 			{
-				name: "assignments-details",
+				featureId: 2,
+				featureName: "assignments-details",
 				operations: ["GET", "POST", "DELETE"]
 			},
 			{
-				name: "resources",
+				featureId: 3,
+				featureName: "resources",
 				operations: ["GET", "POST", "DELETE"]
 			},
 			{
-				name: "resources-details",
+				featureId: 4,
+				featureName: "resources-details",
 				operations: ["GET", "POST", "PUT", "DELETE"]
 			},
 			{
-				name: "orgunits",
+				featureId: 5,
+				featureName: "orgunits",
 				operations: ["GET", "POST"]
 			},
 			{
-				name: "orgunits-details",
+				featureId: 6,
+				featureName: "orgunits-details",
 				operations: ["GET", "POST", "PUT"]
 			}
 		]
@@ -104,30 +121,35 @@ const initialData: IPermissionData[] = [
 
 	{
 		accessRoleId: "sb",
-		name: "Sluttbruker",
-		featureOperations: [
+		features: [
 			{
-				name: "assignments",
+				featureId: 1,
+				featureName: "assignments",
 				operations: ["GET", "POST", "DELETE"]
 			},
 			{
-				name: "assignments-details",
+				featureId: 2,
+				featureName: "assignments-details",
 				operations: ["GET", "POST"]
 			},
 			{
-				name: "resources",
+				featureId: 3,
+				featureName: "resources",
 				operations: ["GET", "POST", "DELETE"]
 			},
 			{
-				name: "resources-details",
+				featureId: 4,
+				featureName: "resources-details",
 				operations: ["GET", "POST", "PUT", "DELETE"]
 			},
 			{
-				name: "orgunits",
+				featureId: 5,
+				featureName: "orgunits",
 				operations: ["GET"]
 			},
 			{
-				name: "orgunits-details",
+				featureId: 6,
+				featureName: "orgunits-details",
 				operations: ["GET", "POST", "PUT"]
 			}
 		]
