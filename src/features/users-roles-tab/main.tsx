@@ -4,6 +4,12 @@ import { Pagination, Select, Table } from "@navikt/ds-react"
 import { useUser } from "../../api/UserContext"
 import { LoaderStyled } from "../index"
 
+const UsersWithRolesContainer = styled.div`
+	display: flex;
+	flex-direction: column;
+	gap: 1rem;
+`
+
 const TableStyled = styled(Table)`
 	thead {
 		th:nth-child(-n + 2) {
@@ -29,9 +35,8 @@ const TableStyled = styled(Table)`
 const PaginationWrapper = styled.div`
 	display: flex;
 	justify-content: flex-end;
+	align-items: flex-end;
 	gap: 1rem;
-
-	margin-top: 1rem;
 `
 
 export const UsersRolesMain = () => {
@@ -50,7 +55,7 @@ export const UsersRolesMain = () => {
 	}
 
 	return (
-		<div>
+		<UsersWithRolesContainer>
 			<TableStyled id="resource-table">
 				<Table.Header>
 					<Table.Row>
@@ -96,18 +101,15 @@ export const UsersRolesMain = () => {
 					<option value={25}>25</option>
 					<option value={50}>50</option>
 				</Select>
-				{usersPage !== null && !isLoading && (
-					<Pagination
-						id="pagination"
-						page={currentPage}
-						onPageChange={setCurrentPage}
-						count={Math.ceil(50 / itemsPerPage)} // usersPage?.totalItems instead of 50 when api is updated
-						siblingCount={itemsPerPage}
-						size="small"
-					/>
-				)}
+				<Pagination
+					id="pagination"
+					page={currentPage}
+					onPageChange={setCurrentPage}
+					count={Math.ceil((usersPage ? usersPage.totalItems : 1) / itemsPerPage)}
+					size="small"
+				/>
 			</PaginationWrapper>
-		</div>
+		</UsersWithRolesContainer>
 	)
 }
 
