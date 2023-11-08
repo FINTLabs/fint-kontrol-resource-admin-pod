@@ -1,8 +1,8 @@
 import { Button, Heading, HStack, VStack } from "@navikt/ds-react"
 import { PersonIcon, ShieldLockIcon } from "@navikt/aksel-icons"
-import AssignUserToOrgUnit from "./assign-user-to-org-unit"
 import React, { useState } from "react"
-import { IOrgUnit, IUser } from "../../api/types"
+import { IOrgUnit, IUser } from "../../../api/types"
+import OrgUnitModal from "./org-unit-modal"
 
 interface AssignRoleToUserConfirmationProps {
 	selectedUser: IUser | null
@@ -11,12 +11,6 @@ interface AssignRoleToUserConfirmationProps {
 
 const AssignRoleToUserConfirmation = ({ selectedUser, selectedAccessRoleId }: AssignRoleToUserConfirmationProps) => {
 	const [orgUnitsForUser, setOrgUnitsForUser] = useState<IOrgUnit[]>([])
-
-	const handleSaveRole = () => {
-		// messageBus.publish("testChannel", "testTopic", "Save Role Clicked")
-		console.log("published a message to test channel")
-		// return undefined
-	}
 
 	return (
 		<VStack>
@@ -40,19 +34,10 @@ const AssignRoleToUserConfirmation = ({ selectedUser, selectedAccessRoleId }: As
 				</HStack>
 			)}
 
-			<AssignUserToOrgUnit setOrgUnitsForUser={setOrgUnitsForUser} />
+			<OrgUnitModal orgUnitsForUser={orgUnitsForUser} setOrgUnitsForUser={setOrgUnitsForUser} />
 
 			<div>
 				<p>Valgte orgenheter brukeren skal ha: {orgUnitsForUser.map((unit) => unit.name)}</p>
-
-				<Button
-					// variant="contained"
-					variant={"primary"}
-					// sx={{ mt: 1, mr: 1 }}
-					onClick={handleSaveRole}
-				>
-					Lagre rettigheter
-				</Button>
 			</div>
 
 			{/*{selectedOrgUnits.length > 0 && (*/}

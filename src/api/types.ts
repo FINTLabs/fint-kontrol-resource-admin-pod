@@ -1,5 +1,12 @@
 // types.ts
 
+// This interface is used in "Tildel rettigheter" to structure the connection between an IUser, IRole and IOrgUnit
+export interface IAssignment {
+	userId: string
+	accessRoleId: string
+	orgUnitIds: string[]
+}
+
 export interface IRole {
 	accessRoleId: string
 	name: string
@@ -31,7 +38,8 @@ export interface IOrgUnit {
 	childrenRef: string[]
 }
 
-export interface IOrgUnits {
+// This type is used for when orgunits are retrieved with pagination. Not often used
+export interface IOrgUnitsPaginated {
 	totalItems: number
 	orgUnits: IOrgUnit[]
 	totalPages: number

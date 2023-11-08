@@ -2,7 +2,7 @@ import React from "react"
 import { PersonCheckmarkIcon, PersonPlusIcon } from "@navikt/aksel-icons"
 import { Loader, Tabs } from "@navikt/ds-react"
 
-import AssingRolesMain from "./assign-roles-tab/assing-roles-main"
+import AssignRolesMain from "./assign-roles-tab/assign-roles-main"
 import { PermissionsMain } from "./define-role-tab/permissions-main"
 import { UsersRolesMain } from "./users-roles-tab/main"
 import styled from "styled-components"
@@ -33,7 +33,7 @@ const LandingComponent = () => {
 				</Tabs.List>
 
 				<Tabs.Panel value="tildel" className="h-24 w-full bg-gray-50 p-4">
-					<AssingRolesMain />
+					<AssignRolesMain />
 				</Tabs.Panel>
 
 				<Tabs.Panel value="inbox" className="h-24 w-full bg-gray-50 p-4">

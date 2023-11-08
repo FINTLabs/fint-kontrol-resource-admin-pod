@@ -1,69 +1,40 @@
-import React, { useState } from "react"
-import {
-	Button,
-	Checkbox,
-	Dialog,
-	DialogActions,
-	DialogContent,
-	DialogTitle,
-	FormControlLabel,
-	Switch
-} from "@mui/material"
+import { IOrgUnit } from "../../../api/types"
+import { useOrgUnits } from "../../../api/OrgUnitContext"
+import React, { useEffect, useState } from "react"
 import { Accordion } from "@navikt/ds-react"
-import { useOrgUnits } from "../../api/OrgUnitContext"
-import { IOrgUnit } from "../../api/types"
+import { Checkbox } from "@mui/material"
 import styled from "styled-components"
 
 const StyledAccordion = styled(Accordion)`
 	* {
-		border: none !important;
+		border-bottom: none;
 		box-shadow: none !important;
 		padding-top: 0 !important;
 		padding-bottom: 0 !important;
 	}
 `
 
-const StyledAccordionHeader = styled(Accordion.Header)`
-	* {
-		border: none !important;
-		box-shadow: none !important;
-		font-weight: normal !important;
-		font-size: 1.1rem !important;
-	}
-`
-
-const StyledAccordionContent = styled(Accordion.Content)`
-{
-  border: none !important;
-  box-shadow: none !important;
-}`
-
-interface DialogUnitProps {
-	open: boolean
-	onClose: () => void
+interface OrgUnitTreeProps {
+	orgUnitsForUser: IOrgUnit[]
+	nodes?: IOrgUnit
+	setOrgUnitsForUser: (newSelected: any) => void
+	aggregated: boolean
 }
+const OrgUnitTree = ({
+	orgUnitsForUser: selectedOrgUnits,
+	nodes: IOrgUnit,
+	setOrgUnitsForUser,
+	aggregated
+}: OrgUnitTreeProps) => {
+	const { orgUnitsData } = useOrgUnits()
 
-const UnitSelectDialog = ({ open, onClose }: DialogUnitProps) => {
-	const { orgUnitsData, setSelectedOrgUnits, selectedOrgUnits } = useOrgUnits()
-	const [aggregated, setAggregated] = useState(false)
-
-	console.log(selectedOrgUnits)
-
-	const customDialogStyle: React.CSSProperties = {
-		width: "600px",
-		padding: "20px",
-		borderRadius: "10px",
-		backgroundColor: "#fff",
-		boxShadow: "0 4px 6px rgba(0, 0, 0, 0.1)"
-	}
-
-	const handleClose = () => {
-		onClose()
-	}
+	useEffect(() => {
+		console.log("Change detected")
+	}, [selectedOrgUnits])
 
 	const toggleOrgUnit = (orgUnit: IOrgUnit) => {
 		const isSelected = selectedOrgUnits.some((unit) => unit.organisationUnitId === orgUnit.organisationUnitId)
-		let newSelected
+		let newSelected: IOrgUnit[]
 
 		if (isSelected) {
 			newSelected = selectedOrgUnits.filter((unit) => unit.organisationUnitId !== orgUnit.organisationUnitId)
@@ -75,19 +46,7 @@ const UnitSelectDialog = ({ open, onClose }: DialogUnitProps) => {
 			}
 		}
 
-		setSelectedOrgUnits(newSelected)
-	}
-
-	const handleAggregationToggle = () => {
-		setAggregated(!aggregated)
-	}
-
-	const handleCheckboxClick = (orgUnit: IOrgUnit) => {
-		if (aggregated) {
-			toggleOrgUnitAndChildren(orgUnit)
-		} else {
-			toggleOrgUnit(orgUnit)
-		}
+		setOrgUnitsForUser(newSelected) // Updates list of selected org units
 	}
 
 	const toggleOrgUnitAndChildren = (orgUnit: IOrgUnit) => {
@@ -113,7 +72,7 @@ const UnitSelectDialog = ({ open, onClose }: DialogUnitProps) => {
 			}
 		}
 
-		setSelectedOrgUnits(newSelected)
+		setOrgUnitsForUser(newSelected) // Updates list of selected org units
 	}
 
 	const findChildrenOrgUnits = (orgUnit: IOrgUnit): IOrgUnit[] => {
@@ -135,11 +94,19 @@ const UnitSelectDialog = ({ open, onClose }: DialogUnitProps) => {
 		return childrenOrgUnits
 	}
 
+	const handleCheckboxClick = (orgUnit: IOrgUnit) => {
+		if (aggregated) {
+			toggleOrgUnitAndChildren(orgUnit)
+		} else {
+			toggleOrgUnit(orgUnit)
+		}
+	}
+
 	const renderTree = (nodes: IOrgUnit) => {
 		return (
 			<StyledAccordion key={nodes.organisationUnitId}>
 				<Accordion.Item>
-					<StyledAccordionHeader>
+					<Accordion.Header>
 						<Checkbox
 							id={`node-${nodes.organisationUnitId}`}
 							checked={selectedOrgUnits.some(
@@ -151,8 +118,8 @@ const UnitSelectDialog = ({ open, onClose }: DialogUnitProps) => {
 							}}
 						/>
 						{nodes.name}
-					</StyledAccordionHeader>
-					<StyledAccordionContent>
+					</Accordion.Header>
+					<Accordion.Content>
 						{Array.isArray(nodes.childrenRef)
 							? nodes.childrenRef.map((nodeId: string) => {
 									const node = orgUnitsData?.orgUnits.find((n) => n.organisationUnitId === nodeId)
@@ -162,44 +129,22 @@ const UnitSelectDialog = ({ open, onClose }: DialogUnitProps) => {
 									return null
 							  })
 							: null}
-					</StyledAccordionContent>
+					</Accordion.Content>
 				</Accordion.Item>
 			</StyledAccordion>
 		)
 	}
 
 	return (
-		<Dialog
-			id={"unitsSelectDialog"}
-			open={open}
-			onClose={handleClose}
-			sx={{ "& .MuiPaper-root": customDialogStyle }}
-		>
-			<DialogTitle>Velg enhet(er)</DialogTitle>
-			<DialogContent>
-				<div>
-					<FormControlLabel
-						control={<Switch />}
-						label="Aggregated"
-						checked={aggregated}
-						onChange={handleAggregationToggle}
-						id="aggregatedCheckbox"
-					/>
-				</div>
-				{orgUnitsData?.orgUnits?.map((node: any) => {
-					if (node.parentRef !== node.organisationUnitId) {
-						return null
-					}
-					return renderTree(node)
-				})}
-			</DialogContent>
-			<DialogActions>
-				<Button id={"closeDialog"} onClick={onClose}>
-					Ferdig
-				</Button>
-			</DialogActions>
-		</Dialog>
+		<>
+			{orgUnitsData?.orgUnits?.map((node: any) => {
+				if (node.parentRef !== node.organisationUnitId) {
+					return null
+				}
+				return renderTree(node)
+			})}
+		</>
 	)
 }
 
-export default UnitSelectDialog
+export default OrgUnitTree
