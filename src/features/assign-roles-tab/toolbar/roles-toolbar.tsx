@@ -3,6 +3,7 @@ import UnitSelectDialog from "./unit-select-dialog"
 import React, { useState } from "react"
 import { Buldings3Icon } from "@navikt/aksel-icons"
 import { Button, Search, Select } from "@navikt/ds-react"
+import { useRole } from "../../../api/RoleContext"
 
 const ToolbarContainer = styled.div`
 	display: flex;
@@ -14,6 +15,7 @@ const ToolbarContainer = styled.div`
 `
 
 const RolesToolbar = ({ setSelectedAccessRoleId }: any) => {
+	const { roles } = useRole()
 	const [showUnitModal, setShowUnitModal] = useState(false)
 
 	const closeModal = () => {
@@ -29,7 +31,6 @@ const RolesToolbar = ({ setSelectedAccessRoleId }: any) => {
 					iconPosition="right"
 					icon={<Buldings3Icon aria-hidden />}
 					id={"selectUnitsIcon"}
-					// variant="outlined"
 					variant={"secondary"}
 					onClick={() => {
 						setShowUnitModal(true)
@@ -46,11 +47,14 @@ const RolesToolbar = ({ setSelectedAccessRoleId }: any) => {
 				id={"rolle"}
 				defaultValue={""}
 			>
-				<option value="">Velg rolle</option>
-				<option value="aa">Applikasjonsadministrator</option>
-				<option value="ata">Applikasjonstilgangsadministrator</option>
-				<option value="e">Enhetsleder</option>
-				<option value="s">Sluttbruker</option>
+				<option value="" disabled={true}>
+					Velg rolle
+				</option>
+				{roles.map((role) => (
+					<option value={role.accessRoleId} key={role.accessRoleId}>
+						{role.name}
+					</option>
+				))}
 			</Select>
 
 			<div>

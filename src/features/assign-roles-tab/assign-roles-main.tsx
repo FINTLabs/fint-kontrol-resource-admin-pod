@@ -8,15 +8,22 @@ import AssignUserRoleTable from "./assign-user-role-table"
 import AssignRoleToUserConfirmation from "./bottom-section/assign-role-to-user-confirmation"
 import { IAssignment } from "../../api/types"
 import { Button } from "@navikt/ds-react"
+import styled from "styled-components"
+
+const AssignRolesContainer = styled.div`
+	display: flex;
+	flex-direction: column;
+	gap: 1rem;
+`
 
 const AssignRolesMain = () => {
 	const { selectedOrgUnits } = useOrgUnits()
 	const { selectedUser, setOrgUnitIds } = useUser()
 	const { selectedAccessRoleId, setSelectedAccessRoleId } = useRole()
 	const [newAssignment, setNewAssigment] = useState<IAssignment>({
-		userId: "",
+		user: null,
 		accessRoleId: "",
-		orgUnitIds: []
+		orgUnits: []
 	})
 
 	const handleSaveRole = () => {
@@ -29,17 +36,24 @@ const AssignRolesMain = () => {
 	console.log(selectedUser + "-" + selectedAccessRoleId + "-" + selectedOrgUnits.length + ".")
 
 	return (
-		<div>
+		<AssignRolesContainer>
 			<RolesToolbar setSelectedAccessRoleId={setSelectedAccessRoleId} setOrgUnitIdsFilter={setOrgUnitIds} />
 
-			<AssignUserRoleTable />
+			<AssignUserRoleTable newAssignment={newAssignment} setNewAssignment={setNewAssigment} />
 
-			<AssignRoleToUserConfirmation selectedUser={selectedUser} selectedAccessRoleId={selectedAccessRoleId} />
+			<AssignRoleToUserConfirmation
+				newAssignment={newAssignment}
+				setNewAssigment={setNewAssigment}
+				selectedUser={selectedUser}
+				selectedAccessRoleId={selectedAccessRoleId}
+			/>
 
-			<Button variant={"primary"} onClick={handleSaveRole}>
-				Lagre rettigheter
-			</Button>
-		</div>
+			<div>
+				<Button variant={"primary"} onClick={handleSaveRole}>
+					Lagre rettigheter
+				</Button>
+			</div>
+		</AssignRolesContainer>
 	)
 }
 

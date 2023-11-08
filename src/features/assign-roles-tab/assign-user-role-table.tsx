@@ -1,7 +1,8 @@
 import { Loader, Pagination, Select, Table } from "@navikt/ds-react"
-import React from "react"
+import React, { useState } from "react"
 import styled from "styled-components"
 import { useUser } from "../../api/UserContext"
+import { IAssignment, IUser } from "../../api/types"
 
 const PaginationWrapper = styled.div`
 	display: flex;
@@ -22,6 +23,14 @@ const TableStyled = styled(Table)`
 			border-bottom: none;
 		}
 	}
+
+	.selected-table-row {
+		background-color: grey;
+
+		:hover {
+			background-color: transparent;
+		}
+	}
 `
 
 const LoaderWrapper = styled.div`
@@ -30,8 +39,14 @@ const LoaderWrapper = styled.div`
 	padding: 5rem 0;
 `
 
-const AssignUserRoleTable = () => {
+interface AssignUserRoleTableProps {
+	newAssignment: IAssignment
+	setNewAssignment: (updatedAssignment: IAssignment) => void
+}
+
+const AssignUserRoleTable = ({ newAssignment, setNewAssignment }: AssignUserRoleTableProps) => {
 	const { itemsPerPage, setItemsPerPage, currentPage, setCurrentPage, isLoading, usersPage } = useUser()
+	const [selectedUser, setSelectedUser] = useState<string>("")
 	console.log(usersPage)
 	const handleChangeRowsPerPage = (event: React.ChangeEvent<HTMLSelectElement | HTMLOptionElement>) => {
 		setItemsPerPage(parseInt(event.target.value, 10))
@@ -46,6 +61,10 @@ const AssignUserRoleTable = () => {
 		)
 	}
 
+	const handleSelectUser = (user: IUser) => {
+		setNewAssignment({ ...newAssignment, user: user })
+	}
+
 	return (
 		<>
 			<TableStyled>
@@ -58,7 +77,11 @@ const AssignUserRoleTable = () => {
 				</Table.Header>
 				<Table.Body>
 					{usersPage?.users.map((user, index) => (
-						<Table.Row key={index}>
+						<Table.Row
+							key={index}
+							onClick={() => handleSelectUser(user)}
+							selected={newAssignment.user?.resourceId === user.resourceId}
+						>
 							<Table.DataCell>{user.firstName + " " + user.lastName}</Table.DataCell>
 							<Table.DataCell>Eksisterende rolletilknytning</Table.DataCell>
 							<Table.DataCell>OrgEnhettilknytning</Table.DataCell>

@@ -1,10 +1,11 @@
 // types.ts
 
 // This interface is used in "Tildel rettigheter" to structure the connection between an IUser, IRole and IOrgUnit
+// TODO: Control check this when API is done!!
 export interface IAssignment {
-	userId: string
+	user: IUser | null
 	accessRoleId: string
-	orgUnitIds: string[]
+	orgUnits: IOrgUnit[]
 }
 
 export interface IRole {

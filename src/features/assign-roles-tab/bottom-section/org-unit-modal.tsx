@@ -15,7 +15,12 @@ const OrgUnitModal = ({ orgUnitsForUser, setOrgUnitsForUser }: OrgUnitModalProps
 
 	return (
 		<div className="py-16">
-			<Button iconPosition="right" icon={<Buldings3Icon aria-hidden />} onClick={() => ref.current?.showModal()}>
+			<Button
+				variant={"secondary"}
+				iconPosition="right"
+				icon={<Buldings3Icon aria-hidden />}
+				onClick={() => ref.current?.showModal()}
+			>
 				Velg orgenhet
 			</Button>
 
