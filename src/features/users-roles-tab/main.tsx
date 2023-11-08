@@ -3,6 +3,7 @@ import styled from "styled-components"
 import { Pagination, Select, Table } from "@navikt/ds-react"
 import { useUser } from "../../api/UserContext"
 import { LoaderStyled } from "../index"
+import { IUser } from "../../api/types"
 
 const UsersWithRolesContainer = styled.div`
 	display: flex;
@@ -71,20 +72,14 @@ export const UsersRolesMain = () => {
 							</Table.DataCell>
 						</Table.Row>
 					) : (
-						usersPage.users.map((user: any, i: number) => {
-							if (i < 50) {
-								// Remove when pagination support is added to api. Also verify that required data is displayed
-								return (
-									<Table.Row key={i}>
-										<Table.DataCell>
-											{user.firstName} {user.lastName}
-										</Table.DataCell>
-										<Table.DataCell>{user.userName}</Table.DataCell>
-									</Table.Row>
-								)
-							}
-							return null
-						})
+						usersPage.users.map((user: IUser, i: number) => (
+							<Table.Row key={i}>
+								<Table.DataCell>
+									{user.firstName} {user.lastName}
+								</Table.DataCell>
+								<Table.DataCell>{user.userName}</Table.DataCell>
+							</Table.Row>
+						))
 					)}
 				</Table.Body>
 			</TableStyled>
