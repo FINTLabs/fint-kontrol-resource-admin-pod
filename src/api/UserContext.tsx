@@ -14,7 +14,7 @@ interface UserContextType {
 	setIsLoading: (isLoading: boolean) => void
 	setItemsPerPage: (itemsPerUSer: number) => void
 	setSelectedUser: (user: IUser | null) => void
-	setOrgUnitIds: (orgUnitIds: string[]) => void
+	setOrgUnitIdsFilter: (orgUnitIds: string[]) => void
 	setUser: (data: IUserPage | null) => void
 }
 
@@ -24,7 +24,7 @@ export function UserProvider({ children, basePath }: { children: React.ReactNode
 	const [currentPage, setCurrentPage] = useState<number>(1)
 	const [isLoading, setIsLoading] = useState<boolean>(false)
 	const [itemsPerPage, setItemsPerPage] = useState<number>(5)
-	const [orgUnitIds, setOrgUnitIds] = useState<string[]>(userContextDefaultValues.orgUnitIds)
+	const [orgUnitIds, setOrgUnitIdsFilter] = useState<string[]>(userContextDefaultValues.orgUnitIds)
 	const [selectedUser, setSelectedUser] = useState<IUser | null>(null)
 	const [usersPage, setUsersPage] = useState<IUserPage | null>(null)
 
@@ -62,7 +62,7 @@ export function UserProvider({ children, basePath }: { children: React.ReactNode
 				setUser,
 				setSelectedUser,
 				setItemsPerPage,
-				setOrgUnitIds
+				setOrgUnitIdsFilter
 			}}
 		>
 			{children}

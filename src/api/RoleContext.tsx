@@ -10,9 +10,7 @@ type RoleContextType = {
 	fetchPermissionDataForRole: (roleId: string) => void
 	permissionDataForRole: IPermissionData
 	roles: IRole[]
-	selectedAccessRoleId: string
 	setIsLoading: (isLoading: boolean) => void
-	setSelectedAccessRoleId: (accessRoleId: string) => void
 	resetPermissionData: () => void
 	updatePermissionDataForRole: (updatedPermissionData: IPermissionData) => void
 }
@@ -25,7 +23,6 @@ export const RoleProvider = ({ children, basePath }: { children: React.ReactNode
 		roleContextDefaultValues.permissionDataForRole
 	) // Remember to use this when api is ready with operations: []
 	const [roles, setRoles] = useState<IRole[]>([]) // Remmeber to use this when api is ready with operations: []
-	const [selectedAccessRoleId, setSelectedAccessRoleId] = useState<string>("")
 
 	useEffect(() => {
 		const fetchAllRoles = async () => {
@@ -36,11 +33,10 @@ export const RoleProvider = ({ children, basePath }: { children: React.ReactNode
 						setRoles(response.data)
 					})
 					.catch((err: ErrorResponse) => console.error(err))
-					.finally(() => setIsLoading(false))
 			}
 		}
 
-		fetchAllRoles()
+		fetchAllRoles().then(() => setIsLoading(false))
 	}, [basePath])
 
 	const fetchFeaturesInRole = async (roleId: string) => {
@@ -96,9 +92,7 @@ export const RoleProvider = ({ children, basePath }: { children: React.ReactNode
 				fetchPermissionDataForRole,
 				permissionDataForRole,
 				roles,
-				selectedAccessRoleId,
 				setIsLoading,
-				setSelectedAccessRoleId,
 				resetPermissionData,
 				updatePermissionDataForRole
 			}}

@@ -4,6 +4,7 @@ import React, { useState } from "react"
 import { Buldings3Icon } from "@navikt/aksel-icons"
 import { Button, Search, Select } from "@navikt/ds-react"
 import { useRole } from "../../../api/RoleContext"
+import { IRole } from "../../../api/types"
 
 const ToolbarContainer = styled.div`
 	display: flex;
@@ -14,7 +15,12 @@ const ToolbarContainer = styled.div`
 	width: 100%;
 `
 
-const RolesToolbar = ({ setSelectedAccessRoleId }: any) => {
+interface RolesToolbarProps {
+	setSelectedAccessRole: (newSelectedRole: IRole) => void
+	setOrgUnitIdsFilter: (orgUnitIdsFilterList: string[]) => void
+}
+
+const RolesToolbar = ({ setSelectedAccessRole }: RolesToolbarProps) => {
 	const { roles } = useRole()
 	const [showUnitModal, setShowUnitModal] = useState(false)
 
@@ -22,6 +28,10 @@ const RolesToolbar = ({ setSelectedAccessRoleId }: any) => {
 		setShowUnitModal(false)
 	}
 
+	const handleUpdateSelectedRoleFilter = (param: string) => {
+		let roleMatchedToId: IRole | undefined = roles.find((role) => role.accessRoleId === param)
+		roleMatchedToId ? setSelectedAccessRole(roleMatchedToId) : console.log(roleMatchedToId)
+	}
 	return (
 		<ToolbarContainer>
 			<UnitSelectDialog open={showUnitModal} onClose={closeModal} />
@@ -43,7 +53,7 @@ const RolesToolbar = ({ setSelectedAccessRoleId }: any) => {
 			<Select
 				label="Rollefilter"
 				size={"medium"}
-				onChange={(e) => setSelectedAccessRoleId(e.target.value as string)}
+				onChange={(e) => handleUpdateSelectedRoleFilter(e.target.value)}
 				id={"rolle"}
 				defaultValue={""}
 			>

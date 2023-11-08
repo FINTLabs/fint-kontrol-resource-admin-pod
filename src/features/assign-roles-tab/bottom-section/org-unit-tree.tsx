@@ -1,6 +1,6 @@
 import { IOrgUnit } from "../../../api/types"
 import { useOrgUnits } from "../../../api/OrgUnitContext"
-import React, { useEffect, useState } from "react"
+import React from "react"
 import { Accordion } from "@navikt/ds-react"
 import { Checkbox } from "@mui/material"
 import styled from "styled-components"
@@ -20,29 +20,20 @@ interface OrgUnitTreeProps {
 	setOrgUnitsForUser: (newSelected: any) => void
 	aggregated: boolean
 }
-const OrgUnitTree = ({
-	orgUnitsForUser: selectedOrgUnits,
-	nodes: IOrgUnit,
-	setOrgUnitsForUser,
-	aggregated
-}: OrgUnitTreeProps) => {
+const OrgUnitTree = ({ orgUnitsForUser, nodes: IOrgUnit, setOrgUnitsForUser, aggregated }: OrgUnitTreeProps) => {
 	const { orgUnitsData } = useOrgUnits()
 
-	useEffect(() => {
-		console.log("Change detected")
-	}, [selectedOrgUnits])
-
 	const toggleOrgUnit = (orgUnit: IOrgUnit) => {
-		const isSelected = selectedOrgUnits.some((unit) => unit.organisationUnitId === orgUnit.organisationUnitId)
+		const isSelected = orgUnitsForUser.some((unit) => unit.organisationUnitId === orgUnit.organisationUnitId)
 		let newSelected: IOrgUnit[]
 
 		if (isSelected) {
-			newSelected = selectedOrgUnits.filter((unit) => unit.organisationUnitId !== orgUnit.organisationUnitId)
+			newSelected = orgUnitsForUser.filter((unit) => unit.organisationUnitId !== orgUnit.organisationUnitId)
 		} else {
-			if (!selectedOrgUnits.some((unit) => unit.organisationUnitId === orgUnit.organisationUnitId)) {
-				newSelected = [...selectedOrgUnits, orgUnit]
+			if (!orgUnitsForUser.some((unit) => unit.organisationUnitId === orgUnit.organisationUnitId)) {
+				newSelected = [...orgUnitsForUser, orgUnit]
 			} else {
-				newSelected = selectedOrgUnits
+				newSelected = orgUnitsForUser
 			}
 		}
 
@@ -50,13 +41,13 @@ const OrgUnitTree = ({
 	}
 
 	const toggleOrgUnitAndChildren = (orgUnit: IOrgUnit) => {
-		const isSelected = selectedOrgUnits.some((unit) => unit.organisationUnitId === orgUnit.organisationUnitId)
-		let newSelected = [...selectedOrgUnits]
+		const isSelected = orgUnitsForUser.some((unit) => unit.organisationUnitId === orgUnit.organisationUnitId)
+		let newSelected = [...orgUnitsForUser]
 
 		if (isSelected) {
-			newSelected = selectedOrgUnits.filter((unit) => unit.organisationUnitId !== orgUnit.organisationUnitId)
+			newSelected = orgUnitsForUser.filter((unit) => unit.organisationUnitId !== orgUnit.organisationUnitId)
 		} else {
-			if (!selectedOrgUnits.some((unit) => unit.organisationUnitId === orgUnit.organisationUnitId)) {
+			if (!orgUnitsForUser.some((unit) => unit.organisationUnitId === orgUnit.organisationUnitId)) {
 				newSelected.push(orgUnit)
 			}
 		}
@@ -109,7 +100,7 @@ const OrgUnitTree = ({
 					<Accordion.Header>
 						<Checkbox
 							id={`node-${nodes.organisationUnitId}`}
-							checked={selectedOrgUnits.some(
+							checked={orgUnitsForUser.some(
 								(unit) => unit.organisationUnitId === nodes.organisationUnitId
 							)}
 							onClick={(event) => {

@@ -47,8 +47,6 @@ const UnitSelectDialog = ({ open, onClose }: DialogUnitProps) => {
 	const { orgUnitsData, setSelectedOrgUnits, selectedOrgUnits } = useOrgUnits()
 	const [aggregated, setAggregated] = useState(false)
 
-	console.log(selectedOrgUnits)
-
 	const customDialogStyle: React.CSSProperties = {
 		width: "600px",
 		padding: "20px",

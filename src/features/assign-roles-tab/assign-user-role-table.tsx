@@ -1,5 +1,5 @@
 import { Loader, Pagination, Select, Table } from "@navikt/ds-react"
-import React, { useState } from "react"
+import React from "react"
 import styled from "styled-components"
 import { useUser } from "../../api/UserContext"
 import { IAssignment, IUser } from "../../api/types"
@@ -46,8 +46,6 @@ interface AssignUserRoleTableProps {
 
 const AssignUserRoleTable = ({ newAssignment, setNewAssignment }: AssignUserRoleTableProps) => {
 	const { itemsPerPage, setItemsPerPage, currentPage, setCurrentPage, isLoading, usersPage } = useUser()
-	const [selectedUser, setSelectedUser] = useState<string>("")
-	console.log(usersPage)
 	const handleChangeRowsPerPage = (event: React.ChangeEvent<HTMLSelectElement | HTMLOptionElement>) => {
 		setItemsPerPage(parseInt(event.target.value, 10))
 		setCurrentPage(1)

@@ -1,10 +1,9 @@
 import { Heading, HStack, VStack } from "@navikt/ds-react"
 import { Buldings3Icon, PersonIcon, ShieldLockIcon } from "@navikt/aksel-icons"
 import React, { useEffect, useState } from "react"
-import { IAssignment, IOrgUnit, IUser } from "../../../api/types"
+import { IAssignment, IOrgUnit, IRole, IUser } from "../../../api/types"
 import OrgUnitModal from "./org-unit-modal"
 import styled from "styled-components"
-import { useRole } from "../../../api/RoleContext"
 
 const UlStyled = styled.ul`
 	float: right;
@@ -18,7 +17,7 @@ const AssignmentSummaryContainer = styled.div`
 
 interface AssignRoleToUserConfirmationProps {
 	selectedUser: IUser | null
-	selectedAccessRoleId: string
+	selectedAccessRole: IRole
 	newAssignment: IAssignment
 	setNewAssigment: (updatedAssignment: IAssignment) => void
 }
@@ -27,9 +26,8 @@ const AssignRoleToUserConfirmation = ({
 	newAssignment,
 	setNewAssigment,
 	selectedUser,
-	selectedAccessRoleId
+	selectedAccessRole
 }: AssignRoleToUserConfirmationProps) => {
-	const { roles } = useRole()
 	const [orgUnitsForUser, setOrgUnitsForUser] = useState<IOrgUnit[]>([])
 	const fullName = `${newAssignment.user?.firstName} ${newAssignment.user?.lastName}`
 
@@ -53,18 +51,11 @@ const AssignRoleToUserConfirmation = ({
 				</HStack>
 			)}
 
-			{selectedAccessRoleId && (
-				<HStack align="center" gap={"5"}>
+			{selectedAccessRole.name && (
+				<span>
 					<ShieldLockIcon title="a11y-title" fontSize="1.5rem" />
-					<Heading size={"small"}>
-						{selectedAccessRoleId &&
-							roles.map((role) => {
-								if (role.accessRoleId === selectedAccessRoleId) {
-									return role.name
-								}
-							})}
-					</Heading>
-				</HStack>
+					<Heading size={"small"}>{selectedAccessRole.name}</Heading>
+				</span>
 			)}
 
 			<OrgUnitModal orgUnitsForUser={newAssignment.orgUnits} setOrgUnitsForUser={setOrgUnitsForUser} />
@@ -82,7 +73,7 @@ const AssignRoleToUserConfirmation = ({
 						</p>
 						<UlStyled>
 							{orgUnitsForUser.map((unit, index) => (
-								<li>
+								<li key={index}>
 									<b>{unit.name}</b>
 								</li>
 							))}
