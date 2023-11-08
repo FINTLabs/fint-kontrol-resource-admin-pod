@@ -1,7 +1,6 @@
 import { Button, Modal, Switch } from "@navikt/ds-react"
 import React, { useRef, useState } from "react"
 import OrgUnitTree from "./org-unit-tree"
-import UnitSelectDialog from "./unit-select-dialog"
 
 interface OrgUnitModalProps {
 	setOrgUnitsForUser: (newSelected: any) => void
