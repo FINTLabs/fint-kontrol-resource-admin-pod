@@ -1,8 +1,11 @@
 import { IOrgUnit } from "../../api/types"
 import { useOrgUnits } from "../../api/OrgUnitContext"
-import React from "react"
+import React, { useState } from "react"
 import { Accordion } from "@navikt/ds-react"
 import { Checkbox } from "@mui/material"
+import styled from "styled-components"
+
+const StyledAccordion = styled(Accordion)``
 
 interface OrgUnitTreeProps {
 	nodes?: IOrgUnit
@@ -10,7 +13,8 @@ interface OrgUnitTreeProps {
 	aggregated: boolean
 }
 const OrgUnitTree = ({ nodes: IOrgUnit, setOrgUnitsForUser, aggregated }: OrgUnitTreeProps) => {
-	const { orgUnitsData, selectedOrgUnits } = useOrgUnits()
+	const { orgUnitsData } = useOrgUnits()
+	const [selectedOrgUnits, setSelectedOrgUnits] = useState<IOrgUnit[]>([])
 
 	const toggleOrgUnit = (orgUnit: IOrgUnit) => {
 		const isSelected = selectedOrgUnits.some((unit) => unit.organisationUnitId === orgUnit.organisationUnitId)
@@ -26,7 +30,7 @@ const OrgUnitTree = ({ nodes: IOrgUnit, setOrgUnitsForUser, aggregated }: OrgUni
 			}
 		}
 
-		setOrgUnitsForUser(newSelected) // Updates list of selected org units
+		setSelectedOrgUnits(newSelected) // Updates list of selected org units
 	}
 
 	const toggleOrgUnitAndChildren = (orgUnit: IOrgUnit) => {
@@ -52,7 +56,7 @@ const OrgUnitTree = ({ nodes: IOrgUnit, setOrgUnitsForUser, aggregated }: OrgUni
 			}
 		}
 
-		setOrgUnitsForUser(newSelected) // Updates list of selected org units
+		setSelectedOrgUnits(newSelected) // Updates list of selected org units
 	}
 
 	const findChildrenOrgUnits = (orgUnit: IOrgUnit): IOrgUnit[] => {
@@ -84,7 +88,7 @@ const OrgUnitTree = ({ nodes: IOrgUnit, setOrgUnitsForUser, aggregated }: OrgUni
 
 	const renderTree = (nodes: IOrgUnit) => {
 		return (
-			<Accordion key={nodes.organisationUnitId}>
+			<StyledAccordion key={nodes.organisationUnitId}>
 				<Accordion.Item>
 					<Accordion.Header>
 						<Checkbox
@@ -111,7 +115,7 @@ const OrgUnitTree = ({ nodes: IOrgUnit, setOrgUnitsForUser, aggregated }: OrgUni
 							: null}
 					</Accordion.Content>
 				</Accordion.Item>
-			</Accordion>
+			</StyledAccordion>
 		)
 	}
 

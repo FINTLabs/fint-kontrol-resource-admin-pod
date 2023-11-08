@@ -1,6 +1,7 @@
-import { Button, Modal } from "@navikt/ds-react"
+import { Button, Modal, Switch } from "@navikt/ds-react"
 import React, { useRef, useState } from "react"
 import OrgUnitTree from "./org-unit-tree"
+import UnitSelectDialog from "./unit-select-dialog"
 
 interface OrgUnitModalProps {
 	setOrgUnitsForUser: (newSelected: any) => void
@@ -16,7 +17,9 @@ const OrgUnitModal = ({ setOrgUnitsForUser }: OrgUnitModalProps) => {
 
 			<Modal ref={ref} header={{ heading: "Knytt brukerrollen til orgenhet" }}>
 				<Modal.Body>
-					<Button onClick={() => setAggregated(!aggregated)}>Aggregert?</Button>
+					<Switch onClick={() => setAggregated(!aggregated)} checked={aggregated}>
+						Aggregering
+					</Switch>
 					<OrgUnitTree setOrgUnitsForUser={setOrgUnitsForUser} aggregated={aggregated} />
 				</Modal.Body>
 				<Modal.Footer>

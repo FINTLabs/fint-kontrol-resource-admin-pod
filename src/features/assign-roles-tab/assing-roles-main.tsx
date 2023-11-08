@@ -7,7 +7,7 @@ import AssignUserRoleTable from "./assign-user-role-table"
 
 import AssignRoleToUserConfirmation from "./assign-role-to-user-confirmation"
 
-const Main = () => {
+const AssingRolesMain = () => {
 	const { selectedOrgUnits } = useOrgUnits()
 	const { selectedUser, setOrgUnitIds } = useUser()
 	const { selectedAccessRoleId, setSelectedAccessRoleId } = useRole()
@@ -25,4 +25,4 @@ const Main = () => {
 	)
 }
 
-export default Main
+export default AssingRolesMain
