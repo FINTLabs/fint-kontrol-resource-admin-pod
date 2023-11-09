@@ -49,13 +49,11 @@ describe("Check resources-admin", () => {
 	//         cy.get('#resource-0').click()
 	//     });
 	//
-	//   //todo
 	//   it('Members tab (exits, title, table, search)', () => {
 	//     // cy.goToHome();
 	//     cy.get('#tableTitle').should('have.text','Members')
 	//   });
 	//
-	//   //TODO
 	//   it('Resrouces tab (exits, title, table, search)', () => {
 	//     // cy.goToHome();
 	//     cy.get('.MuiTabs-flexContainer > [tabindex="-1"]').should('have.text','Resources')
