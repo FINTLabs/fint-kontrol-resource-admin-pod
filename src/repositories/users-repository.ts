@@ -1,7 +1,13 @@
 import { IUserPage } from "../api/types"
 import axios from "axios"
 
-const getUsersPage = (basePath: string, currentPage: number, itemsPerPage: number, orgUnitIds: string[]) => {
+const getUsersPage = (
+	basePath: string,
+	currentPage: number,
+	itemsPerPage: number,
+	orgUnitIds: string[],
+	searchString: string
+) => {
 	const baseUrl = `${basePath === "/" ? "" : basePath}/api/accessmanagement/v1/user`
 	let queryParams = []
 
@@ -15,6 +21,10 @@ const getUsersPage = (basePath: string, currentPage: number, itemsPerPage: numbe
 
 	if (orgUnitIds) {
 		orgUnitIds.map((orgUnitId) => queryParams.push(`orgUnitId=${orgUnitId}`))
+	}
+
+	if (searchString) {
+		queryParams.push(`search=${searchString}`)
 	}
 
 	const url = `${baseUrl}${queryParams.length > 0 ? "?" : ""}${queryParams.join("&")}`

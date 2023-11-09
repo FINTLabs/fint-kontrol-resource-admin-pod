@@ -9,6 +9,7 @@ interface UserContextType {
 	itemsPerPage: number
 	orgUnitIds: string[]
 	usersPage: IUserPage | null
+	searchString: string
 	selectedUser: IUser | null
 	setCurrentPage: (currentPage: number) => void
 	setIsLoading: (isLoading: boolean) => void
@@ -16,6 +17,7 @@ interface UserContextType {
 	setSelectedUser: (user: IUser | null) => void
 	setOrgUnitIdsFilter: (orgUnitIds: string[]) => void
 	setUser: (data: IUserPage | null) => void
+	setSearchString: (searchString: string) => void
 }
 
 export const UserContext = createContext<UserContextType | undefined>(undefined)
@@ -27,6 +29,7 @@ export function UserProvider({ children, basePath }: { children: React.ReactNode
 	const [orgUnitIds, setOrgUnitIdsFilter] = useState<string[]>(userContextDefaultValues.orgUnitIds)
 	const [selectedUser, setSelectedUser] = useState<IUser | null>(null)
 	const [usersPage, setUsersPage] = useState<IUserPage | null>(null)
+	const [searchString, setSearchString] = useState<string>("")
 
 	const setUser = (data: IUserPage | null) => {
 		setUsersPage(data)
@@ -36,7 +39,7 @@ export function UserProvider({ children, basePath }: { children: React.ReactNode
 		const fetchUsersPage = async () => {
 			if (basePath) {
 				setIsLoading(true)
-				await UsersRepository.getUsersPage(basePath, currentPage, itemsPerPage, orgUnitIds)
+				await UsersRepository.getUsersPage(basePath, currentPage, itemsPerPage, orgUnitIds, searchString)
 					.then((response) => {
 						setUsersPage(response.data)
 					})
@@ -46,7 +49,7 @@ export function UserProvider({ children, basePath }: { children: React.ReactNode
 		}
 
 		fetchUsersPage()
-	}, [basePath, currentPage, itemsPerPage, orgUnitIds])
+	}, [basePath, currentPage, itemsPerPage, orgUnitIds, searchString])
 
 	return (
 		<UserContext.Provider
@@ -56,13 +59,15 @@ export function UserProvider({ children, basePath }: { children: React.ReactNode
 				isLoading,
 				orgUnitIds,
 				usersPage,
+				searchString,
 				selectedUser,
 				setCurrentPage,
 				setIsLoading,
 				setUser,
 				setSelectedUser,
 				setItemsPerPage,
-				setOrgUnitIdsFilter
+				setOrgUnitIdsFilter,
+				setSearchString
 			}}
 		>
 			{children}

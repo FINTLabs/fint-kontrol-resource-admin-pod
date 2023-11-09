@@ -5,6 +5,7 @@ import { Buldings3Icon } from "@navikt/aksel-icons"
 import { Button, Search, Select } from "@navikt/ds-react"
 import { useRole } from "../../../api/RoleContext"
 import { IRole } from "../../../api/types"
+import { useUser } from "../../../api/UserContext"
 
 const ToolbarContainer = styled.div`
 	display: flex;
@@ -21,8 +22,10 @@ interface RolesToolbarProps {
 }
 
 const RolesToolbar = ({ setSelectedAccessRole }: RolesToolbarProps) => {
+	const { setSearchString } = useUser()
 	const { roles } = useRole()
 	const [showUnitModal, setShowUnitModal] = useState(false)
+	const [currentSearchString, setCurrentSearchString] = useState<string>("")
 
 	const closeModal = () => {
 		setShowUnitModal(false)
@@ -32,6 +35,14 @@ const RolesToolbar = ({ setSelectedAccessRole }: RolesToolbarProps) => {
 		let roleMatchedToId: IRole | undefined = roles.find((role) => role.accessRoleId === param)
 		roleMatchedToId ? setSelectedAccessRole(roleMatchedToId) : console.log(roleMatchedToId)
 	}
+
+	const triggerSearchString = (event?: React.FormEvent<HTMLFormElement>) => {
+		if (event) {
+			event.preventDefault() // This is to prevent complete page rerender on submit.
+		}
+		setSearchString(currentSearchString)
+	}
+
 	return (
 		<ToolbarContainer>
 			<UnitSelectDialog open={showUnitModal} onClose={closeModal} />
@@ -68,7 +79,16 @@ const RolesToolbar = ({ setSelectedAccessRole }: RolesToolbarProps) => {
 			</Select>
 
 			<div>
-				<Search label="Søk på personnavn" hideLabel={false} variant="secondary" />
+				<form onSubmit={(event) => triggerSearchString(event)}>
+					<Search
+						value={currentSearchString}
+						onChange={(currentValue) => setCurrentSearchString(currentValue)}
+						onSearchClick={() => triggerSearchString()}
+						label="Søk på personnavn"
+						hideLabel={false}
+						variant="secondary"
+					/>
+				</form>
 			</div>
 		</ToolbarContainer>
 	)
