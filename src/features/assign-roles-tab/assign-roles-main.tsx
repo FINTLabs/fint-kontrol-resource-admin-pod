@@ -43,7 +43,7 @@ const AssignRolesMain = () => {
 			/>
 
 			<div>
-				<Button variant={"primary"} onClick={handleSaveRole}>
+				<Button variant={"primary"} onClick={handleSaveRole} id={"save-button-id"}>
 					Lagre rettigheter
 				</Button>
 			</div>

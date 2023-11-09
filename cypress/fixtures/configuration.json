@@ -1,0 +1,74 @@
+{
+	"id": 76,
+	"name": "fint-kontroll",
+	"basePath": "/beta/fintlabs-no",
+	"appBarMenuMainLayout": {
+		"id": 77,
+		"appbar": {
+			"id": 78,
+			"name": "fint-kontroll-appbar-pod",
+			"uri": "http://fint-kontroll-appbar-pod:7100/manifest.json"
+		},
+		"menu": {
+			"id": 79,
+			"name": "fint-kontroll-menu-pod",
+			"uri": "http://fint-kontroll-menu-pod:7100/manifest.json"
+		},
+		"main": [
+			{
+				"id": 84,
+				"name": "fint-kontroll-dashboard-pod",
+				"uri": "http://fint-kontroll-dashboard-pod:7100/manifest.json",
+				"title": "Dashboard",
+				"path": "/beta/fintlabs-no/",
+				"icon": "dashboard",
+				"menuOrder": 0
+			},
+			{
+				"id": 81,
+				"name": "fint-kontroll-role-pod",
+				"uri": "http://fint-kontroll-role-pod:7100/manifest.json",
+				"title": "Grupper",
+				"path": "/beta/fintlabs-no/grupper",
+				"icon": "group",
+				"menuOrder": 1
+			},
+			{
+				"id": 82,
+				"name": "fint-kontroll-user-pod",
+				"uri": "http://fint-kontroll-user-pod:7100/manifest.json",
+				"title": "Brukere",
+				"path": "/beta/fintlabs-no/brukere",
+				"icon": "person",
+				"menuOrder": 2
+			},
+			{
+				"id": 80,
+				"name": "fint-kontroll-resource-pod",
+				"uri": "http://fint-kontroll-resource-pod:7100/manifest.json",
+				"title": "Ressurser",
+				"path": "/beta/fintlabs-no/ressurser",
+				"icon": "approval",
+				"menuOrder": 3
+			},
+			{
+				"id": 83,
+				"name": "fint-kontroll-resource-admin-pod",
+				"uri": "http://fint-kontroll-resource-admin-pod:7100/manifest.json",
+				"title": "Ressurser Admin",
+				"path": "/beta/fintlabs-no/ressurser-admin",
+				"icon": "manage_accounts",
+				"menuOrder": 4
+			},
+			{
+				"id": 83,
+				"name": "fint-kontroll-app-admin-pod",
+				"uri": "http://fint-kontroll-app-admin-pod:7100/manifest.json",
+				"title": "Applikasjonsadministrator",
+				"path": "/beta/fintlabs-no/app-admin",
+				"icon": "dashboard",
+				"menuOrder": 4
+			}
+		]
+	}
+}

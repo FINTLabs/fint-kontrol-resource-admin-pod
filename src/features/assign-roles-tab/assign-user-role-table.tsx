@@ -65,7 +65,7 @@ const AssignUserRoleTable = ({ newAssignment, setNewAssignment }: AssignUserRole
 
 	return (
 		<>
-			<TableStyled>
+			<TableStyled id={"rettigheter-table-delegation"}>
 				<Table.Header>
 					<Table.Row>
 						<Table.HeaderCell>Navn</Table.HeaderCell>

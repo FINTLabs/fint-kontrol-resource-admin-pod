@@ -44,7 +44,7 @@ const RolesToolbar = ({ setSelectedAccessRole }: RolesToolbarProps) => {
 	}
 
 	return (
-		<ToolbarContainer>
+		<ToolbarContainer id={"toolbar-id"}>
 			<UnitSelectDialog open={showUnitModal} onClose={closeModal} />
 
 			<div>

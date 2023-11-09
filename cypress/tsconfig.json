@@ -1,0 +1,12 @@
+{
+	"compilerOptions": {
+		"baseUrl": "../node_modules",
+		"lib": ["es5", "dom"],
+		"target": "es5",
+		"types": ["cypress", "node", "cypress-axe"]
+	},
+	"include": [
+		"**/*.ts",
+		"../cypress.d.ts"
+	]
+}

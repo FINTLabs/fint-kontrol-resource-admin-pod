@@ -17,7 +17,7 @@ const LandingComponent = () => {
 		<div>
 			<h2 id="tableTitle">Rettighetsstyring</h2>
 
-			<Tabs defaultValue="tildel">
+			<Tabs defaultValue="tildel" id={"navigation-tab-id"}>
 				<Tabs.List>
 					<Tabs.Tab
 						value="tildel"
