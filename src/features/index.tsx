@@ -17,18 +17,25 @@ const LandingComponent = () => {
 		<div>
 			<h2 id="tableTitle">Rettighetsstyring</h2>
 
-			<Tabs defaultValue="tildel" id={"navigation-tab-id"}>
+			<Tabs defaultValue="tildel" id={"navigation-bar-id"}>
 				<Tabs.List>
 					<Tabs.Tab
 						value="tildel"
 						label="Tildel rettigheter"
 						icon={<PersonPlusIcon title="historielogg" />}
+						id={"assign-role-tab-id"}
 					/>
-					<Tabs.Tab value="inbox" label="Definer rolle" icon={<PersonCheckmarkIcon title="inbox" />} />
+					<Tabs.Tab
+						value="inbox"
+						label="Definer rolle"
+						icon={<PersonCheckmarkIcon title="inbox" />}
+						id={"define-role-tab-id"}
+					/>
 					<Tabs.Tab
 						value="usersWithRoles"
 						label="Se brukere med roller"
 						icon={<PersonCheckmarkIcon title="inbox" />}
+						id={"see-users-tab-id"}
 					/>
 				</Tabs.List>
 

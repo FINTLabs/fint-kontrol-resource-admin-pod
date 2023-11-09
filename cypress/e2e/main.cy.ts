@@ -1,22 +1,25 @@
-describe("Check resources-admin", () => {
-	beforeEach(() => {
-		const baseUrl = "http://localhost:3000/api"
-		cy.interceptAndReturnFile("GET", `${baseUrl}/accessmanagement/v1/user`, "users.json")
-		cy.interceptAndReturnFile("GET", `${baseUrl}/orgunits`, "orgunits.json")
-		cy.interceptAndReturnFile("GET", `${baseUrl}/accessmanagement/v1/accessrole`, "allAccessRoles.json")
-	})
+import { wait } from "@testing-library/user-event/dist/utils"
 
+before(() => {
+	const baseUrl = "http://localhost:3000/api"
+	cy.interceptAndReturnFile("GET", `${baseUrl}/accessmanagement/v1/user`, "users.json")
+	cy.interceptAndReturnFile("GET", `${baseUrl}/orgunits`, "orgunits.json")
+	cy.interceptAndReturnFile("GET", `${baseUrl}/accessmanagement/v1/accessrole`, "allAccessRoles.json")
+})
+
+describe("Check resources-admin", () => {
 	it("can render home page", () => {
 		cy.goToHome()
 		cy.wait(1000)
 	})
 
 	it("can see navigation-tab", () => {
-		cy.get("#navigation-tab-id").should("be.visible")
+		cy.get("#navigation-bar-id").should("be.visible")
 	})
 
-	it("can click first tab menu item", () => {
-		cy.get("#navigation-tab-id button").first().click()
+	it("can click 'Tildel rettigheter'", () => {
+		cy.get("#assign-role-tab-id").click()
+		wait(1000)
 	})
 
 	it("Check toolbar", () => {
@@ -60,23 +63,23 @@ describe("Check resources-admin", () => {
 	//   });
 })
 
-describe("New test shit", () => {
-	beforeEach(() => {
-		const baseUrl = "http://localhost:3000/api"
-		cy.interceptAndReturnFile("GET", `${baseUrl}/accessmanagement/v1/user`, "users.json")
-		cy.interceptAndReturnFile("GET", `${baseUrl}/orgunits`, "orgunits.json")
-		cy.interceptAndReturnFile("GET", `${baseUrl}/accessmanagement/v1/accessrole`, "allAccessRoles.json")
-	})
-
+describe("Test suite for 'Definer rolle'", () => {
 	it("can render home page", () => {
 		cy.goToHome()
 		cy.wait(1000)
 	})
 
 	it("can see navigation-tab", () => {
-		cy.get("#navigation-tab-id").should("be.visible")
+		cy.get("#navigation-bar-id").should("be.visible")
 	})
-	it("Click into a new tab", () => {
-		cy.get("#resource-0").click()
+
+	it("Click into a 'Definer rolle'", () => {
+		cy.get("#define-role-tab-id").click()
+		wait(1000)
+	})
+
+	it("Can see Select of roles", () => {
+		cy.get("select").should("be.visible").contains("option")
+		wait(1000)
 	})
 })
