@@ -1,7 +1,7 @@
 [
 	{
-		"id": "a1",
-		"resourceId": "accessRole1"
+		"accessRoleId": "a1",
+		"name": "accessRole1"
 	},
 	{
 		"accessRoleId": "a2",

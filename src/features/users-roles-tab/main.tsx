@@ -57,7 +57,7 @@ export const UsersRolesMain = () => {
 
 	return (
 		<UsersWithRolesContainer>
-			<TableStyled id="resource-table">
+			<TableStyled id="users-table-id">
 				<Table.Header>
 					<Table.Row>
 						<Table.HeaderCell scope="col">Fult navn</Table.HeaderCell>
@@ -113,7 +113,7 @@ const CenteredDataCell = styled(Table.DataCell)`
 `
 const BlankTable = () => {
 	return (
-		<TableStyled id="resource-table">
+		<TableStyled id="users-table-id">
 			<Table.Header>
 				<Table.Row>
 					<Table.HeaderCell scope="col">Ressurs</Table.HeaderCell>

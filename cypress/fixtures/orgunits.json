@@ -1,8 +1,8 @@
 [
 	{
+		"currentPage": 0,
 		"totalItems": 2,
 		"totalPages": 1,
-		"currentPage": 1,
 		"orgUnits": [
 			{
 				"id": "1",

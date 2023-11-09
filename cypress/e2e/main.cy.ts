@@ -1,10 +1,22 @@
 import { wait } from "@testing-library/user-event/dist/utils"
 
-before(() => {
+// before(() => {
+// 	const baseUrl = "http://localhost:3000/api"
+// 	cy.interceptAndReturnFile("GET", `${baseUrl}/accessmanagement/v1/user`, "users.json")
+// 	cy.interceptAndReturnFile("GET", `${baseUrl}/orgunits`, "orgunits.json")
+// 	cy.interceptAndReturnFile("GET", `${baseUrl}/accessmanagement/v1/accessrole`, "allAccessRoles.json")
+// })
+
+beforeEach(() => {
 	const baseUrl = "http://localhost:3000/api"
-	cy.interceptAndReturnFile("GET", `${baseUrl}/accessmanagement/v1/user`, "users.json")
+	cy.interceptAndReturnFile("GET", `${baseUrl}/accessmanagement/v1/user*`, "users.json")
 	cy.interceptAndReturnFile("GET", `${baseUrl}/orgunits`, "orgunits.json")
 	cy.interceptAndReturnFile("GET", `${baseUrl}/accessmanagement/v1/accessrole`, "allAccessRoles.json")
+	cy.interceptAndReturnFile(
+		"GET",
+		`${baseUrl}/accessmanagement/v1/accesspermission/accessrole/*`,
+		"singleAccessRole.json"
+	)
 })
 
 describe("Check resources-admin", () => {
@@ -78,8 +90,39 @@ describe("Test suite for 'Definer rolle'", () => {
 		wait(1000)
 	})
 
-	it("Can see Select of roles", () => {
-		cy.get("select").should("be.visible").contains("option")
+	it("Can see Select and option of roles", () => {
+		cy.get("select").should("be.visible")
+		cy.get("select")
+			.find("option")
+			.each((option) => {
+				cy.log(`Option Text: ${option.text()}`)
+			})
+		cy.get("select").select("accessRole1")
 		wait(1000)
+	})
+
+	it("Can see table of features from the selected access role", () => {
+		cy.get("#permissions-table td").contains("featureName1").should("exist")
+	})
+})
+
+describe("Test suite for 'Se brukere med roller'", () => {
+	it("can render home page", () => {
+		cy.goToHome()
+		cy.wait(1000)
+	})
+
+	it("can see navigation-tab", () => {
+		cy.get("#navigation-bar-id").should("be.visible")
+	})
+
+	it("Click into a 'Se brukere med roller'", () => {
+		cy.get("#see-users-tab-id").click()
+		wait(1000)
+	})
+
+	it("Can see a table with at least one example user", () => {
+		cy.get("#users-table-id").should("be.visible")
+		cy.get("#users-table-id td").contains("Petter Pettersen").should("exist")
 	})
 })

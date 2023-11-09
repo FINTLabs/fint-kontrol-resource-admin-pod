@@ -49,7 +49,7 @@ export const PermissionsTable = ({
 	const availableOperations = ["GET", "POST", "PUT", "DELETE"]
 
 	return (
-		<TableStyled>
+		<TableStyled id={"permissions-table"}>
 			<Table.Header>
 				<Table.Row>
 					<Table.HeaderCell>Feature</Table.HeaderCell>
