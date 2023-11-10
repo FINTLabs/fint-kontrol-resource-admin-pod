@@ -39,7 +39,12 @@ export const ConfirmSafeRedirectModal = () => {
 
 	return (
 		<div className="py-16">
-			<Modal ref={ref} header={{ heading: "Lagre endringer" }} onClose={() => handleCloseModal()}>
+			<Modal
+				ref={ref}
+				header={{ heading: "Lagre endringer" }}
+				onClose={() => handleCloseModal()}
+				onCancel={(e) => e.preventDefault()}
+			>
 				<Modal.Body>Du har data som ikke er lagret. Ønsker du å forkaste endringene?</Modal.Body>
 				<Modal.Footer>
 					<Button type="button" onClick={() => handleCloseModal(true)}>
