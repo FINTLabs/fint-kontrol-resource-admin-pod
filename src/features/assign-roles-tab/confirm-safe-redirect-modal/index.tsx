@@ -8,7 +8,6 @@ import { useUser } from "../../../api/UserContext"
 // }
 
 export const ConfirmSafeRedirectModal = () => {
-	const {} = useUser()
 	const ref = useRef<HTMLDialogElement>(null)
 	const { tabToRouteTo, setCurrentTab, setIsTabModified, isModalVisible, setIsModalVisible } = useSafeTabChange()
 
