@@ -1,11 +1,11 @@
-import axios from "axios";
-import {IConfiguration} from "./types";
+import axios from "axios"
+import { IConfiguration } from "./types"
 const getBaseUrl = () => {
-    return axios.get<IConfiguration>('api/layout/configuration');
+	return axios.get<IConfiguration>("api/layout/configuration")
 }
 
-const GeneralRepository  = {
-    getBaseUrl
+const GeneralRepository = {
+	getBaseUrl
 }
 
 export default GeneralRepository
