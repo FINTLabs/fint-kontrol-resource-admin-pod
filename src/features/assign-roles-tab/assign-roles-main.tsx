@@ -8,6 +8,7 @@ import { IAssignment, IRole } from "../../api/types"
 import { Button } from "@navikt/ds-react"
 import styled from "styled-components"
 import { useSafeTabChange } from "../../api/safe-tab-change-context"
+import { ConfirmSafeRedirectModal } from "./confirm-safe-redirect-modal"
 
 const AssignRolesContainer = styled.div`
 	display: flex;
@@ -34,6 +35,8 @@ const AssignRolesMain = () => {
 
 	return (
 		<AssignRolesContainer>
+			<ConfirmSafeRedirectModal />
+
 			<RolesToolbar setSelectedAccessRole={setSelectedAccessRole} setOrgUnitIdsFilter={setOrgUnitIdsFilter} />
 
 			<AssignUserRoleTable newAssignment={newAssignment} setNewAssignment={setNewAssigment} />

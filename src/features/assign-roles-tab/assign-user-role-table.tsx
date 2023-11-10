@@ -3,6 +3,7 @@ import React from "react"
 import styled from "styled-components"
 import { useUser } from "../../api/UserContext"
 import { IAssignment, IUser } from "../../api/types"
+import { useSafeTabChange } from "../../api/safe-tab-change-context"
 
 const PaginationWrapper = styled.div`
 	display: flex;
@@ -46,6 +47,7 @@ interface AssignUserRoleTableProps {
 
 const AssignUserRoleTable = ({ newAssignment, setNewAssignment }: AssignUserRoleTableProps) => {
 	const { itemsPerPage, setItemsPerPage, currentPage, setCurrentPage, isLoading, usersPage } = useUser()
+	const { setIsTabModified } = useSafeTabChange()
 	const handleChangeRowsPerPage = (event: React.ChangeEvent<HTMLSelectElement | HTMLOptionElement>) => {
 		setItemsPerPage(parseInt(event.target.value, 10))
 		setCurrentPage(1)
@@ -61,6 +63,7 @@ const AssignUserRoleTable = ({ newAssignment, setNewAssignment }: AssignUserRole
 
 	const handleSelectUser = (user: IUser) => {
 		setNewAssignment({ ...newAssignment, user: user })
+		setIsTabModified(true)
 	}
 
 	return (
