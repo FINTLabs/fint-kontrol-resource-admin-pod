@@ -1,7 +1,6 @@
 import React, { useEffect, useRef } from "react"
 import { useSafeTabChange } from "../../../api/safe-tab-change-context"
 import { Button, Modal } from "@navikt/ds-react"
-import { useUser } from "../../../api/UserContext"
 
 // interface ConfirmSaveModalProps {
 // 	modifiedAssignment: IAssignment
