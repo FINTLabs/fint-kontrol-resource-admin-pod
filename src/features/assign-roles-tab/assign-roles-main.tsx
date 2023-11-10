@@ -7,6 +7,7 @@ import AssignRoleToUserConfirmation from "./bottom-section/assign-role-to-user-c
 import { IAssignment, IRole } from "../../api/types"
 import { Button } from "@navikt/ds-react"
 import styled from "styled-components"
+import { useSafeTabChange } from "../../api/safe-tab-change-context"
 
 const AssignRolesContainer = styled.div`
 	display: flex;
@@ -16,6 +17,7 @@ const AssignRolesContainer = styled.div`
 
 const AssignRolesMain = () => {
 	const { selectedUser, setOrgUnitIdsFilter } = useUser()
+	const { setIsTabModified } = useSafeTabChange()
 	const [selectedAccessRole, setSelectedAccessRole] = useState<IRole>({ accessRoleId: "", name: "" })
 	const [newAssignment, setNewAssigment] = useState<IAssignment>({
 		user: null,
@@ -26,6 +28,7 @@ const AssignRolesMain = () => {
 	const handleSaveRole = () => {
 		// messageBus.publish("testChannel", "testTopic", "Save Role Clicked")
 		console.log("Assignment object contains the following: ", newAssignment)
+		setIsTabModified(false)
 		// return undefined
 	}
 

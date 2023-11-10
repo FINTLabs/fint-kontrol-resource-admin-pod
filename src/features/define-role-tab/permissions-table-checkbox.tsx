@@ -1,5 +1,6 @@
 import { Checkbox } from "@navikt/ds-react"
 import React, { useState } from "react"
+import { useSafeTabChange } from "../../api/safe-tab-change-context"
 
 interface IPermissionTableCheckbox {
 	indexForOperationsList: number
@@ -16,8 +17,12 @@ const PermissionsTableCheckbox = ({
 	notifyOperationsChanged
 }: IPermissionTableCheckbox) => {
 	const [isChecked, setIsChecked] = useState(isCheckedProp)
+	const { isTabModified, setIsTabModified } = useSafeTabChange()
 	const handleCheckboxChange = () => {
 		setIsChecked(!isChecked)
+		if (!isTabModified) {
+			setIsTabModified(true)
+		}
 		notifyOperationsChanged(indexForOperationsList, featureId, operationProp)
 	}
 

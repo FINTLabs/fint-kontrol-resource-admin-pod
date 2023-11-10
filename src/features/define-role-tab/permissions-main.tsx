@@ -6,6 +6,8 @@ import { useRole } from "../../api/RoleContext"
 import styled from "styled-components"
 import { IPermissionData } from "../../api/types"
 import { LoaderStyled } from "../index"
+import { useSafeTabChange } from "../../api/safe-tab-change-context"
+import { ConfirmSaveModal } from "./confirm-save-role-modal"
 
 export const TableStyled = styled(Table)`
 	thead {
@@ -41,8 +43,10 @@ export const PermissionsMain = () => {
 	} = useRole()
 	const [modifiedPermissionDataObject, setModifiedPermissionDataObject] =
 		useState<IPermissionData>(permissionDataForRole)
+	const { setIsTabModified } = useSafeTabChange()
 
 	useEffect(() => {
+		setIsTabModified(false)
 		if (localSelectedAccessRoleId && localSelectedAccessRoleId.length > 0) {
 			fetchPermissionDataForRole(localSelectedAccessRoleId)
 		} else {
@@ -53,6 +57,7 @@ export const PermissionsMain = () => {
 
 	return (
 		<>
+			<ConfirmSaveModal modifiedPermissionDataObject={modifiedPermissionDataObject} />
 			<PermissionsToolbar
 				roleName={getRoleNameFromId(localSelectedAccessRoleId)}
 				roles={roles}

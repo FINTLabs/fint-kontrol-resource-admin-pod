@@ -6,6 +6,7 @@ import { OrgUnitsProvider } from "./api/OrgUnitContext"
 import { UserProvider } from "./api/UserContext"
 import { userContextDefaultValues } from "./api/types"
 import GeneralRepository from "./repositories"
+import { SafeTabChangeProvider } from "./api/safe-tab-change-context"
 
 function App() {
 	const [basePath, setBasePath] = useState<string>(userContextDefaultValues.basePath)
@@ -32,15 +33,17 @@ function App() {
 	}
 
 	return (
-		<RoleProvider basePath={basePath}>
-			<UserProvider basePath={basePath}>
-				<OrgUnitsProvider basePath={basePath}>
-					<Routes>
-						<Route path={`${basePath}/ressurser-admin/`} element={<LandingComponent />} />
-					</Routes>
-				</OrgUnitsProvider>
-			</UserProvider>
-		</RoleProvider>
+		<SafeTabChangeProvider>
+			<RoleProvider basePath={basePath}>
+				<UserProvider basePath={basePath}>
+					<OrgUnitsProvider basePath={basePath}>
+						<Routes>
+							<Route path={`${basePath}/ressurser-admin/`} element={<LandingComponent />} />
+						</Routes>
+					</OrgUnitsProvider>
+				</UserProvider>
+			</RoleProvider>
+		</SafeTabChangeProvider>
 	)
 }
 

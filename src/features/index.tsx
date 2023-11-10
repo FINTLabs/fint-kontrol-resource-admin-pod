@@ -6,6 +6,7 @@ import AssignRolesMain from "./assign-roles-tab/assign-roles-main"
 import { PermissionsMain } from "./define-role-tab/permissions-main"
 import { UsersRolesMain } from "./users-roles-tab/main"
 import styled from "styled-components"
+import { useSafeTabChange } from "../api/safe-tab-change-context"
 
 export const LoaderStyled = styled(Loader)`
 	display: flex;
@@ -13,11 +14,21 @@ export const LoaderStyled = styled(Loader)`
 `
 
 const LandingComponent = () => {
+	const { currentTab, isTabModified, setCurrentTab, setIsModalVisible, setTabToRouteTo } = useSafeTabChange()
+	const handleChangeTab = (tabClicked: string) => {
+		if (isTabModified) {
+			setIsModalVisible(true)
+			setTabToRouteTo(tabClicked)
+		} else {
+			setCurrentTab(tabClicked)
+		}
+	}
+
 	return (
 		<div>
 			<h2 id="tableTitle">Rettighetsstyring</h2>
 
-			<Tabs defaultValue="tildel" id={"navigation-bar-id"}>
+			<Tabs value={currentTab} id={"navigation-bar-id"} onChange={handleChangeTab}>
 				<Tabs.List>
 					<Tabs.Tab
 						value="tildel"
@@ -26,7 +37,7 @@ const LandingComponent = () => {
 						id={"assign-role-tab-id"}
 					/>
 					<Tabs.Tab
-						value="inbox"
+						value="define"
 						label="Definer rolle"
 						icon={<PersonCheckmarkIcon title="inbox" />}
 						id={"define-role-tab-id"}
@@ -43,7 +54,7 @@ const LandingComponent = () => {
 					<AssignRolesMain />
 				</Tabs.Panel>
 
-				<Tabs.Panel value="inbox" className="h-24 w-full bg-gray-50 p-4">
+				<Tabs.Panel value="define" className="h-24 w-full bg-gray-50 p-4">
 					<PermissionsMain />
 				</Tabs.Panel>
 
