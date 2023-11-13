@@ -1,4 +1,4 @@
-import React, { useState } from "react"
+import React, { useEffect, useState } from "react"
 import { useUser } from "../../api/UserContext"
 import RolesToolbar from "./toolbar/roles-toolbar"
 import AssignUserRoleTable from "./assign-user-role-table"
@@ -29,12 +29,14 @@ const AssignRolesMain = () => {
 		orgUnits: []
 	})
 
+	useEffect(() => {
+		setNewAssigment({ ...newAssignment, accessRoleId: selectedAccessRole.accessRoleId })
+		// eslint-disable-next-line react-hooks/exhaustive-deps
+	}, [selectedAccessRole])
+
 	const handleSaveRole = () => {
-		// messageBus.publish("testChannel", "testTopic", "Save Role Clicked")
-		console.log("Assignment object contains the following: ", newAssignment)
 		setIsTabModified(false)
 		postNewAssignment(newAssignment)
-		// return undefined
 	}
 
 	return (
