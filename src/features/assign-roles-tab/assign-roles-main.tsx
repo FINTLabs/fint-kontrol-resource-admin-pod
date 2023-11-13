@@ -4,11 +4,12 @@ import RolesToolbar from "./toolbar/roles-toolbar"
 import AssignUserRoleTable from "./assign-user-role-table"
 
 import AssignRoleToUserConfirmation from "./bottom-section/assign-role-to-user-confirmation"
-import { IAssignment, IRole } from "../../api/types"
+import { IAssignment, IRole, IUser } from "../../api/types"
 import { Button } from "@navikt/ds-react"
 import styled from "styled-components"
 import { useSafeTabChange } from "../../api/safe-tab-change-context"
 import { ConfirmSafeRedirectModal } from "./confirm-safe-redirect-modal"
+import { useAssignments } from "../../api/assignment-context"
 
 const AssignRolesContainer = styled.div`
 	display: flex;
@@ -18,10 +19,12 @@ const AssignRolesContainer = styled.div`
 
 const AssignRolesMain = () => {
 	const { selectedUser, setOrgUnitIdsFilter } = useUser()
+	const { postNewAssignment } = useAssignments()
 	const { setIsTabModified } = useSafeTabChange()
 	const [selectedAccessRole, setSelectedAccessRole] = useState<IRole>({ accessRoleId: "", name: "" })
 	const [newAssignment, setNewAssigment] = useState<IAssignment>({
-		user: null,
+		user: emptyUser,
+		scopeId: 1, // TODO: This is bound to be changed in the future to allow scope definitions to be selected in the frontend. For now, it is defaulted to "1"
 		accessRoleId: "",
 		orgUnits: []
 	})
@@ -30,6 +33,7 @@ const AssignRolesMain = () => {
 		// messageBus.publish("testChannel", "testTopic", "Save Role Clicked")
 		console.log("Assignment object contains the following: ", newAssignment)
 		setIsTabModified(false)
+		postNewAssignment(newAssignment)
 		// return undefined
 	}
 
@@ -58,3 +62,12 @@ const AssignRolesMain = () => {
 }
 
 export default AssignRolesMain
+
+const emptyUser: IUser = {
+	id: 1,
+	userName: "",
+	firstName: "",
+	lastName: "",
+	userType: "",
+	resourceId: ""
+}

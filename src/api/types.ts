@@ -3,8 +3,9 @@
 // This interface is used in "Tildel rettigheter" to structure the connection between an IUser, IRole and IOrgUnit
 // TODO: Control check this when API is done!!
 export interface IAssignment {
-	user: IUser | null
+	user: IUser
 	accessRoleId: string
+	scopeId: number
 	orgUnits: IOrgUnit[]
 }
 

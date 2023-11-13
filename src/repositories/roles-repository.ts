@@ -20,10 +20,9 @@ const getPermissionDataForRole = (basePath: string, roleId: string) => {
 }
 
 const putPermissionDataForRole = (basePath: string, updatedPermissionRole: IPermissionData) => {
-	const tempFix: IPermissionData[] = [updatedPermissionRole] // THIS MUST BE CHANGED BACK TO NOT BE [] ANYMORE. Should only be one Object wrapper.
 	const baseUrl = `${basePath === "/" ? "" : basePath}/api/accessmanagement/v1/accesspermission`
 	const url = `${baseUrl}`
-	return axios.put(url, tempFix)
+	return axios.put(url, updatedPermissionRole)
 }
 
 const RolesRepository = {

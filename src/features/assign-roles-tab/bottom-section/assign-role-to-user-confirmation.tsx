@@ -61,7 +61,7 @@ const AssignRoleToUserConfirmation = ({
 			<OrgUnitModal orgUnitsForUser={newAssignment.orgUnits} setOrgUnitsForUser={setOrgUnitsForUser} />
 
 			<AssignmentSummaryContainer>
-				{newAssignment.user && (
+				{newAssignment.user.firstName.length > 0 && (
 					<span>
 						<PersonIcon title="a11y-title" fontSize="1.5rem" /> Valgt bruker: <b>{fullName}</b>
 					</span>
