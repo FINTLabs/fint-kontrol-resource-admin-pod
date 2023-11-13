@@ -8,6 +8,8 @@ import { userContextDefaultValues } from "./api/types"
 import GeneralRepository from "./repositories"
 import { SafeTabChangeProvider } from "./api/safe-tab-change-context"
 import { AssignmentProvider } from "./api/assignment-context"
+import { ToastContainer } from "react-toastify"
+import SuccessfulCreation from "./features/successful-creation"
 
 function App() {
 	const [basePath, setBasePath] = useState<string>(userContextDefaultValues.basePath)
@@ -35,12 +37,15 @@ function App() {
 
 	return (
 		<SafeTabChangeProvider>
+			<ToastContainer limit={1} />
+
 			<RoleProvider basePath={basePath}>
 				<UserProvider basePath={basePath}>
 					<OrgUnitsProvider basePath={basePath}>
 						<AssignmentProvider basePath={basePath}>
 							<Routes>
 								<Route path={`${basePath}/ressurser-admin/`} element={<LandingComponent />} />
+								<Route path={`${basePath}/successful-creation`} element={<SuccessfulCreation />} />
 							</Routes>
 						</AssignmentProvider>
 					</OrgUnitsProvider>

@@ -10,6 +10,7 @@ import styled from "styled-components"
 import { useSafeTabChange } from "../../api/safe-tab-change-context"
 import { ConfirmSafeRedirectModal } from "./confirm-safe-redirect-modal"
 import { useAssignments } from "../../api/assignment-context"
+import { useForm } from "react-hook-form"
 
 const AssignRolesContainer = styled.div`
 	display: flex;
@@ -28,6 +29,7 @@ const AssignRolesMain = () => {
 		accessRoleId: "",
 		orgUnits: []
 	})
+	const { handleSubmit } = useForm()
 
 	useEffect(() => {
 		setNewAssigment({ ...newAssignment, accessRoleId: selectedAccessRole.accessRoleId })
@@ -41,24 +43,26 @@ const AssignRolesMain = () => {
 
 	return (
 		<AssignRolesContainer>
-			<ConfirmSafeRedirectModal />
+			<form onSubmit={handleSubmit(handleSaveRole)}>
+				<ConfirmSafeRedirectModal />
 
-			<RolesToolbar setSelectedAccessRole={setSelectedAccessRole} setOrgUnitIdsFilter={setOrgUnitIdsFilter} />
+				<RolesToolbar setSelectedAccessRole={setSelectedAccessRole} setOrgUnitIdsFilter={setOrgUnitIdsFilter} />
 
-			<AssignUserRoleTable newAssignment={newAssignment} setNewAssignment={setNewAssigment} />
+				<AssignUserRoleTable newAssignment={newAssignment} setNewAssignment={setNewAssigment} />
 
-			<AssignRoleToUserConfirmation
-				newAssignment={newAssignment}
-				setNewAssigment={setNewAssigment}
-				selectedUser={selectedUser}
-				selectedAccessRole={selectedAccessRole}
-			/>
+				<AssignRoleToUserConfirmation
+					newAssignment={newAssignment}
+					setNewAssigment={setNewAssigment}
+					selectedUser={selectedUser}
+					selectedAccessRole={selectedAccessRole}
+				/>
 
-			<div>
-				<Button variant={"primary"} onClick={handleSaveRole} id={"save-button-id"}>
-					Lagre rettigheter
-				</Button>
-			</div>
+				<div>
+					<Button variant={"primary"} onClick={handleSaveRole} id={"save-button-id"}>
+						Lagre rettigheter
+					</Button>
+				</div>
+			</form>
 		</AssignRolesContainer>
 	)
 }
