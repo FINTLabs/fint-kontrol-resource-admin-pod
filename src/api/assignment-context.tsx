@@ -1,8 +1,9 @@
 import React, { createContext, useContext, useState } from "react"
 import { IAssignment } from "./types"
-import { ErrorResponse, useNavigate } from "react-router-dom"
+import { useNavigate } from "react-router-dom"
 import AssignmentRepository from "../repositories/assignment-repository"
 import { toast } from "react-toastify"
+import { AxiosError } from "axios"
 
 interface AssignmentContextType {
 	isLoading: boolean
@@ -16,6 +17,7 @@ export const AssignmentProvider = ({ children, basePath }: { children: React.Rea
 	const navigate = useNavigate()
 
 	const postNewAssignment = async (newAssignment: IAssignment) => {
+		toast.dismiss()
 		if (basePath) {
 			setIsLoading(true)
 			await AssignmentRepository.postNewAssignment(basePath, newAssignment)
@@ -24,9 +26,9 @@ export const AssignmentProvider = ({ children, basePath }: { children: React.Rea
 					navigate("/successful-creation")
 					toast.success("Ny rolletildeling utført!")
 				})
-				.catch((err: ErrorResponse) => {
-					console.error(err)
+				.catch((err: AxiosError) => {
 					toast.error("Rolletildeling feilet.")
+					console.log(err)
 				})
 				.finally(() => setIsLoading(false))
 		}

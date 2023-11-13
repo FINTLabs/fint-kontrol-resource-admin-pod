@@ -8,7 +8,6 @@ import { userContextDefaultValues } from "./api/types"
 import GeneralRepository from "./repositories"
 import { SafeTabChangeProvider } from "./api/safe-tab-change-context"
 import { AssignmentProvider } from "./api/assignment-context"
-import { ToastContainer } from "react-toastify"
 import SuccessfulCreation from "./features/successful-creation"
 
 function App() {
@@ -37,8 +36,6 @@ function App() {
 
 	return (
 		<SafeTabChangeProvider>
-			<ToastContainer limit={1} />
-
 			<RoleProvider basePath={basePath}>
 				<UserProvider basePath={basePath}>
 					<OrgUnitsProvider basePath={basePath}>

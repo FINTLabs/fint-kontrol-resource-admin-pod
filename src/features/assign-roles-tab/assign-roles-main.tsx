@@ -43,20 +43,20 @@ const AssignRolesMain = () => {
 
 	return (
 		<AssignRolesContainer>
+			<ConfirmSafeRedirectModal />
+
+			<RolesToolbar setSelectedAccessRole={setSelectedAccessRole} setOrgUnitIdsFilter={setOrgUnitIdsFilter} />
+
+			<AssignUserRoleTable newAssignment={newAssignment} setNewAssignment={setNewAssigment} />
+
+			<AssignRoleToUserConfirmation
+				newAssignment={newAssignment}
+				setNewAssigment={setNewAssigment}
+				selectedUser={selectedUser}
+				selectedAccessRole={selectedAccessRole}
+			/>
+
 			<form onSubmit={handleSubmit(handleSaveRole)}>
-				<ConfirmSafeRedirectModal />
-
-				<RolesToolbar setSelectedAccessRole={setSelectedAccessRole} setOrgUnitIdsFilter={setOrgUnitIdsFilter} />
-
-				<AssignUserRoleTable newAssignment={newAssignment} setNewAssignment={setNewAssigment} />
-
-				<AssignRoleToUserConfirmation
-					newAssignment={newAssignment}
-					setNewAssigment={setNewAssigment}
-					selectedUser={selectedUser}
-					selectedAccessRole={selectedAccessRole}
-				/>
-
 				<div>
 					<Button variant={"primary"} onClick={handleSaveRole} id={"save-button-id"}>
 						Lagre rettigheter
