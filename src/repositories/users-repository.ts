@@ -24,7 +24,7 @@ const getUsersPage = (
 	}
 
 	if (searchString) {
-		queryParams.push(`search=${searchString}`)
+		queryParams.push(`name=${searchString}`)
 	}
 
 	const url = `${baseUrl}${queryParams.length > 0 ? "?" : ""}${queryParams.join("&")}`
