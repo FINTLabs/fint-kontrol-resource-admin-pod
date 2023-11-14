@@ -49,7 +49,7 @@ function App() {
 								/>
 								<Route
 									path={`${basePath}/ressurser-admin/tildelingsadmin/id/:userId`}
-									element={<UserAssignmentPage />}
+									element={<UserAssignmentPage basePath={basePath} />}
 								/>
 							</Routes>
 						</AssignmentProvider>

@@ -1,4 +1,4 @@
-import { IUserPage } from "../api/types"
+import { IUser, IUserPage } from "../api/types"
 import axios from "axios"
 
 const getUsersPage = (
@@ -32,8 +32,14 @@ const getUsersPage = (
 	return axios.get<IUserPage>(url)
 }
 
+const getSpecificUserById = (basePath: string, userId: string) => {
+	const url = `${basePath === "/" ? "" : basePath}/api/accessmanagement/v1/user/${userId}`
+	return axios.get<IUser>(url)
+}
+
 const UsersRepository = {
-	getUsersPage
+	getUsersPage,
+	getSpecificUserById
 }
 
 export default UsersRepository

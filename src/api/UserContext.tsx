@@ -1,7 +1,7 @@
 import React, { createContext, useContext, useState, useEffect } from "react"
 import { IUser, userContextDefaultValues, IUserPage } from "./types"
 import UsersRepository from "../repositories/users-repository"
-import { ErrorResponse } from "react-router-dom"
+import { AxiosError } from "axios"
 
 interface UserContextType {
 	currentPage: number
@@ -43,7 +43,7 @@ export function UserProvider({ children, basePath }: { children: React.ReactNode
 					.then((response) => {
 						setUsersPage(response.data)
 					})
-					.catch((err: ErrorResponse) => console.error(err))
+					.catch((err: AxiosError) => console.error(err))
 					.finally(() => setIsLoading(false))
 			}
 		}
