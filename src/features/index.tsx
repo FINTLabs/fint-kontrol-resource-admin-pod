@@ -4,7 +4,7 @@ import { Loader, Tabs } from "@navikt/ds-react"
 
 import AssignRolesMain from "./assign-roles-tab/assign-roles-main"
 import { PermissionsMain } from "./define-role-tab/permissions-main"
-import { UsersRolesMain } from "./users-roles-tab/main"
+import { UsersRolesMain } from "./users-roles-tab"
 import styled from "styled-components"
 import { useSafeTabChange } from "../api/safe-tab-change-context"
 

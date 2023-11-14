@@ -9,6 +9,7 @@ import GeneralRepository from "./repositories"
 import { SafeTabChangeProvider } from "./api/safe-tab-change-context"
 import { AssignmentProvider } from "./api/assignment-context"
 import SuccessfulCreation from "./features/successful-creation"
+import UserAssignmentPage from "./features/users-roles-tab/user-assignment/user-assignment-page"
 
 function App() {
 	const [basePath, setBasePath] = useState<string>(userContextDefaultValues.basePath)
@@ -42,7 +43,14 @@ function App() {
 						<AssignmentProvider basePath={basePath}>
 							<Routes>
 								<Route path={`${basePath}/ressurser-admin/`} element={<LandingComponent />} />
-								<Route path={`${basePath}/successful-creation`} element={<SuccessfulCreation />} />
+								<Route
+									path={`${basePath}/ressurser-admin/successful-creation`}
+									element={<SuccessfulCreation />}
+								/>
+								<Route
+									path={`${basePath}/ressurser-admin/userId/:id}`}
+									element={<UserAssignmentPage />}
+								/>
 							</Routes>
 						</AssignmentProvider>
 					</OrgUnitsProvider>

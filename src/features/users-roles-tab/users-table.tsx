@@ -1,17 +1,12 @@
-import React from "react"
-import styled from "styled-components"
-import { Pagination, Select, Table } from "@navikt/ds-react"
 import { useUser } from "../../api/UserContext"
+import { Button, Pagination, Select, Table } from "@navikt/ds-react"
 import { LoaderStyled } from "../index"
 import { IUser } from "../../api/types"
+import React from "react"
+import styled from "styled-components"
+import { useNavigate } from "react-router-dom"
 
-const UsersWithRolesContainer = styled.div`
-	display: flex;
-	flex-direction: column;
-	gap: 1rem;
-`
-
-const TableStyled = styled(Table)`
+export const UsersTableStyled = styled(Table)`
 	thead {
 		th:nth-child(-n + 2) {
 			width: 400px;
@@ -40,28 +35,23 @@ const PaginationWrapper = styled.div`
 	gap: 1rem;
 `
 
-export const UsersRolesMain = () => {
+export const UsersTable = () => {
 	const { currentPage, isLoading, itemsPerPage, setCurrentPage, setItemsPerPage, usersPage } = useUser()
-
-	// eslint-disable-next-line @typescript-eslint/no-unused-vars
-	let paginatedData = usersPage ? usersPage.users : null
+	const navigate = useNavigate()
 
 	const handleChangeRowsPerPage = (event: React.ChangeEvent<HTMLSelectElement | HTMLOptionElement>) => {
 		setItemsPerPage(parseInt(event.target.value, 10))
 		setCurrentPage(1)
 	}
 
-	if (!usersPage) {
-		return <BlankTable />
-	}
-
 	return (
-		<UsersWithRolesContainer>
-			<TableStyled id="users-table-id">
+		<>
+			<UsersTableStyled id="users-table-id">
 				<Table.Header>
 					<Table.Row>
 						<Table.HeaderCell scope="col">Fult navn</Table.HeaderCell>
 						<Table.HeaderCell scope="col">Epost</Table.HeaderCell>
+						<Table.HeaderCell scope="col">Administrer tildeling</Table.HeaderCell>
 					</Table.Row>
 				</Table.Header>
 				<Table.Body>
@@ -72,17 +62,25 @@ export const UsersRolesMain = () => {
 							</Table.DataCell>
 						</Table.Row>
 					) : (
-						usersPage.users.map((user: IUser, i: number) => (
+						usersPage?.users.map((user: IUser, i: number) => (
 							<Table.Row key={i}>
 								<Table.DataCell>
 									{user.firstName} {user.lastName}
 								</Table.DataCell>
 								<Table.DataCell>{user.userName}</Table.DataCell>
+								<Table.DataCell>
+									<Button
+										variant={"secondary"}
+										onClick={() => navigate(`/ressurser-admin/userId/${user.resourceId}`)}
+									>
+										Administrer
+									</Button>
+								</Table.DataCell>
 							</Table.Row>
 						))
 					)}
 				</Table.Body>
-			</TableStyled>
+			</UsersTableStyled>
 
 			<PaginationWrapper>
 				<Select
@@ -104,34 +102,6 @@ export const UsersRolesMain = () => {
 					size="small"
 				/>
 			</PaginationWrapper>
-		</UsersWithRolesContainer>
-	)
-}
-
-const CenteredDataCell = styled(Table.DataCell)`
-	text-align: center;
-`
-const BlankTable = () => {
-	return (
-		<TableStyled id="users-table-id">
-			<Table.Header>
-				<Table.Row>
-					<Table.HeaderCell scope="col">Ressurs</Table.HeaderCell>
-					<Table.HeaderCell scope="col">Type</Table.HeaderCell>
-					<Table.HeaderCell scope="col" align="right">
-						Antall totalt
-					</Table.HeaderCell>
-					<Table.HeaderCell scope="col" align="right">
-						Antall i bruk
-					</Table.HeaderCell>
-					<Table.HeaderCell scope="col"></Table.HeaderCell>
-				</Table.Row>
-			</Table.Header>
-			<Table.Body>
-				<Table.Row key={1} className="loading-table">
-					<CenteredDataCell colSpan={5}>Tabellen ser ut til å være tom eller udefinert</CenteredDataCell>
-				</Table.Row>
-			</Table.Body>
-		</TableStyled>
+		</>
 	)
 }
