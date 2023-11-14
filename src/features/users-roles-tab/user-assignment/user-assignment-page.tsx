@@ -1,6 +1,6 @@
 import { useNavigate, useParams } from "react-router-dom"
 import styled from "styled-components"
-import { Button } from "@navikt/ds-react"
+import { Button, Heading, Panel, Table } from "@navikt/ds-react"
 import { ArrowBack } from "@mui/icons-material"
 import { useEffect, useState } from "react"
 import { useUser } from "../../../api/UserContext"
@@ -52,10 +52,15 @@ const UserAssignmentPage = ({ basePath }: UserAssignmentPageProps) => {
 				<LoaderStyled size="3xlarge" title="Laster inn brukerdata..." />
 			) : (
 				<div>
-					<span>
+					<Panel>
+						<Heading size={"small"}>Brukerinfo</Heading>
 						Navn: {user?.firstName} {user?.lastName}
-					</span>
-					<div>wrapper for tildelingstabell</div>
+					</Panel>
+
+					<Panel>
+						<Table></Table>
+						wrapper for tildelingstabell
+					</Panel>
 				</div>
 			)}
 		</UserAssignmentContainer>
