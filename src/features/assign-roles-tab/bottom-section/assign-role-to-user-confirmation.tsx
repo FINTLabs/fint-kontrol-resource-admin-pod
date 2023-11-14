@@ -1,76 +1,99 @@
-import { Heading, HStack, VStack } from "@navikt/ds-react"
+import { Heading, HStack, Select, VStack } from "@navikt/ds-react"
 import { Buldings3Icon, PersonIcon, ShieldLockIcon } from "@navikt/aksel-icons"
 import React, { useEffect, useState } from "react"
-import { IAssignment, IOrgUnit, IRole, IUser } from "../../../api/types"
+import { IAssignment, IOrgUnit, IRole } from "../../../api/types"
 import OrgUnitModal from "./org-unit-modal"
 import styled from "styled-components"
+import { useRole } from "../../../api/RoleContext"
+
+const AssignmentSummaryContainer = styled.div`
+	display: flex;
+	flex-direction: column;
+	gap: 1rem;
+
+	width: max-content;
+`
 
 const UlStyled = styled.ul`
 	float: right;
 	list-style-type: none;
 	margin: 0;
+	padding: 0;
 `
 
-const AssignmentSummaryContainer = styled.div`
-	width: max-content;
+const HStackStyled = styled(HStack)`
+	align-items: flex-end;
+	gap: 0.5rem;
 `
 
 interface AssignRoleToUserConfirmationProps {
-	selectedUser: IUser | null
 	selectedAccessRole: IRole
 	newAssignment: IAssignment
 	setNewAssigment: (updatedAssignment: IAssignment) => void
 }
 
-const AssignRoleToUserConfirmation = ({
-	newAssignment,
-	setNewAssigment,
-	selectedUser,
-	selectedAccessRole
-}: AssignRoleToUserConfirmationProps) => {
+const AssignRoleToUserConfirmation = ({ newAssignment, setNewAssigment }: AssignRoleToUserConfirmationProps) => {
+	const { roles } = useRole()
 	const [orgUnitsForUser, setOrgUnitsForUser] = useState<IOrgUnit[]>([])
+	const [selectedAccessRole, setSelectedAccessRole] = useState<IRole>({ accessRoleId: "", name: "" })
 	const fullName = `${newAssignment.user?.firstName} ${newAssignment.user?.lastName}`
 
 	const handleUpdateOrgUnitsInAssignment = () => {
 		setNewAssigment({ ...newAssignment, orgUnits: orgUnitsForUser })
 	}
-
 	useEffect(() => {
 		handleUpdateOrgUnitsInAssignment()
 		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [orgUnitsForUser])
 
+	const handleUpdateSelectedRole = (param: string) => {
+		let roleMatchedToId: IRole | undefined = roles.find((role) => role.accessRoleId === param)
+		roleMatchedToId ? setSelectedAccessRole(roleMatchedToId) : console.log(roleMatchedToId)
+	}
+
 	return (
 		<VStack gap={"4"}>
-			{selectedUser && (
-				<HStack align="center" gap={"5"}>
-					<PersonIcon title="a11y-title" fontSize="1.5rem" />
-					<Heading size={"small"}>
-						{selectedUser.firstName} {selectedUser.lastName}
-					</Heading>
-				</HStack>
-			)}
+			<HStackStyled>
+				<OrgUnitModal orgUnitsForUser={newAssignment.orgUnits} setOrgUnitsForUser={setOrgUnitsForUser} />
+				<Select
+					size={"medium"}
+					onChange={(e) => handleUpdateSelectedRole(e.target.value)}
+					id={"rolle"}
+					defaultValue={""}
+					label={"Tildel rolle"}
+				>
+					<option value="" disabled={true}>
+						Velg rolle
+					</option>
+					{roles.map((role) => (
+						<option value={role.accessRoleId} key={role.accessRoleId}>
+							{role.name}
+						</option>
+					))}
+				</Select>
+			</HStackStyled>
 
-			{selectedAccessRole.name && (
-				<span>
-					<ShieldLockIcon title="a11y-title" fontSize="1.5rem" />
-					<Heading size={"small"}>{selectedAccessRole.name}</Heading>
-				</span>
-			)}
-
-			<OrgUnitModal orgUnitsForUser={newAssignment.orgUnits} setOrgUnitsForUser={setOrgUnitsForUser} />
+			<Heading size={"small"}>Oppsummering</Heading>
 
 			<AssignmentSummaryContainer>
-				{newAssignment.user.firstName.length > 0 && (
-					<span>
-						<PersonIcon title="a11y-title" fontSize="1.5rem" /> Valgt bruker: <b>{fullName}</b>
-					</span>
+				{selectedAccessRole.name && (
+					<div>
+						<ShieldLockIcon title="a11y-title" fontSize="1.5rem" />
+						Valgt rolle: <b>{selectedAccessRole.name}</b>
+					</div>
 				)}
+
+				{newAssignment.user.firstName.length > 0 && (
+					<div>
+						<PersonIcon title="a11y-title" fontSize="1.5rem" /> Valgt bruker: <b>{fullName}</b>
+					</div>
+				)}
+
 				{newAssignment.orgUnits.length > 0 && (
 					<div>
-						<p>
+						<div>
 							<Buldings3Icon title="a11y-title" fontSize="1.5rem" /> Valgte orgenheter brukeren skal ha:
-						</p>
+						</div>
 						<UlStyled>
 							{orgUnitsForUser.map((unit, index) => (
 								<li key={index}>

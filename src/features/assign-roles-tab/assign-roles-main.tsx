@@ -19,7 +19,7 @@ const AssignRolesContainer = styled.div`
 `
 
 const AssignRolesMain = () => {
-	const { selectedUser, setOrgUnitIdsFilter } = useUser()
+	const { setOrgUnitIdsFilter } = useUser()
 	const { postNewAssignment } = useAssignments()
 	const { setIsTabModified } = useSafeTabChange()
 	const [selectedAccessRole, setSelectedAccessRole] = useState<IRole>({ accessRoleId: "", name: "" })
@@ -52,7 +52,6 @@ const AssignRolesMain = () => {
 			<AssignRoleToUserConfirmation
 				newAssignment={newAssignment}
 				setNewAssigment={setNewAssigment}
-				selectedUser={selectedUser}
 				selectedAccessRole={selectedAccessRole}
 			/>
 
