@@ -25,17 +25,17 @@ const UserAssignmentPage = ({ basePath }: UserAssignmentPageProps) => {
 	const navigate = useNavigate()
 
 	useEffect(() => {
-		const getUserById = async () => {
+		const getUserById = () => {
 			if (userId) {
 				setIsLoading(true)
-				await UsersRepository.getSpecificUserById(basePath, userId)
+				UsersRepository.getSpecificUserById(basePath, userId)
 					.then((response) => setUser(response.data))
 					.catch((err: AxiosError) => console.error(err))
 					.finally(() => setIsLoading(false))
 			}
 		}
 		getUserById()
-	}, [userId])
+	}, [setIsLoading, userId, basePath])
 
 	const goBack = () => {
 		navigate(-1) // Navigate back in the history
