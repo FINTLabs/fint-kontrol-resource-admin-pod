@@ -48,7 +48,7 @@ function App() {
 									element={<SuccessfulCreation />}
 								/>
 								<Route
-									path={`${basePath}/ressurser-admin/userId/:id}`}
+									path={`${basePath}/ressurser-admin/tildelingsadmin/id/:userId`}
 									element={<UserAssignmentPage />}
 								/>
 							</Routes>

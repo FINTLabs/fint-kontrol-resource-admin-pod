@@ -71,7 +71,9 @@ export const UsersTable = () => {
 								<Table.DataCell>
 									<Button
 										variant={"secondary"}
-										onClick={() => navigate(`/ressurser-admin/userId/${user.resourceId}`)}
+										onClick={() =>
+											navigate(`/ressurser-admin/tildelingsadmin/id/${user.resourceId}`)
+										}
 									>
 										Administrer
 									</Button>
