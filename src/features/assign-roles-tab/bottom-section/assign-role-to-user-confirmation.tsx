@@ -5,6 +5,7 @@ import { IAssignment, IOrgUnit, IRole } from "../../../api/types"
 import OrgUnitModal from "./org-unit-modal"
 import styled from "styled-components"
 import { useRole } from "../../../api/RoleContext"
+import { toast } from "react-toastify"
 
 const AssignmentSummaryContainer = styled.div`
 	display: flex;
@@ -48,7 +49,9 @@ const AssignRoleToUserConfirmation = ({ newAssignment, setNewAssigment }: Assign
 
 	const handleUpdateSelectedRole = (param: string) => {
 		let roleMatchedToId: IRole | undefined = roles.find((role) => role.accessRoleId === param)
-		roleMatchedToId ? setSelectedAccessRole(roleMatchedToId) : console.log(roleMatchedToId)
+		roleMatchedToId ? setSelectedAccessRole(roleMatchedToId) : toast.error("Noe gikk galt ved valg av rolle")
+		const updatedAssignment: IAssignment = { ...newAssignment, accessRoleId: param }
+		setNewAssigment(updatedAssignment)
 	}
 
 	return (
