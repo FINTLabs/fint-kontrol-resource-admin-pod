@@ -27,10 +27,10 @@ const LandingComponent = () => {
 		if (isTabModified) {
 			setIsModalVisible(true)
 			setTabToRouteTo(tabClicked)
-			navigate(`${basePath === "/" ? "/" : basePath + "/"}ressurser-admin?tab=${tabClicked}`)
+			navigate(`?tab=${tabClicked}`)
 		} else {
 			setCurrentTab(tabClicked)
-			navigate(`${basePath === "/" ? "/" : basePath + "/"}ressurser-admin?tab=${tabClicked}`)
+			navigate(`?tab=${tabClicked}`)
 		}
 	}
 
