@@ -1,4 +1,4 @@
-import React, { useEffect } from "react"
+import React, { useEffect, useState } from "react"
 import { PersonCheckmarkIcon, PersonPlusIcon } from "@navikt/aksel-icons"
 import { Loader, Tabs } from "@navikt/ds-react"
 
@@ -7,7 +7,7 @@ import { PermissionsMain } from "./define-role-tab/permissions-main"
 import { UsersRolesMain } from "./users-roles-tab"
 import styled from "styled-components"
 import { useSafeTabChange } from "../api/safe-tab-change-context"
-import { useNavigate, useParams } from "react-router-dom"
+import { useLocation, useNavigate, useParams } from "react-router-dom"
 import { useGeneral } from "../api/GeneralContext"
 
 export const LoaderStyled = styled(Loader)`
@@ -18,28 +18,19 @@ export const LoaderStyled = styled(Loader)`
 const LandingComponent = () => {
 	const { basePath } = useGeneral()
 	const { currentTab, isTabModified, setCurrentTab, setIsModalVisible, setTabToRouteTo } = useSafeTabChange()
-	const { tab } = useParams()
+
 	const navigate = useNavigate()
 
-	useEffect(() => {
-		if (tab) {
-			setCurrentTab(tab)
-		}
-	}, [tab, setCurrentTab])
 	const handleChangeTab = (tabClicked: string) => {
 		if (isTabModified) {
 			setIsModalVisible(true)
 			setTabToRouteTo(tabClicked)
 			navigate(`${basePath === "/" ? "/" : basePath + "/"}ressurser-admin?tab=${tabClicked}`)
-			// navigate(`${basePath === "/" ? "/" : basePath + "/"}ressurser-admin/${tabClicked}`)
 		} else {
 			setCurrentTab(tabClicked)
 			navigate(`${basePath === "/" ? "/" : basePath + "/"}ressurser-admin?tab=${tabClicked}`)
-			// navigate(`${basePath === "/" ? "/" : basePath + "/"}ressurser-admin/${tabClicked}`)
 		}
 	}
-
-	console.log("tab: " + tab)
 
 	return (
 		<div>

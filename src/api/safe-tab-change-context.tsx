@@ -1,4 +1,5 @@
-import React, { createContext, useContext, useState } from "react"
+import React, { createContext, useContext, useEffect, useState } from "react"
+import { useLocation } from "react-router-dom"
 
 type SafeTabChangeContextType = {
 	currentTab: string
@@ -14,10 +15,19 @@ type SafeTabChangeContextType = {
 const SafeTabChangeContext = createContext<SafeTabChangeContextType | undefined>(undefined)
 
 export const SafeTabChangeProvider = ({ children }: { children: React.ReactNode }) => {
+	const location = useLocation()
+	const searchParams = new URLSearchParams(location.search)
+	const tab = searchParams.get("tab")
 	const [isTabModified, setIsTabModified] = useState(false)
 	const [isModalVisible, setIsModalVisible] = useState(false)
-	const [currentTab, setCurrentTab] = useState<string>("tildel")
+	const [currentTab, setCurrentTab] = useState<string>("")
 	const [tabToRouteTo, setTabToRouteTo] = useState(currentTab)
+
+	useEffect(() => {
+		if (tab) {
+			setCurrentTab(tab)
+		}
+	}, [tab])
 
 	return (
 		<SafeTabChangeContext.Provider
