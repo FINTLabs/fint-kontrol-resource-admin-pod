@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react"
+import React from "react"
 import { PersonCheckmarkIcon, PersonPlusIcon } from "@navikt/aksel-icons"
 import { Loader, Tabs } from "@navikt/ds-react"
 
@@ -7,7 +7,7 @@ import { PermissionsMain } from "./define-role-tab/permissions-main"
 import { UsersRolesMain } from "./users-roles-tab"
 import styled from "styled-components"
 import { useSafeTabChange } from "../api/safe-tab-change-context"
-import { useLocation, useNavigate, useParams } from "react-router-dom"
+import { useNavigate } from "react-router-dom"
 import { useGeneral } from "../api/GeneralContext"
 
 export const LoaderStyled = styled(Loader)`
