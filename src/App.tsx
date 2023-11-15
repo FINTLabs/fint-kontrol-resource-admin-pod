@@ -42,7 +42,7 @@ function App() {
 					<OrgUnitsProvider basePath={basePath}>
 						<AssignmentProvider basePath={basePath}>
 							<Routes>
-								<Route path={`${basePath}/ressurser-admin/`} element={<LandingComponent />} />
+								<Route path={`${basePath}/ressurser-admin/:tab`} element={<LandingComponent />} />
 								<Route
 									path={`${basePath}/ressurser-admin/successful-creation`}
 									element={<SuccessfulCreation />}

@@ -1,4 +1,4 @@
-import React from "react"
+import React, { useEffect } from "react"
 import { PersonCheckmarkIcon, PersonPlusIcon } from "@navikt/aksel-icons"
 import { Loader, Tabs } from "@navikt/ds-react"
 
@@ -7,6 +7,7 @@ import { PermissionsMain } from "./define-role-tab/permissions-main"
 import { UsersRolesMain } from "./users-roles-tab"
 import styled from "styled-components"
 import { useSafeTabChange } from "../api/safe-tab-change-context"
+import { useNavigate, useParams } from "react-router-dom"
 
 export const LoaderStyled = styled(Loader)`
 	display: flex;
@@ -15,12 +16,22 @@ export const LoaderStyled = styled(Loader)`
 
 const LandingComponent = () => {
 	const { currentTab, isTabModified, setCurrentTab, setIsModalVisible, setTabToRouteTo } = useSafeTabChange()
+	const { tab } = useParams()
+	const navigate = useNavigate()
+
+	useEffect(() => {
+		if (tab) {
+			setCurrentTab(tab)
+		}
+	}, [tab, setCurrentTab])
 	const handleChangeTab = (tabClicked: string) => {
 		if (isTabModified) {
 			setIsModalVisible(true)
 			setTabToRouteTo(tabClicked)
+			navigate(`/ressurser-admin/${tabClicked}`)
 		} else {
 			setCurrentTab(tabClicked)
+			navigate(`/ressurser-admin/${tabClicked}`)
 		}
 	}
 
