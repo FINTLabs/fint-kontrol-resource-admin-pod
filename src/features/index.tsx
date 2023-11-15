@@ -7,7 +7,7 @@ import { PermissionsMain } from "./define-role-tab/permissions-main"
 import { UsersRolesMain } from "./users-roles-tab"
 import styled from "styled-components"
 import { useSafeTabChange } from "../api/safe-tab-change-context"
-import { useNavigate } from "react-router-dom"
+import { useLocation, useNavigate } from "react-router-dom"
 import { useGeneral } from "../api/GeneralContext"
 
 export const LoaderStyled = styled(Loader)`
@@ -18,7 +18,9 @@ export const LoaderStyled = styled(Loader)`
 const LandingComponent = () => {
 	const { basePath } = useGeneral()
 	const { currentTab, isTabModified, setCurrentTab, setIsModalVisible, setTabToRouteTo } = useSafeTabChange()
-
+	const location = useLocation()
+	const searchParams = new URLSearchParams(location.search)
+	const tab = searchParams.get("tab")
 	const navigate = useNavigate()
 
 	const handleChangeTab = (tabClicked: string) => {
@@ -30,6 +32,10 @@ const LandingComponent = () => {
 			setCurrentTab(tabClicked)
 			navigate(`${basePath === "/" ? "/" : basePath + "/"}ressurser-admin?tab=${tabClicked}`)
 		}
+	}
+
+	if (!tab) {
+		setCurrentTab("tildel")
 	}
 
 	return (
