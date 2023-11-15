@@ -19,7 +19,7 @@ export function GeneralProvider({ children }: { children: React.ReactNode }) {
 			GeneralRepository.getBaseUrl()
 				.then((response) => {
 					if (response.data.basePath) {
-						setBasePath("/" + response.data.basePath)
+						setBasePath(response.data.basePath + "/")
 					} else {
 						setBasePath("/")
 					}
