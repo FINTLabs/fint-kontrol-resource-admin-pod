@@ -42,7 +42,10 @@ function App() {
 					<OrgUnitsProvider basePath={basePath}>
 						<AssignmentProvider basePath={basePath}>
 							<Routes>
+								{/* To allow both without query param and without, this has to be done */}
+								<Route path={`${basePath}/ressurser-admin`} element={<LandingComponent />} />
 								<Route path={`${basePath}/ressurser-admin/:tab`} element={<LandingComponent />} />
+
 								<Route
 									path={`${basePath}/ressurser-admin/successful-creation`}
 									element={<SuccessfulCreation />}
