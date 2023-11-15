@@ -1,7 +1,7 @@
 import React from "react"
 import { Route, Routes } from "react-router-dom"
 import { RoleProvider } from "./api/RoleContext"
-import LandingComponent from "./features"
+import LandingComponent, { LoaderStyled } from "./features"
 import { OrgUnitsProvider } from "./api/OrgUnitContext"
 import { UserProvider } from "./api/UserContext"
 import { SafeTabChangeProvider } from "./api/safe-tab-change-context"
@@ -13,8 +13,8 @@ import { useGeneral } from "./api/GeneralContext"
 function App() {
 	const { basePath, isLoading } = useGeneral()
 
-	if ((process.env.NODE_ENV === "production" && !basePath) || isLoading) {
-		return <div>Loading...</div>
+	if (isLoading) {
+		return <LoaderStyled size={"3xlarge"} />
 	}
 
 	return (

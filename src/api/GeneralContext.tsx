@@ -14,9 +14,9 @@ export function GeneralProvider({ children }: { children: React.ReactNode }) {
 	const [isLoading, setIsLoading] = useState(false)
 
 	useEffect(() => {
-		const fetchBasePath = () => {
+		const fetchBasePath = async () => {
 			setIsLoading(true)
-			GeneralRepository.getBaseUrl()
+			await GeneralRepository.getBaseUrl()
 				.then((response) => {
 					if (response.data.basePath) {
 						setBasePath(response.data.basePath)
@@ -25,11 +25,9 @@ export function GeneralProvider({ children }: { children: React.ReactNode }) {
 					}
 				})
 				.catch((err: AxiosError) => console.error(err))
-				.finally(() => setIsLoading(false))
 		}
-		if (process.env.NODE_ENV !== "development") {
-			fetchBasePath()
-		}
+
+		fetchBasePath().then(() => setIsLoading(false))
 	}, [basePath])
 
 	return (
