@@ -1,6 +1,6 @@
 import React, { createContext, useContext, useState, useEffect } from "react"
 import { IOrgUnit, IOrgUnitsPaginated } from "./types"
-import { fetchUnitTreeData } from "./"
+import OrgUnitRepository from "../repositories/org-unit-repository"
 
 interface OrgUnitsContextType {
 	orgUnitsData: IOrgUnitsPaginated | null
@@ -16,13 +16,10 @@ export function OrgUnitsProvider({ children, basePath }: { children: React.React
 	const [selectedOrgUnits, setSelectedOrgUnits] = useState<IOrgUnit[]>([])
 
 	useEffect(() => {
-		const fetchData = async () => {
-			try {
-				const newUnitTree = await fetchUnitTreeData(basePath)
-				setOrgUnitsData(newUnitTree)
-			} catch (error) {
-				console.error(error)
-			}
+		const fetchData = () => {
+			OrgUnitRepository.fetchUnitTreeData(basePath)
+				.then((response) => setOrgUnitsData(response.data))
+				.catch((error) => console.log(error))
 		}
 
 		fetchData()
