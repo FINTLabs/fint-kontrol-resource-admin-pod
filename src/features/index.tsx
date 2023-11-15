@@ -8,7 +8,6 @@ import { UsersRolesMain } from "./users-roles-tab"
 import styled from "styled-components"
 import { useSafeTabChange } from "../api/safe-tab-change-context"
 import { useLocation, useNavigate } from "react-router-dom"
-import { useGeneral } from "../api/GeneralContext"
 
 export const LoaderStyled = styled(Loader)`
 	display: flex;
@@ -16,7 +15,6 @@ export const LoaderStyled = styled(Loader)`
 `
 
 const LandingComponent = () => {
-	const { basePath } = useGeneral()
 	const { currentTab, isTabModified, setCurrentTab, setIsModalVisible, setTabToRouteTo } = useSafeTabChange()
 	const location = useLocation()
 	const searchParams = new URLSearchParams(location.search)
