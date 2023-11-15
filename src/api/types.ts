@@ -62,6 +62,25 @@ export interface IUser {
 	lastName: string
 	userType: string
 	userName: string
+	roles?: IUserRole[]
+}
+
+export interface IUserRole {
+	roleId: string
+	roleName: string
+	scopes: IScope[]
+}
+
+export interface IScope {
+	objectType: string
+	orgUnits: IOrgUnitForScope[]
+	scopeId: string
+}
+
+export interface IOrgUnitForScope {
+	name: string
+	orgUnitId: string
+	shortName: string
 }
 
 // -----------------------

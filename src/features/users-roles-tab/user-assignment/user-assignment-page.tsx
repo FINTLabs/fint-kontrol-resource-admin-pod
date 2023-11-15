@@ -1,13 +1,15 @@
 import { useNavigate, useParams } from "react-router-dom"
 import styled from "styled-components"
-import { Button, Heading, Panel, Table } from "@navikt/ds-react"
+import { Button, Heading, Panel } from "@navikt/ds-react"
 import { ArrowBack } from "@mui/icons-material"
 import { useEffect, useState } from "react"
 import { useUser } from "../../../api/UserContext"
-import { IUser } from "../../../api/types"
+import { IUser, IUserRole } from "../../../api/types"
 import UsersRepository from "../../../repositories/users-repository"
 import { AxiosError } from "axios/index"
 import { LoaderStyled } from "../../index"
+import RoleOrgunitAssociationTable from "./role-orgunit-association-table"
+import ChangeAssignmentsModal from "./change-assignments-modal"
 
 const UserAssignmentContainer = styled.div`
 	display: flex;
@@ -22,6 +24,7 @@ const UserAssignmentPage = ({ basePath }: UserAssignmentPageProps) => {
 	const { userId } = useParams()
 	const { setIsLoading, isLoading } = useUser()
 	const [user, setUser] = useState<IUser>()
+	const [assignmentToChange, setAssignmentToChange] = useState<IUserRole>()
 	const navigate = useNavigate()
 
 	useEffect(() => {
@@ -41,6 +44,10 @@ const UserAssignmentPage = ({ basePath }: UserAssignmentPageProps) => {
 		navigate(-1) // Navigate back in the history
 	}
 
+	const toggleChangeModal = (assignmentToChange: IUserRole) => {
+		setAssignmentToChange(assignmentToChange)
+	}
+
 	return (
 		<UserAssignmentContainer>
 			<div>
@@ -58,11 +65,11 @@ const UserAssignmentPage = ({ basePath }: UserAssignmentPageProps) => {
 					</Panel>
 
 					<Panel>
-						<Table></Table>
-						wrapper for tildelingstabell
+						<RoleOrgunitAssociationTable user={user} toggleChangeModal={toggleChangeModal} />
 					</Panel>
 				</div>
 			)}
+			<ChangeAssignmentsModal assignmentToChange={assignmentToChange} />
 		</UserAssignmentContainer>
 	)
 }
