@@ -8,6 +8,7 @@ import { UsersRolesMain } from "./users-roles-tab"
 import styled from "styled-components"
 import { useSafeTabChange } from "../api/safe-tab-change-context"
 import { useNavigate, useParams } from "react-router-dom"
+import { useGeneral } from "../api/GeneralContext"
 
 export const LoaderStyled = styled(Loader)`
 	display: flex;
@@ -15,6 +16,7 @@ export const LoaderStyled = styled(Loader)`
 `
 
 const LandingComponent = () => {
+	const { basePath } = useGeneral()
 	const { currentTab, isTabModified, setCurrentTab, setIsModalVisible, setTabToRouteTo } = useSafeTabChange()
 	const { tab } = useParams()
 	const navigate = useNavigate()
@@ -28,10 +30,10 @@ const LandingComponent = () => {
 		if (isTabModified) {
 			setIsModalVisible(true)
 			setTabToRouteTo(tabClicked)
-			navigate(`/ressurser-admin/${tabClicked}`)
+			navigate(`${basePath}ressurser-admin/${tabClicked}`)
 		} else {
 			setCurrentTab(tabClicked)
-			navigate(`/ressurser-admin/${tabClicked}`)
+			navigate(`${basePath}ressurser-admin/${tabClicked}`)
 		}
 	}
 
