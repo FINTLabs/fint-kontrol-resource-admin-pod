@@ -1,11 +1,10 @@
-import React, { createContext, useContext, useState } from "react"
+import React, { createContext, useContext, useEffect, useState } from "react"
 import { AxiosError } from "axios"
 import GeneralRepository from "../repositories"
 
 interface GeneralContextType {
 	basePath: string
 	isLoading: boolean
-	fetchBasePath: () => void
 }
 
 export const GeneralContext = createContext<GeneralContextType | undefined>(undefined)
@@ -14,8 +13,8 @@ export function GeneralProvider({ children }: { children: React.ReactNode }) {
 	const [basePath, setBasePath] = useState("/")
 	const [isLoading, setIsLoading] = useState(false)
 
-	const fetchBasePath = () => {
-		if (process.env.NODE_ENV !== "development") {
+	useEffect(() => {
+		const fetchBasePath = () => {
 			setIsLoading(true)
 			GeneralRepository.getBaseUrl()
 				.then((response) => {
@@ -28,16 +27,16 @@ export function GeneralProvider({ children }: { children: React.ReactNode }) {
 				.catch((err: AxiosError) => console.error(err))
 				.finally(() => setIsLoading(false))
 		}
-	}
-
-	console.log(basePath)
+		if (process.env.NODE_ENV !== "development") {
+			fetchBasePath()
+		}
+	}, [basePath])
 
 	return (
 		<GeneralContext.Provider
 			value={{
 				basePath,
-				isLoading,
-				fetchBasePath
+				isLoading
 			}}
 		>
 			{children}

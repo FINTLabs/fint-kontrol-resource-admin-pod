@@ -17,8 +17,6 @@ function App() {
 		return <div>Loading...</div>
 	}
 
-	console.log(basePath)
-
 	return (
 		<SafeTabChangeProvider>
 			<RoleProvider basePath={basePath}>
