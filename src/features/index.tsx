@@ -30,12 +30,16 @@ const LandingComponent = () => {
 		if (isTabModified) {
 			setIsModalVisible(true)
 			setTabToRouteTo(tabClicked)
-			navigate(`${basePath === "/" ? "/" : basePath + "/"}ressurser-admin/${tabClicked}`)
+			navigate(`${basePath === "/" ? "/" : basePath + "/"}ressurser-admin?tab=${tabClicked}`)
+			// navigate(`${basePath === "/" ? "/" : basePath + "/"}ressurser-admin/${tabClicked}`)
 		} else {
 			setCurrentTab(tabClicked)
-			navigate(`${basePath === "/" ? "/" : basePath + "/"}ressurser-admin/${tabClicked}`)
+			navigate(`${basePath === "/" ? "/" : basePath + "/"}ressurser-admin?tab=${tabClicked}`)
+			// navigate(`${basePath === "/" ? "/" : basePath + "/"}ressurser-admin/${tabClicked}`)
 		}
 	}
+
+	console.log("tab: " + tab)
 
 	return (
 		<div>
