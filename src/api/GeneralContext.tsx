@@ -19,7 +19,7 @@ export function GeneralProvider({ children }: { children: React.ReactNode }) {
 			setIsLoading(true)
 			GeneralRepository.getBaseUrl()
 				.then((response) => {
-					if (response) {
+					if (response.data.basePath) {
 						setBasePath(response.data.basePath)
 					} else {
 						setBasePath("/")
@@ -29,6 +29,8 @@ export function GeneralProvider({ children }: { children: React.ReactNode }) {
 				.finally(() => setIsLoading(false))
 		}
 	}
+
+	console.log(basePath)
 
 	return (
 		<GeneralContext.Provider
