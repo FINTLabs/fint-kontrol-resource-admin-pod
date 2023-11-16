@@ -87,20 +87,6 @@ export const PermissionsMain = () => {
 }
 
 const BlankTable = () => {
-	// Create an array to generate 4 empty rows and 4 empty cells for user display
-	const blankData = Array.from({ length: 4 }, (_, rowIdx) => (
-		<Table.Row key={rowIdx}>
-			<Table.DataCell key={0}></Table.DataCell>
-			{Array.from({ length: 4 }, (_, colIdx) => (
-				<Table.DataCell key={colIdx}>
-					<Checkbox hideLabel={true} disabled={true}>
-						filler
-					</Checkbox>
-				</Table.DataCell>
-			))}
-		</Table.Row>
-	))
-
 	return (
 		<TableStyled>
 			<Table.Header>
@@ -112,7 +98,20 @@ const BlankTable = () => {
 					<Table.HeaderCell>DELETE</Table.HeaderCell>
 				</Table.Row>
 			</Table.Header>
-			<Table.Body>{blankData}</Table.Body>
+			<Table.Body>
+				{Array.from({ length: 4 }, (_, rowIdx) => (
+					<Table.Row key={rowIdx}>
+						<Table.DataCell key={0}></Table.DataCell>
+						{Array.from({ length: 4 }, (_, colIdx) => (
+							<Table.DataCell key={colIdx}>
+								<Checkbox hideLabel={true} disabled={true}>
+									filler
+								</Checkbox>
+							</Table.DataCell>
+						))}
+					</Table.Row>
+				))}
+			</Table.Body>
 		</TableStyled>
 	)
 }

@@ -5,6 +5,7 @@ import { IUser } from "../../api/types"
 import React from "react"
 import styled from "styled-components"
 import { useNavigate } from "react-router-dom"
+import { useGeneral } from "../../api/GeneralContext"
 
 export const UsersTableStyled = styled(Table)`
 	thead {
@@ -38,6 +39,7 @@ const PaginationWrapper = styled.div`
 export const UsersTable = () => {
 	const { currentPage, isLoading, itemsPerPage, setCurrentPage, setItemsPerPage, usersPage } = useUser()
 	const navigate = useNavigate()
+	const { basePath } = useGeneral()
 
 	const handleChangeRowsPerPage = (event: React.ChangeEvent<HTMLSelectElement | HTMLOptionElement>) => {
 		setItemsPerPage(parseInt(event.target.value, 10))
@@ -72,7 +74,7 @@ export const UsersTable = () => {
 									<Button
 										variant={"secondary"}
 										onClick={() =>
-											navigate(`/ressurser-admin/tildelingsadmin/id/${user.resourceId}`)
+											navigate(`${basePath}ressurser-admin/tildelingsadmin/id/${user.resourceId}`)
 										}
 									>
 										Administrer
