@@ -53,7 +53,9 @@ export const UsersTable = () => {
 					<Table.Row>
 						<Table.HeaderCell scope="col">Fult navn</Table.HeaderCell>
 						<Table.HeaderCell scope="col">Epost</Table.HeaderCell>
-						<Table.HeaderCell scope="col">Administrer tildeling</Table.HeaderCell>
+						<Table.HeaderCell scope="col" align={"center"}>
+							Administrer tildeling
+						</Table.HeaderCell>
 					</Table.Row>
 				</Table.Header>
 				<Table.Body>
@@ -70,7 +72,7 @@ export const UsersTable = () => {
 									{user.firstName} {user.lastName}
 								</Table.DataCell>
 								<Table.DataCell>{user.userName}</Table.DataCell>
-								<Table.DataCell>
+								<Table.DataCell align={"center"}>
 									<Button
 										variant={"secondary"}
 										onClick={() =>
