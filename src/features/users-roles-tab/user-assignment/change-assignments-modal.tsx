@@ -1,6 +1,6 @@
 import { IUserRole } from "../../../api/types"
 import { Button, Modal } from "@navikt/ds-react"
-import React, { useEffect, useRef, useState } from "react"
+import React, { useEffect, useRef } from "react"
 
 interface ChangeAssignmentsModalProps {
 	assignmentToChange: IUserRole
