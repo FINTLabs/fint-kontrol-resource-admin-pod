@@ -62,7 +62,11 @@ const LandingComponent = () => {
 					/>
 				</Tabs.List>
 
-				<Tabs.Panel value="tildel" className="h-24 w-full bg-gray-50 p-4">
+				<Tabs.Panel
+					value="tildel"
+					className="h-24 w-full bg-gray-50 p-4"
+					onSelect={(event) => event.preventDefault()}
+				>
 					<AssignRolesMain />
 				</Tabs.Panel>
 

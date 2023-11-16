@@ -6,7 +6,7 @@ import { useEffect, useState } from "react"
 import { useUser } from "../../../api/UserContext"
 import { IUser, IUserRole } from "../../../api/types"
 import UsersRepository from "../../../repositories/users-repository"
-import { AxiosError } from "axios/index"
+import { AxiosError } from "axios"
 import { LoaderStyled } from "../../index"
 import RoleOrgunitAssociationTable from "./role-orgunit-association-table"
 import ChangeAssignmentsModal from "./change-assignments-modal"
@@ -22,9 +22,14 @@ interface UserAssignmentPageProps {
 }
 const UserAssignmentPage = ({ basePath }: UserAssignmentPageProps) => {
 	const { userId } = useParams()
-	const { setIsLoading, isLoading } = useUser()
+	const { isLoading, setIsLoading } = useUser()
 	const [user, setUser] = useState<IUser>()
-	const [assignmentToChange, setAssignmentToChange] = useState<IUserRole>()
+	const [assignmentToChange, setAssignmentToChange] = useState<IUserRole>({
+		roleId: "",
+		roleName: "",
+		scopes: []
+	})
+	const [isModalOpen, setIsModalOpen] = useState(false)
 	const navigate = useNavigate()
 
 	useEffect(() => {
@@ -46,6 +51,11 @@ const UserAssignmentPage = ({ basePath }: UserAssignmentPageProps) => {
 
 	const toggleChangeModal = (assignmentToChange: IUserRole) => {
 		setAssignmentToChange(assignmentToChange)
+		setIsModalOpen(true)
+	}
+
+	if (isLoading) {
+		return <LoaderStyled size={"3xlarge"} />
 	}
 
 	return (
@@ -69,7 +79,14 @@ const UserAssignmentPage = ({ basePath }: UserAssignmentPageProps) => {
 					</Panel>
 				</div>
 			)}
-			<ChangeAssignmentsModal assignmentToChange={assignmentToChange} />
+
+			{isModalOpen && (
+				<ChangeAssignmentsModal
+					assignmentToChange={assignmentToChange}
+					modalOpenProp={isModalOpen}
+					setIsModalOpen={setIsModalOpen}
+				/>
+			)}
 		</UserAssignmentContainer>
 	)
 }

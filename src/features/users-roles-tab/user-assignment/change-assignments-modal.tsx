@@ -1,31 +1,51 @@
 import { IUserRole } from "../../../api/types"
 import { Button, Modal } from "@navikt/ds-react"
-import React, { useEffect, useRef } from "react"
+import React, { useEffect, useRef, useState } from "react"
 
 interface ChangeAssignmentsModalProps {
-	assignmentToChange: IUserRole | undefined
+	assignmentToChange: IUserRole
+	modalOpenProp: boolean
+	setIsModalOpen: (isOpen: boolean) => void
 }
-const ChangeAssignmentsModal = ({ assignmentToChange }: ChangeAssignmentsModalProps) => {
+const ChangeAssignmentsModal = ({ assignmentToChange, modalOpenProp, setIsModalOpen }: ChangeAssignmentsModalProps) => {
 	const ref = useRef<HTMLDialogElement>(null)
 
 	useEffect(() => {
+		if (assignmentToChange.roleId.length > 0 || modalOpenProp) {
+			openModal()
+		}
+		// eslint-disable-next-line react-hooks/exhaustive-deps
+	}, [assignmentToChange, modalOpenProp])
+
+	const openModal = () => {
+		setIsModalOpen(true)
 		ref.current?.showModal()
-	}, [assignmentToChange])
+	}
 
-	console.log("omegalul", assignmentToChange)
+	const closeModal = () => {
+		setIsModalOpen(false)
+		ref.current?.close()
+	}
 
-	const handleSubmitChangesToRole = () => {}
+	const handleSubmitChangesToRole = () => {
+		closeModal()
+	}
 
 	return (
 		<div className="py-16">
-			<Modal ref={ref} header={{ heading: `Endre ${assignmentToChange?.roleName}` }}>
+			<Modal
+				ref={ref}
+				header={{ heading: `Endre ${assignmentToChange?.roleName}` }}
+				onCancel={closeModal}
+				onAbort={closeModal}
+			>
 				<Modal.Body>Ønsker du å endre?</Modal.Body>
 				<Modal.Footer>
 					<Button type="button" onClick={() => handleSubmitChangesToRole()}>
-						Lagre endringer
+						Lagre
 					</Button>
-					<Button type="button" variant="secondary" onClick={() => ref.current?.close()}>
-						Forkast endringer
+					<Button type="button" variant="secondary" onClick={closeModal}>
+						Avbryt
 					</Button>
 				</Modal.Footer>
 			</Modal>
