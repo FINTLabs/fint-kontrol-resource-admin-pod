@@ -74,7 +74,11 @@ export const UsersTable = () => {
 									<Button
 										variant={"secondary"}
 										onClick={() =>
-											navigate(`${basePath}ressurser-admin/tildelingsadmin/id/${user.resourceId}`)
+											navigate(
+												`${
+													basePath === "/" ? "/" : basePath + "/"
+												}ressurser-admin/tildelingsadmin/id/${user.resourceId}`
+											)
 										}
 									>
 										Administrer
