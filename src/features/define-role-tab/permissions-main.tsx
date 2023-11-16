@@ -55,6 +55,11 @@ export const PermissionsMain = () => {
 		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [localSelectedAccessRoleId])
 
+	const handleUpdatePermissionData = () => {
+		updatePermissionDataForRole(modifiedPermissionDataObject)
+		setIsTabModified(false)
+	}
+
 	return (
 		<>
 			<ConfirmSaveModal modifiedPermissionDataObject={modifiedPermissionDataObject} />
@@ -72,9 +77,7 @@ export const PermissionsMain = () => {
 						modifiedPermissionDataForRole={permissionDataForRole}
 						setModifiedPermissionDataForRole={setModifiedPermissionDataObject}
 					/>
-					<Button onClick={() => updatePermissionDataForRole(modifiedPermissionDataObject)}>
-						Lagre rolle
-					</Button>
+					<Button onClick={handleUpdatePermissionData}>Lagre rolle</Button>
 				</PermissionDataContainer>
 			) : (
 				<BlankTable /> // Render the blank table when no accessRoleId is selected

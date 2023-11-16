@@ -55,8 +55,8 @@ const LandingComponent = () => {
 						id={"define-role-tab-id"}
 					/>
 					<Tabs.Tab
-						value="usersWithRoles"
-						label="Se brukere med roller"
+						value="tildelingsadmin"
+						label="Tildelingsadministrasjon"
 						icon={<PersonCheckmarkIcon title="inbox" />}
 						id={"see-users-tab-id"}
 					/>
@@ -70,7 +70,7 @@ const LandingComponent = () => {
 					<PermissionsMain />
 				</Tabs.Panel>
 
-				<Tabs.Panel value="usersWithRoles" className="h-24 w-full bg-gray-50 p-4">
+				<Tabs.Panel value="tildelingsadmin" className="h-24 w-full bg-gray-50 p-4">
 					<UsersRolesMain />
 				</Tabs.Panel>
 			</Tabs>
