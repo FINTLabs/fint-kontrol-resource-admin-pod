@@ -1,6 +1,9 @@
 import { IUserRole } from "../../../api/types"
 import { Button, Modal } from "@navikt/ds-react"
-import React, { useEffect, useRef } from "react"
+import React, { useEffect, useRef, useState } from "react"
+import EditUserAssignment from "./edit-user-assignment"
+import AssignmentRepository from "../../../repositories/assignment-repository"
+import { useGeneral } from "../../../api/GeneralContext"
 
 interface ChangeAssignmentsModalProps {
 	assignmentToChange: IUserRole
@@ -9,6 +12,8 @@ interface ChangeAssignmentsModalProps {
 }
 const ChangeAssignmentsModal = ({ assignmentToChange, modalOpenProp, setIsModalOpen }: ChangeAssignmentsModalProps) => {
 	const ref = useRef<HTMLDialogElement>(null)
+	const { basePath } = useGeneral()
+	const [updatedAssignment, setUpdatedAssignment] = useState<IUserRole>(assignmentToChange)
 
 	useEffect(() => {
 		if (assignmentToChange.roleId.length > 0 || modalOpenProp) {
@@ -28,6 +33,10 @@ const ChangeAssignmentsModal = ({ assignmentToChange, modalOpenProp, setIsModalO
 	}
 
 	const handleSubmitChangesToRole = () => {
+		// Call PUT-endpoint in assignment-repository
+		// TODO: fix this when API is ready
+		AssignmentRepository.putAssignment(basePath, updatedAssignment)
+		//Submit new assignment data to API when API is ready
 		closeModal()
 	}
 
@@ -39,7 +48,12 @@ const ChangeAssignmentsModal = ({ assignmentToChange, modalOpenProp, setIsModalO
 				onCancel={closeModal}
 				onAbort={closeModal}
 			>
-				<Modal.Body>Ønsker du å endre?</Modal.Body>
+				<Modal.Body>
+					<EditUserAssignment
+						assignmentDetails={updatedAssignment}
+						setUpdateAssignmentWhenDeletingOrgUnit={setUpdatedAssignment}
+					/>
+				</Modal.Body>
 				<Modal.Footer>
 					<Button type="button" onClick={() => handleSubmitChangesToRole()}>
 						Lagre
