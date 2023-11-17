@@ -1,9 +1,10 @@
-import { Loader, Pagination, Select, Table } from "@navikt/ds-react"
-import React from "react"
+import { Button, Loader, Pagination, Select, Table } from "@navikt/ds-react"
+import React, { useState } from "react"
 import styled from "styled-components"
 import { useUser } from "../../api/UserContext"
 import { IAssignment, IUser } from "../../api/types"
 import { useSafeTabChange } from "../../api/safe-tab-change-context"
+import ExistingAssignmentModal from "./existing-assignment-modal"
 
 const PaginationWrapper = styled.div`
 	display: flex;
@@ -48,6 +49,8 @@ interface AssignUserRoleTableProps {
 const AssignUserRoleTable = ({ newAssignment, setNewAssignment }: AssignUserRoleTableProps) => {
 	const { itemsPerPage, setItemsPerPage, currentPage, setCurrentPage, isLoading, usersPage } = useUser()
 	const { setIsTabModified } = useSafeTabChange()
+	const [isModalOpen, setIsModalOpen] = useState(false)
+	const [roleDataForModal, setRoleDataForModal] = useState<IUser | undefined>()
 	const handleChangeRowsPerPage = (event: React.ChangeEvent<HTMLSelectElement | HTMLOptionElement>) => {
 		setItemsPerPage(parseInt(event.target.value, 10))
 		setCurrentPage(1)
@@ -66,14 +69,26 @@ const AssignUserRoleTable = ({ newAssignment, setNewAssignment }: AssignUserRole
 		setIsTabModified(true)
 	}
 
+	const getExistingRoleData = (user: IUser) => {
+		setIsModalOpen(true)
+		if (user.roles) {
+			setRoleDataForModal(user)
+		}
+		setRoleDataForModal(user)
+	}
+
 	return (
 		<>
+			<ExistingAssignmentModal
+				isModalOpen={isModalOpen}
+				setIsModalOpen={setIsModalOpen}
+				existingRoleData={roleDataForModal}
+			/>
 			<TableStyled id={"rettigheter-table-delegation"}>
 				<Table.Header>
 					<Table.Row>
 						<Table.HeaderCell>Navn</Table.HeaderCell>
-						<Table.HeaderCell>Rolle</Table.HeaderCell>
-						<Table.HeaderCell>Org-enhet</Table.HeaderCell>
+						<Table.HeaderCell align={"center"}>Rolletildeling</Table.HeaderCell>
 					</Table.Row>
 				</Table.Header>
 				<Table.Body>
@@ -84,8 +99,13 @@ const AssignUserRoleTable = ({ newAssignment, setNewAssignment }: AssignUserRole
 							selected={newAssignment.user?.resourceId === user.resourceId}
 						>
 							<Table.DataCell>{user.firstName + " " + user.lastName}</Table.DataCell>
-							<Table.DataCell>Eksisterende rolletilknytning</Table.DataCell>
-							<Table.DataCell>OrgEnhettilknytning</Table.DataCell>
+							{user.roles?.length === 0 ? (
+								<Table.DataCell>Ingen eksisterende tildeling</Table.DataCell>
+							) : (
+								<Table.DataCell align={"center"}>
+									<Button onClick={() => getExistingRoleData(user)}>Se tildelingsinformasjon</Button>
+								</Table.DataCell>
+							)}
 						</Table.Row>
 					))}
 				</Table.Body>
