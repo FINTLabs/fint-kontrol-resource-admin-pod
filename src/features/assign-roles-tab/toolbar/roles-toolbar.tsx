@@ -65,7 +65,7 @@ const RolesToolbar = ({ setSelectedAccessRole }: RolesToolbarProps) => {
 				label="Rollefilter"
 				size={"medium"}
 				onChange={(e) => handleUpdateSelectedRoleFilter(e.target.value)}
-				id={"rolle"}
+				id={"role-filter"}
 				defaultValue={""}
 			>
 				<option value="" disabled={true}>

@@ -61,7 +61,7 @@ const AssignRoleToUserConfirmation = ({ newAssignment, setNewAssigment }: Assign
 				<Select
 					size={"medium"}
 					onChange={(e) => handleUpdateSelectedRole(e.target.value)}
-					id={"rolle"}
+					id={"tildel-rolle"}
 					defaultValue={""}
 					label={"Tildel rolle"}
 				>
