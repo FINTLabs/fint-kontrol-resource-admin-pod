@@ -8,43 +8,45 @@ interface ExistingAssignmentModalProps {
 	existingRoleData: IUser | undefined
 }
 const ExistingAssignmentModal = ({ existingRoleData, isModalOpen, setIsModalOpen }: ExistingAssignmentModalProps) => {
-	const ref = useRef<HTMLDialogElement>(null)
+	const existingRoleRef = useRef<HTMLDialogElement>(null)
 
 	useEffect(() => {
-		if (existingRoleData) {
-			isModalOpen ? handleOpenModal() : handleCloseModal()
-		}
+		isModalOpen ? handleOpenModal() : handleCloseModal()
 		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [isModalOpen])
 
 	const handleCloseModal = (shouldSave?: boolean) => {
 		setIsModalOpen(false)
-		ref.current?.close()
+		existingRoleRef.current?.close()
 	}
 
 	const handleOpenModal = () => {
 		setIsModalOpen(true)
-		ref.current?.showModal()
-	}
-
-	if (!existingRoleData) {
-		return <>Det fins ingen gyldig data om rolletildelingen</>
+		existingRoleRef.current?.showModal()
 	}
 
 	return (
-		<Modal ref={ref} onClose={() => handleCloseModal()}>
+		<Modal ref={existingRoleRef} onClose={() => handleCloseModal()}>
 			<Modal.Header>
 				<Heading size={"small"}>
-					Tildelingsinformasjon for {existingRoleData.firstName} {existingRoleData.lastName}
+					Tildelingsinformasjon for {existingRoleData?.firstName} {existingRoleData?.lastName}
 				</Heading>
 			</Modal.Header>
 			<Modal.Body>
-				{existingRoleData.roles?.map((role) => (
-					<>
-						{role.roleName}
-						<ul>{role.scopes.map((scope) => scope.orgUnits.map((orgUnit) => <li>{orgUnit.name}</li>))}</ul>
-					</>
-				))}
+				{existingRoleData ? (
+					existingRoleData.roles?.map((role) => (
+						<div key={role.roleId}>
+							{role.roleName}
+							<ul>
+								{role.scopes.map((scope) =>
+									scope.orgUnits.map((orgUnit) => <li key={orgUnit.orgUnitId}>{orgUnit.name}</li>)
+								)}
+							</ul>
+						</div>
+					))
+				) : (
+					<>Det fins ingen gyldig data om rolletildelingen</>
+				)}
 			</Modal.Body>
 			<Modal.Footer>
 				<Button type="button" onClick={() => handleCloseModal(true)}>
