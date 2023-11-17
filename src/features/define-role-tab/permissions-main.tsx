@@ -105,7 +105,7 @@ const BlankTable = () => {
 						{Array.from({ length: 4 }, (_, colIdx) => (
 							<Table.DataCell key={colIdx}>
 								<Checkbox hideLabel={true} disabled={true}>
-									filler
+									{rowIdx + " " + colIdx}
 								</Checkbox>
 							</Table.DataCell>
 						))}
