@@ -33,7 +33,7 @@ export function GeneralProvider({ children }: { children: React.ReactNode }) {
 		}
 
 		fetchBasePath()
-	}, [basePath])
+	}, [])
 
 	return (
 		<GeneralContext.Provider
