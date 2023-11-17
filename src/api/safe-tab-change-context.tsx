@@ -24,9 +24,10 @@ export const SafeTabChangeProvider = ({ children }: { children: React.ReactNode 
 	const [tabToRouteTo, setTabToRouteTo] = useState(currentTab)
 
 	useEffect(() => {
-		if (tab) {
+		if (tab && !isTabModified) {
 			setCurrentTab(tab)
 		}
+		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [tab])
 
 	return (

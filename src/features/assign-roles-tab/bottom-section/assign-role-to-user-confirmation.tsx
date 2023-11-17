@@ -1,4 +1,4 @@
-import { Heading, HStack, Select, VStack } from "@navikt/ds-react"
+import { Button, Heading, HStack, Select, VStack } from "@navikt/ds-react"
 import { Buldings3Icon, PersonIcon, ShieldLockIcon } from "@navikt/aksel-icons"
 import React, { useEffect, useState } from "react"
 import { IAssignment, IOrgUnit, IRole } from "../../../api/types"
@@ -31,9 +31,14 @@ interface AssignRoleToUserConfirmationProps {
 	selectedAccessRole: IRole
 	newAssignment: IAssignment
 	setNewAssigment: (updatedAssignment: IAssignment) => void
+	resetAssignment: () => void
 }
 
-const AssignRoleToUserConfirmation = ({ newAssignment, setNewAssigment }: AssignRoleToUserConfirmationProps) => {
+const AssignRoleToUserConfirmation = ({
+	newAssignment,
+	setNewAssigment,
+	resetAssignment
+}: AssignRoleToUserConfirmationProps) => {
 	const { roles } = useRole()
 	const [orgUnitsForUser, setOrgUnitsForUser] = useState<IOrgUnit[]>([])
 	const [selectedAccessRole, setSelectedAccessRole] = useState<IRole>({ accessRoleId: "", name: "" })
@@ -74,6 +79,10 @@ const AssignRoleToUserConfirmation = ({ newAssignment, setNewAssigment }: Assign
 						</option>
 					))}
 				</Select>
+
+				<Button variant={"secondary"} onClick={resetAssignment}>
+					Nullstill tildeling
+				</Button>
 			</HStackStyled>
 
 			<Heading size={"small"}>Oppsummering</Heading>

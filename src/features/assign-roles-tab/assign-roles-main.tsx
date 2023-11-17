@@ -11,6 +11,7 @@ import { useSafeTabChange } from "../../api/safe-tab-change-context"
 import { ConfirmSafeRedirectModal } from "./confirm-safe-redirect-modal"
 import { useAssignments } from "../../api/assignment-context"
 import { useForm } from "react-hook-form"
+import { toast } from "react-toastify"
 
 const AssignRolesContainer = styled.div`
 	display: flex;
@@ -37,8 +38,34 @@ const AssignRolesMain = () => {
 	}, [selectedAccessRole])
 
 	const handleSaveRole = () => {
+		if (validateNewAssignment()) {
+			setIsTabModified(false)
+			postNewAssignment(newAssignment)
+		} else {
+			toast.info("Data mangler i tildelingen.")
+		}
+	}
+
+	const validateNewAssignment = () => {
+		if (newAssignment.user.resourceId.length === 0) {
+			return false
+		} else if (newAssignment.accessRoleId.length === 0) {
+			return false
+		} else if (newAssignment.orgUnits.length === 0) {
+			return false
+		} else {
+			return true
+		}
+	}
+
+	const resetAssignment = () => {
+		setNewAssigment({
+			user: emptyUser,
+			scopeId: 1, // TODO: This is bound to be changed in the future to allow scope definitions to be selected in the frontend. For now, it is defaulted to "1"
+			accessRoleId: "",
+			orgUnits: []
+		})
 		setIsTabModified(false)
-		postNewAssignment(newAssignment)
 	}
 
 	return (
@@ -53,6 +80,7 @@ const AssignRolesMain = () => {
 				newAssignment={newAssignment}
 				setNewAssigment={setNewAssigment}
 				selectedAccessRole={selectedAccessRole}
+				resetAssignment={resetAssignment}
 			/>
 
 			<form onSubmit={handleSubmit(handleSaveRole)}>
