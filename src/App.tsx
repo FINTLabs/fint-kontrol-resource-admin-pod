@@ -8,7 +8,7 @@ import { SafeTabChangeProvider } from "./api/safe-tab-change-context"
 import { AssignmentProvider } from "./api/assignment-context"
 import SuccessfulCreation from "./features/successful-creation"
 import UserAssignmentPage from "./features/users-roles-tab/user-assignment/user-assignment-page"
-import { useGeneral } from "./api/GeneralContext"
+import { useGeneral } from "./api/generalContext"
 
 function App() {
 	const { basePath, isLoading } = useGeneral()

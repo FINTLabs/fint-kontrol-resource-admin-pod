@@ -5,7 +5,7 @@ import { IUser } from "../../api/types"
 import React from "react"
 import styled from "styled-components"
 import { useNavigate } from "react-router-dom"
-import { useGeneral } from "../../api/GeneralContext"
+import { useGeneral } from "../../api/generalContext"
 
 export const UsersTableStyled = styled(Table)`
 	thead {
