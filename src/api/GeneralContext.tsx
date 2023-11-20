@@ -10,15 +10,14 @@ interface GeneralContextType {
 export const GeneralContext = createContext<GeneralContextType | undefined>(undefined)
 
 export function GeneralProvider({ children }: { children: React.ReactNode }) {
-	const [basePath, setBasePath] = useState("/")
+	const [basePath, setBasePath] = useState<string>("")
 	const [isLoading, setIsLoading] = useState(false)
 
 	useEffect(() => {
-		const fetchBasePath = () => {
+		const fetchBasePath = async () => {
 			setIsLoading(true)
-			GeneralRepository.getBaseUrl()
+			await GeneralRepository.getBaseUrl()
 				.then((response) => {
-					console.log("response", response)
 					if (response.data.basePath) {
 						setBasePath(response.data.basePath)
 					} else {
@@ -29,10 +28,9 @@ export function GeneralProvider({ children }: { children: React.ReactNode }) {
 					setBasePath("/")
 					console.error(err)
 				})
-				.finally(() => setIsLoading(false))
 		}
 
-		fetchBasePath()
+		fetchBasePath().then(() => setIsLoading(false))
 	}, [])
 
 	return (

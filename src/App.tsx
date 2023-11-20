@@ -13,7 +13,7 @@ import { useGeneral } from "./api/GeneralContext"
 function App() {
 	const { basePath, isLoading } = useGeneral()
 
-	if (isLoading) {
+	if (isLoading || !basePath) {
 		return <LoaderStyled size={"3xlarge"} />
 	}
 
