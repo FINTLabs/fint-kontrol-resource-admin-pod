@@ -178,7 +178,7 @@ const UnitSelectDialog = ({ open, onClose }: DialogUnitProps) => {
 				<div>
 					<FormControlLabel
 						control={<Switch />}
-						label="Aggregated"
+						label="Inkluder underliggende enheter"
 						checked={aggregated}
 						onChange={handleAggregationToggle}
 						id="aggregatedCheckbox"

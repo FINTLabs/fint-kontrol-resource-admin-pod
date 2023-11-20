@@ -27,7 +27,7 @@ const OrgUnitModal = ({ orgUnitsForUser, setOrgUnitsForUser }: OrgUnitModalProps
 			<Modal ref={ref} header={{ heading: "Knytt brukerrollen til orgenhet" }}>
 				<Modal.Body>
 					<Switch onClick={() => setAggregated(!aggregated)} checked={aggregated}>
-						Aggregering
+						Inkluder underliggende enheter
 					</Switch>
 					<OrgUnitTree
 						orgUnitsForUser={orgUnitsForUser}
