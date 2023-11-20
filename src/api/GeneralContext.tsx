@@ -30,7 +30,11 @@ export function GeneralProvider({ children }: { children: React.ReactNode }) {
 				})
 		}
 
-		fetchBasePath().then(() => setIsLoading(false))
+		if (process.env.NODE_ENV === "production") {
+			fetchBasePath().then(() => setIsLoading(false))
+		} else {
+			setBasePath("/")
+		}
 	}, [])
 
 	return (
