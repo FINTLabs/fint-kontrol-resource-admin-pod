@@ -27,7 +27,6 @@ const LandingComponent = () => {
 			setTabToRouteTo(tabClicked)
 			navigate(`?tab=${tabClicked}`)
 		} else {
-			console.log("Den routet her")
 			setCurrentTab(tabClicked)
 			navigate(`?tab=${tabClicked}`)
 		}
