@@ -3,11 +3,12 @@ import { IFeature, IPermissionData } from "./types"
 import { AxiosError } from "axios"
 import FeaturesRepository from "../repositories/FeaturesRepository"
 import RolesRepositories from "../repositories/RolesRepositories"
+import { toast } from "react-toastify"
 
 interface FeaturesContextType {
 	isLoading: boolean
 	allFeatures: IFeature[]
-	putFeaturesToRole: (updatedAssignment: IPermissionData) => void
+	putFeaturesToRole: (updatedAssignment: IPermissionData) => any
 }
 
 const FeaturesContext = createContext<FeaturesContextType | undefined>(undefined)
@@ -38,13 +39,16 @@ export const FeaturesProvider = ({ children, basePath }: { children: React.React
 
 	const putFeaturesToRole = async (updatedPermissionData: IPermissionData) => {
 		if (basePath) {
+			setIsLoading(true)
 			await RolesRepositories.putAssignment(basePath, updatedPermissionData)
-				.then((res) => {
-					setAllFeatures(res.data)
+				.then(() => {
+					toast.success("Features ble lagt til")
 				})
 				.catch((err: AxiosError) => {
 					console.log(err)
+					toast.error("Noe gikk galt, Feilkode: " + err.code)
 				})
+				.finally(() => setIsLoading(false))
 		}
 	}
 

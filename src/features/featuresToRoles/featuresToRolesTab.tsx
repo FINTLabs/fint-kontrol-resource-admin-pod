@@ -4,6 +4,7 @@ import { IFeature, IFeatureOperation, IPermissionData } from "../../api/types"
 import React, { useEffect, useState } from "react"
 import { useRole } from "../../api/RoleContext"
 import { useFeatures } from "../../api/FeatureContext"
+import { LoaderStyled } from "../index"
 
 const ConnectionContainer = styled.div`
 	display: flex;
@@ -27,7 +28,7 @@ const ConnectionContainer = styled.div`
 `
 
 const FeaturesToRolesTab = () => {
-	const { roles, fetchPermissionDataForRole, permissionDataForRole } = useRole()
+	const { roles, fetchPermissionDataForRole, permissionDataForRole, isLoading } = useRole()
 	const { allFeatures, putFeaturesToRole } = useFeatures()
 	const [updatedPermissionData, setUpdatedPermissionData] = useState<IPermissionData>(permissionDataForRole)
 
@@ -89,6 +90,8 @@ const FeaturesToRolesTab = () => {
 				<div className={"access-role-changes-container"}>
 					{updatedPermissionData.accessRoleId === "" ? (
 						<></>
+					) : isLoading ? (
+						<LoaderStyled size={"3xlarge"} />
 					) : (
 						<>
 							<Table>

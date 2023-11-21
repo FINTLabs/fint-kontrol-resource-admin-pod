@@ -29,18 +29,14 @@ const putPermissionDataForRole = (basePath: string, updatedPermissionRole: IPerm
 const putAssignment = (basePath: string, updatedAssignment: IPermissionData) => {
 	const baseUrl = `${basePath === "/" ? "" : basePath}/api/accessmanagement/v1/accesspermission`
 	const url = `${baseUrl}`
-	console.log(updatedAssignment)
 	// TODO: fix this when API is ready
 	return axios.put(url, updatedAssignment)
 }
 
 const putAccessRole = (basePath: string, updatedAssignment: IUserRole) => {
-	console.log("HER")
 	const baseUrl = `${basePath === "/" ? "" : basePath}/api/accessmanagement/v1/accesspermission`
 	const url = `${baseUrl}`
 	toast.info("Lagring forsøkt, men feilet.")
-	console.log(basePath)
-	console.log(updatedAssignment)
 	// TODO: fix this when API is ready
 	return axios.post(url, updatedAssignment)
 }
