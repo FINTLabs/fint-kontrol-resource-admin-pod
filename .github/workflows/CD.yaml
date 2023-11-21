@@ -38,7 +38,7 @@ jobs:
               run: yarn build
 
             - name: Run Cypress Tests
-              run: yarn run cypress:run  # Adjust the script to run your Cypress tests
+              run: yarn run cypress:run
 
             - name: Copy asset-manifest.json to podlet
               run: cp build/asset-manifest.json podlet/
