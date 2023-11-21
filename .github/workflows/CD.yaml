@@ -37,8 +37,11 @@ jobs:
             - name: Build React App
               run: yarn build
 
-            - name: Run Cypress Tests
-              run: yarn run cypress:run
+            -   name: Cypress run
+                uses: cypress-io/github-action@v6
+                with:
+                    start: yarn start
+                    wait-on: "http://localhost:3000"
 
             - name: Copy asset-manifest.json to podlet
               run: cp build/asset-manifest.json podlet/
