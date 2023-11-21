@@ -1,7 +1,7 @@
 import React, { createContext, useContext, useState, useEffect } from "react"
 import { IPermissionData, IRole, roleContextDefaultValues } from "./types"
 import { ErrorResponse } from "react-router-dom"
-import RolesRepository from "../repositories/roles-repository"
+import RolesRepositories from "../repositories/RolesRepositories"
 
 type RoleContextType = {
 	isLoading: boolean
@@ -28,7 +28,7 @@ export const RoleProvider = ({ children, basePath }: { children: React.ReactNode
 		const fetchAllRoles = async () => {
 			if (basePath) {
 				setIsLoading(true)
-				await RolesRepository.getAllRoles(basePath)
+				await RolesRepositories.getAllRoles(basePath)
 					.then((response) => {
 						setRoles(response.data)
 					})
@@ -42,7 +42,7 @@ export const RoleProvider = ({ children, basePath }: { children: React.ReactNode
 	const fetchFeaturesInRole = async (roleId: string) => {
 		if (basePath) {
 			setIsLoading(true)
-			await RolesRepository.getFeaturesInRole(basePath, roleId)
+			await RolesRepositories.getFeaturesInRole(basePath, roleId)
 				.then((response) => {
 					setRoles(response.data)
 				})
@@ -54,7 +54,7 @@ export const RoleProvider = ({ children, basePath }: { children: React.ReactNode
 	const fetchPermissionDataForRole = async (roleId: string) => {
 		if (basePath) {
 			setIsLoading(true)
-			await RolesRepository.getPermissionDataForRole(basePath, roleId)
+			await RolesRepositories.getPermissionDataForRole(basePath, roleId)
 				.then((response) => {
 					setPermissionDataForRole(response.data)
 				})
@@ -66,7 +66,7 @@ export const RoleProvider = ({ children, basePath }: { children: React.ReactNode
 	const updatePermissionDataForRole = async (updatedPermissionRole: IPermissionData) => {
 		if (basePath) {
 			setIsLoading(true)
-			await RolesRepository.putPermissionDataForRole(basePath, updatedPermissionRole)
+			await RolesRepositories.putPermissionDataForRole(basePath, updatedPermissionRole)
 				.then((response) => {
 					fetchPermissionDataForRole(updatedPermissionRole.accessRoleId)
 				})

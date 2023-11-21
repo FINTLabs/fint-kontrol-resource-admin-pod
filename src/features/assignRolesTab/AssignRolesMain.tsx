@@ -1,15 +1,15 @@
 import React, { useEffect, useState } from "react"
 import { useUser } from "../../api/UserContext"
-import RolesToolbar from "./toolbar/roles-toolbar"
-import AssignUserRoleTable from "./assign-user-role-table"
+import RolesToolbar from "./toolbar/RolesToolbar"
+import AssignUserRoleTable from "./AssignUserRoleTable"
 
-import AssignRoleToUserConfirmation from "./bottom-section/assign-role-to-user-confirmation"
+import AssignRoleToUserConfirmation from "./bottomSection/AssignRoleToUserConfirmation"
 import { IAssignment, IRole, IUser } from "../../api/types"
 import { Button } from "@navikt/ds-react"
 import styled from "styled-components"
-import { useSafeTabChange } from "../../api/safe-tab-change-context"
-import { ConfirmSafeRedirectModal } from "./confirm-safe-redirect-modal"
-import { useAssignments } from "../../api/assignment-context"
+import { useSafeTabChange } from "../../api/SafeTabChangeContext"
+import { ConfirmSafeRedirectModal } from "./confirmSafeRedirectModal"
+import { useAssignments } from "../../api/AssignmentContext"
 import { useForm } from "react-hook-form"
 import { toast } from "react-toastify"
 
@@ -51,11 +51,7 @@ const AssignRolesMain = () => {
 			return false
 		} else if (newAssignment.accessRoleId.length === 0) {
 			return false
-		} else if (newAssignment.orgUnits.length === 0) {
-			return false
-		} else {
-			return true
-		}
+		} else return newAssignment.orgUnits.length !== 0
 	}
 
 	const resetAssignment = () => {

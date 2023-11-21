@@ -1,5 +1,5 @@
 import styled from "styled-components"
-import UnitSelectDialog from "./unit-select-dialog"
+import UnitSelectDialog from "./UnitSelectDialog"
 import React, { useState } from "react"
 import { Buldings3Icon } from "@navikt/aksel-icons"
 import { Button, Search, Select } from "@navikt/ds-react"

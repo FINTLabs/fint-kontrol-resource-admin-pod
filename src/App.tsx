@@ -4,11 +4,11 @@ import { RoleProvider } from "./api/RoleContext"
 import LandingComponent, { LoaderStyled } from "./features"
 import { OrgUnitsProvider } from "./api/OrgUnitContext"
 import { UserProvider } from "./api/UserContext"
-import { SafeTabChangeProvider } from "./api/safe-tab-change-context"
-import { AssignmentProvider } from "./api/assignment-context"
-import SuccessfulCreation from "./features/successful-creation"
-import UserAssignmentPage from "./features/users-roles-tab/user-assignment/user-assignment-page"
-import { useGeneral } from "./api/generalContext"
+import { SafeTabChangeProvider } from "./api/SafeTabChangeContext"
+import { AssignmentProvider } from "./api/AssignmentContext"
+import SuccessfulCreation from "./features/successfulCreation"
+import UserAssignmentPage from "./features/usersRolesTab/user-assignment/user-assignment-page"
+import { useGeneral } from "./api/GeneralContext"
 
 function App() {
 	const { basePath, isLoading } = useGeneral()

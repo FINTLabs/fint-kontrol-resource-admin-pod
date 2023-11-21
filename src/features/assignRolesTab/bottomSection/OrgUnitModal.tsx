@@ -1,6 +1,6 @@
 import { Button, Modal, Switch } from "@navikt/ds-react"
 import React, { useRef, useState } from "react"
-import OrgUnitTree from "./org-unit-tree"
+import OrgUnitTree from "./OrgUnitTree"
 import { IOrgUnit } from "../../../api/types"
 import { Buldings3Icon } from "@navikt/aksel-icons"
 

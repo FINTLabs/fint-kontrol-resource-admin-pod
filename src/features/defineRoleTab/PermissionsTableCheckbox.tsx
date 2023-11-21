@@ -1,6 +1,6 @@
 import { Checkbox } from "@navikt/ds-react"
 import React, { useState } from "react"
-import { useSafeTabChange } from "../../api/safe-tab-change-context"
+import { useSafeTabChange } from "../../api/SafeTabChangeContext"
 
 interface IPermissionTableCheckbox {
 	indexForOperationsList: number

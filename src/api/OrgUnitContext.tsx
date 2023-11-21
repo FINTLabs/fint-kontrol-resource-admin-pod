@@ -1,6 +1,6 @@
 import React, { createContext, useContext, useState, useEffect } from "react"
 import { IOrgUnit, IOrgUnitsPaginated } from "./types"
-import OrgUnitRepository from "../repositories/org-unit-repository"
+import OrgUnitRepository from "../repositories/OrgUnitRepository"
 
 interface OrgUnitsContextType {
 	orgUnitsData: IOrgUnitsPaginated | null

@@ -2,11 +2,11 @@ import React from "react"
 import { PersonCheckmarkIcon, PersonPlusIcon } from "@navikt/aksel-icons"
 import { Loader, Tabs } from "@navikt/ds-react"
 
-import AssignRolesMain from "./assign-roles-tab/assign-roles-main"
-import { PermissionsMain } from "./define-role-tab/permissions-main"
-import { UsersRolesMain } from "./users-roles-tab"
+import AssignRolesMain from "./assignRolesTab/AssignRolesMain"
+import { PermissionsMain } from "./defineRoleTab/PermissionsMain"
+import { UsersRolesMain } from "./usersRolesTab"
 import styled from "styled-components"
-import { useSafeTabChange } from "../api/safe-tab-change-context"
+import { useSafeTabChange } from "../api/SafeTabChangeContext"
 import { useLocation, useNavigate } from "react-router-dom"
 
 export const LoaderStyled = styled(Loader)`
@@ -52,7 +52,7 @@ const LandingComponent = () => {
 						value="define"
 						label="Definer rolle"
 						icon={<PersonCheckmarkIcon title="inbox" />}
-						id={"define-role-tab-id"}
+						id={"defineRoleTab-id"}
 					/>
 					<Tabs.Tab
 						value="tildelingsadmin"

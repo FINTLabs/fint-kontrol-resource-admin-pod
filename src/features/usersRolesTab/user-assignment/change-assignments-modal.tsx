@@ -2,8 +2,8 @@ import { IUserRole } from "../../../api/types"
 import { Button, Modal } from "@navikt/ds-react"
 import React, { useEffect, useRef, useState } from "react"
 import EditUserAssignment from "./edit-user-assignment"
-import AssignmentRepository from "../../../repositories/assignment-repository"
-import { useGeneral } from "../../../api/generalContext"
+import AssignmentRepository from "../../../repositories/AssignmentRepository"
+import { useGeneral } from "../../../api/GeneralContext"
 
 interface ChangeAssignmentsModalProps {
 	assignmentToChange: IUserRole

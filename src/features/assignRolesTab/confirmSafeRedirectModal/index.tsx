@@ -1,15 +1,12 @@
-import { IPermissionData } from "../../../api/types"
-import { useRole } from "../../../api/RoleContext"
 import React, { useEffect, useRef } from "react"
-import { useSafeTabChange } from "../../../api/safe-tab-change-context"
+import { useSafeTabChange } from "../../../api/SafeTabChangeContext"
 import { Button, Modal } from "@navikt/ds-react"
 
-interface ConfirmSaveModalProps {
-	modifiedPermissionDataObject: IPermissionData
-}
+// interface ConfirmSaveModalProps {
+// 	modifiedAssignment: IAssignment
+// }
 
-export const ConfirmSaveModal = ({ modifiedPermissionDataObject }: ConfirmSaveModalProps) => {
-	const { updatePermissionDataForRole } = useRole()
+export const ConfirmSafeRedirectModal = () => {
 	const ref = useRef<HTMLDialogElement>(null)
 	const { tabToRouteTo, setCurrentTab, setIsTabModified, isModalVisible, setIsModalVisible } = useSafeTabChange()
 
@@ -20,7 +17,8 @@ export const ConfirmSaveModal = ({ modifiedPermissionDataObject }: ConfirmSaveMo
 
 	const handleCloseModal = (shouldSave?: boolean) => {
 		if (shouldSave) {
-			updatePermissionDataForRole(modifiedPermissionDataObject)
+			// update the assignmentData if save is true
+			// SAVE()
 			setIsTabModified(false)
 			setIsModalVisible(false)
 			setCurrentTab(tabToRouteTo)

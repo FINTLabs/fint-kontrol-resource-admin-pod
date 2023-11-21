@@ -3,8 +3,8 @@ import React, { useState } from "react"
 import styled from "styled-components"
 import { useUser } from "../../api/UserContext"
 import { IAssignment, IUser } from "../../api/types"
-import { useSafeTabChange } from "../../api/safe-tab-change-context"
-import ExistingAssignmentModal from "./existing-assignment-modal"
+import { useSafeTabChange } from "../../api/SafeTabChangeContext"
+import ExistingAssignmentModal from "./ExistingAssignmentModal"
 
 const PaginationWrapper = styled.div`
 	display: flex;

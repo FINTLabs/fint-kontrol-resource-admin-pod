@@ -1,6 +1,6 @@
 import React, { createContext, useContext, useState, useEffect } from "react"
 import { IUser, userContextDefaultValues, IUserPage } from "./types"
-import UsersRepository from "../repositories/users-repository"
+import UsersRepository from "../repositories/UsersRepository"
 import { AxiosError } from "axios"
 
 interface UserContextType {

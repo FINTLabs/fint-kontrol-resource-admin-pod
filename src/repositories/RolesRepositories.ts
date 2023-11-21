@@ -25,11 +25,11 @@ const putPermissionDataForRole = (basePath: string, updatedPermissionRole: IPerm
 	return axios.put(url, updatedPermissionRole)
 }
 
-const RolesRepository = {
+const RolesRepositories = {
 	getAllRoles,
 	getFeaturesInRole,
 	getPermissionDataForRole,
 	putPermissionDataForRole
 }
 
-export default RolesRepository
+export default RolesRepositories

@@ -86,7 +86,7 @@ describe("Test suite for 'Definer rolle'", () => {
 	})
 
 	it("Click into a 'Definer rolle'", () => {
-		cy.get("#define-role-tab-id").click()
+		cy.get("#defineRoleTab-id").click()
 		wait(1000)
 	})
 

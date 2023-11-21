@@ -1,8 +1,8 @@
 import React, { useEffect, useState } from "react"
-import { TableStyled } from "./permissions-main"
+import { TableStyled } from "./PermissionsMain"
 import { Table } from "@navikt/ds-react"
 import { IPermissionData } from "../../api/types"
-import PermissionsTableCheckbox from "./permissions-table-checkbox"
+import PermissionsTableCheckbox from "./PermissionsTableCheckbox"
 
 interface PermissionsTableProps {
 	modifiedPermissionDataForRole: IPermissionData
