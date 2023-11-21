@@ -87,15 +87,15 @@ export const PermissionsMain = () => {
 }
 
 const BlankTable = () => {
+	const readableOperations = ["Kan hente", "Kan lage ny", "Kan oppdatere", "Kan slette"]
 	return (
 		<TableStyled>
 			<Table.Header>
 				<Table.Row>
 					<Table.HeaderCell>Feature</Table.HeaderCell>
-					<Table.HeaderCell>GET</Table.HeaderCell>
-					<Table.HeaderCell>POST</Table.HeaderCell>
-					<Table.HeaderCell>PUT</Table.HeaderCell>
-					<Table.HeaderCell>DELETE</Table.HeaderCell>
+					{readableOperations.map((ele) => (
+						<Table.HeaderCell key={ele}>{ele}</Table.HeaderCell>
+					))}
 				</Table.Row>
 			</Table.Header>
 			<Table.Body>

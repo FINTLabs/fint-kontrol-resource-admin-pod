@@ -47,13 +47,14 @@ export const PermissionsTable = ({
 	}
 
 	const availableOperations = ["GET", "POST", "PUT", "DELETE"]
+	const readableOperations = ["Kan hente", "Kan lage ny", "Kan oppdatere", "Kan slette"]
 
 	return (
 		<TableStyled id={"permissions-table"}>
 			<Table.Header>
 				<Table.Row>
 					<Table.HeaderCell>Feature</Table.HeaderCell>
-					{availableOperations.map((operation, index) => (
+					{readableOperations.map((operation, index) => (
 						<Table.HeaderCell key={operation + index}>{operation}</Table.HeaderCell>
 					))}
 				</Table.Row>
