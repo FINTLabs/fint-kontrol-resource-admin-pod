@@ -33,10 +33,9 @@ const ChangeAssignmentsModal = ({ assignmentToChange, modalOpenProp, setIsModalO
 	}
 
 	const handleSubmitChangesToRole = () => {
-		// Call PUT-endpoint in assignment-repository
-		// TODO: fix this when API is ready
-		AssignmentRepository.putAssignment(basePath, updatedAssignment)
-		//Submit new assignment data to API when API is ready
+		console.log(updatedAssignment)
+		// TODO: Fix this when API is ready
+		// AssignmentRepository.putAccessRole(basePath, updatedAssignment)
 		closeModal()
 	}
 

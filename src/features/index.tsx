@@ -8,6 +8,7 @@ import { UsersRolesMain } from "./usersRolesTab"
 import styled from "styled-components"
 import { useSafeTabChange } from "../api/SafeTabChangeContext"
 import { useLocation, useNavigate } from "react-router-dom"
+import FeaturesToRolesTab from "./featuresToRoles/featuresToRolesTab"
 
 export const LoaderStyled = styled(Loader)`
 	display: flex;
@@ -60,6 +61,12 @@ const LandingComponent = () => {
 						icon={<PersonCheckmarkIcon title="inbox" />}
 						id={"see-users-tab-id"}
 					/>
+					<Tabs.Tab
+						value="featureRole"
+						label="Knytt features til roller"
+						icon={<PersonCheckmarkIcon title="inbox" />}
+						id={"feature-role-id"}
+					/>
 				</Tabs.List>
 
 				<Tabs.Panel
@@ -76,6 +83,10 @@ const LandingComponent = () => {
 
 				<Tabs.Panel value="tildelingsadmin" className="h-24 w-full bg-gray-50 p-4">
 					<UsersRolesMain />
+				</Tabs.Panel>
+
+				<Tabs.Panel value="featureRole" className="h-24 w-full bg-gray-50 p-4">
+					<FeaturesToRolesTab />
 				</Tabs.Panel>
 			</Tabs>
 		</div>

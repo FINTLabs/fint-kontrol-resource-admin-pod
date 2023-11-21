@@ -22,8 +22,7 @@ export const AssignmentProvider = ({ children, basePath }: { children: React.Rea
 			setIsLoading(true)
 			await AssignmentRepository.postNewAssignment(basePath, newAssignment)
 				.then((res) => {
-					console.log(res.status)
-					navigate("/ressurser-admin/successfulCreation")
+					navigate("/ressurser-admin/successful-creation")
 					toast.success("Ny rolletildeling utført!")
 				})
 				.catch((err: AxiosError) => {

@@ -29,6 +29,8 @@ export interface IFeatureOperation {
 // Features reside in a Role, but not as part of its type from the API
 export interface IFeature {
 	name: string
+	id: string
+	path: string
 }
 
 export interface IOrgUnit {

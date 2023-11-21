@@ -9,7 +9,7 @@ import UsersRepository from "../../../repositories/UsersRepository"
 import { AxiosError } from "axios"
 import { LoaderStyled } from "../../index"
 import RoleOrgunitAssociationTable from "./role-orgunit-association-table"
-import ChangeAssignmentsModal from "./change-assignments-modal"
+import ChangeAssignmentsModal from "./ChangeAssignmentsModal"
 
 const UserAssignmentContainer = styled.div`
 	display: flex;

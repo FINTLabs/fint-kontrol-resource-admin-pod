@@ -1,5 +1,6 @@
 import axios from "axios"
-import { IPermissionData, IRole } from "../api/types"
+import { IPermissionData, IRole, IUserRole } from "../api/types"
+import { toast } from "react-toastify"
 
 const getAllRoles = (basePath: string) => {
 	const baseUrl = `${basePath === "/" ? "" : basePath}/api/accessmanagement/v1/accessrole`
@@ -25,11 +26,32 @@ const putPermissionDataForRole = (basePath: string, updatedPermissionRole: IPerm
 	return axios.put(url, updatedPermissionRole)
 }
 
+const putAssignment = (basePath: string, updatedAssignment: IPermissionData) => {
+	const baseUrl = `${basePath === "/" ? "" : basePath}/api/accessmanagement/v1/accesspermission`
+	const url = `${baseUrl}`
+	console.log(updatedAssignment)
+	// TODO: fix this when API is ready
+	return axios.put(url, updatedAssignment)
+}
+
+const putAccessRole = (basePath: string, updatedAssignment: IUserRole) => {
+	console.log("HER")
+	const baseUrl = `${basePath === "/" ? "" : basePath}/api/accessmanagement/v1/accesspermission`
+	const url = `${baseUrl}`
+	toast.info("Lagring forsøkt, men feilet.")
+	console.log(basePath)
+	console.log(updatedAssignment)
+	// TODO: fix this when API is ready
+	return axios.post(url, updatedAssignment)
+}
+
 const RolesRepositories = {
 	getAllRoles,
 	getFeaturesInRole,
 	getPermissionDataForRole,
-	putPermissionDataForRole
+	putPermissionDataForRole,
+	putAssignment,
+	putAccessRole
 }
 
 export default RolesRepositories
