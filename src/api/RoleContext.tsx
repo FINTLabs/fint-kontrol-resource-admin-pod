@@ -2,6 +2,7 @@ import React, { createContext, useContext, useState, useEffect } from "react"
 import { IPermissionData, IRole, roleContextDefaultValues } from "./types"
 import { ErrorResponse } from "react-router-dom"
 import RolesRepositories from "../repositories/RolesRepositories"
+import { useSafeTabChange } from "./SafeTabChangeContext"
 
 type RoleContextType = {
 	isLoading: boolean
@@ -18,11 +19,16 @@ type RoleContextType = {
 const RoleContext = createContext<RoleContextType | undefined>(undefined)
 
 export const RoleProvider = ({ children, basePath }: { children: React.ReactNode; basePath: string }) => {
+	const { currentTab } = useSafeTabChange()
 	const [isLoading, setIsLoading] = useState<boolean>(false)
 	const [permissionDataForRole, setPermissionDataForRole] = useState<IPermissionData>(
 		roleContextDefaultValues.permissionDataForRole
 	) // Remember to use this when api is ready with operations: []
 	const [roles, setRoles] = useState<IRole[]>([]) // Remmeber to use this when api is ready with operations: []
+
+	useEffect(() => {
+		resetPermissionData() // This ensures the tab data is reset when tab is changed
+	}, [currentTab])
 
 	useEffect(() => {
 		const fetchAllRoles = async () => {

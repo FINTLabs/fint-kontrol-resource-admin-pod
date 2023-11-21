@@ -28,9 +28,13 @@ const ConnectionContainer = styled.div`
 `
 
 const FeaturesToRolesTab = () => {
-	const { roles, fetchPermissionDataForRole, permissionDataForRole, isLoading } = useRole()
+	const { roles, fetchPermissionDataForRole, permissionDataForRole, isLoading, resetPermissionData } = useRole()
 	const { allFeatures, putFeaturesToRole } = useFeatures()
 	const [updatedPermissionData, setUpdatedPermissionData] = useState<IPermissionData>(permissionDataForRole)
+
+	useEffect(() => {
+		resetPermissionData()
+	}, [])
 
 	useEffect(() => {
 		setUpdatedPermissionData(permissionDataForRole)
