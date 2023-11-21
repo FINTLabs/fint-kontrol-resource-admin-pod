@@ -55,7 +55,9 @@ export const PermissionsTable = ({
 				<Table.Row>
 					<Table.HeaderCell>Feature</Table.HeaderCell>
 					{readableOperations.map((operation, index) => (
-						<Table.HeaderCell key={operation + index}>{operation}</Table.HeaderCell>
+						<Table.HeaderCell key={operation + index} align={"center"}>
+							{operation}
+						</Table.HeaderCell>
 					))}
 				</Table.Row>
 			</Table.Header>

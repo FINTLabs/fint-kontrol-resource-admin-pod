@@ -22,6 +22,10 @@ export const TableStyled = styled(Table)`
 			border-bottom: none;
 		}
 	}
+
+	.navds-checkbox {
+		margin: 0 auto;
+	}
 `
 
 const PermissionDataContainer = styled.div`
@@ -94,7 +98,9 @@ const BlankTable = () => {
 				<Table.Row>
 					<Table.HeaderCell>Feature</Table.HeaderCell>
 					{readableOperations.map((ele) => (
-						<Table.HeaderCell key={ele}>{ele}</Table.HeaderCell>
+						<Table.HeaderCell key={ele} align={"center"}>
+							{ele}
+						</Table.HeaderCell>
 					))}
 				</Table.Row>
 			</Table.Header>

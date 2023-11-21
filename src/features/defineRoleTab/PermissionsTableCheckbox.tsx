@@ -19,15 +19,23 @@ const PermissionsTableCheckbox = ({
 	const [isChecked, setIsChecked] = useState(isCheckedProp)
 	const { isTabModified, setIsTabModified } = useSafeTabChange()
 	const handleCheckboxChange = () => {
-		setIsChecked(!isChecked)
-		if (!isTabModified) {
-			setIsTabModified(true)
+		if (operationProp !== "GET") {
+			setIsChecked(!isChecked)
+			if (!isTabModified) {
+				setIsTabModified(true)
+			}
+			notifyOperationsChanged(indexForOperationsList, featureId, operationProp)
 		}
-		notifyOperationsChanged(indexForOperationsList, featureId, operationProp)
 	}
 
 	return (
-		<Checkbox hideLabel={true} checked={isChecked} color={"primary"} onChange={handleCheckboxChange}>
+		<Checkbox
+			hideLabel={true}
+			checked={isChecked}
+			color={"primary"}
+			onChange={handleCheckboxChange}
+			disabled={operationProp === "GET"}
+		>
 			{operationProp}
 		</Checkbox>
 	)
