@@ -81,7 +81,7 @@ const AssignRolesMain = () => {
 
 			<form onSubmit={handleSubmit(handleSaveRole)}>
 				<div>
-					<Button variant={"primary"} onClick={handleSaveRole} id={"save-button-id"}>
+					<Button variant={"primary"} id={"save-button-id"}>
 						Lagre rettigheter
 					</Button>
 				</div>
