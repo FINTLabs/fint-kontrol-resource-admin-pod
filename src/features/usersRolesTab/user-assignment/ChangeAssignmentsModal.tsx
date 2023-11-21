@@ -2,8 +2,7 @@ import { IUserRole } from "../../../api/types"
 import { Button, Modal } from "@navikt/ds-react"
 import React, { useEffect, useRef, useState } from "react"
 import EditUserAssignment from "./edit-user-assignment"
-import AssignmentRepository from "../../../repositories/AssignmentRepository"
-import { useGeneral } from "../../../api/GeneralContext"
+// import { useGeneral } from "../../../api/GeneralContext"
 
 interface ChangeAssignmentsModalProps {
 	assignmentToChange: IUserRole
@@ -12,7 +11,7 @@ interface ChangeAssignmentsModalProps {
 }
 const ChangeAssignmentsModal = ({ assignmentToChange, modalOpenProp, setIsModalOpen }: ChangeAssignmentsModalProps) => {
 	const ref = useRef<HTMLDialogElement>(null)
-	const { basePath } = useGeneral()
+	// const { basePath } = useGeneral()
 	const [updatedAssignment, setUpdatedAssignment] = useState<IUserRole>(assignmentToChange)
 
 	useEffect(() => {

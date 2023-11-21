@@ -1,6 +1,5 @@
 import axios from "axios"
-import { IAssignment, IPermissionData, IUserRole } from "../api/types"
-import { toast } from "react-toastify"
+import { IAssignment } from "../api/types"
 
 interface IPreparedAssignment {
 	userId: string
