@@ -185,6 +185,9 @@ const UnitSelectDialog = ({ open, onClose }: DialogUnitProps) => {
 					/>
 				</div>
 				{orgUnitsData?.orgUnits?.map((node: any) => {
+					if (node.parentRef !== node.organisationUnitId) {
+						return null
+					}
 					return renderTree(node)
 				})}
 			</DialogContent>
