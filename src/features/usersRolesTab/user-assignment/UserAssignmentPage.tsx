@@ -1,16 +1,14 @@
 import { useNavigate, useParams } from "react-router-dom"
 import styled from "styled-components"
-import { Button, Heading, Panel } from "@navikt/ds-react"
+import { Box, Button, Heading } from "@navikt/ds-react"
 import { ArrowBack } from "@mui/icons-material"
 import { useEffect, useState } from "react"
 import { useUser } from "../../../api/UserContext"
 import { IUser, IUserRole } from "../../../api/types"
-import UsersRepository from "../../../repositories/UsersRepository"
-import { AxiosError } from "axios"
 import { LoaderStyled } from "../../index"
-import RoleOrgunitAssociationTable from "./role-orgunit-association-table"
-import ChangeAssignmentsModal from "./ChangeAssignmentsModal"
-import DeleteAssignmentsModal from "./DeleteAssignmentsModal"
+import RoleOrgunitAssociationTable from "./RoleOrgunitAssociationTable"
+import ChangeAssignment from "./modals/ChangeAssignment"
+import DeleteAssignment from "./modals/DeleteAssignment"
 
 const UserAssignmentContainer = styled.div`
 	display: flex;
@@ -21,9 +19,10 @@ const UserAssignmentContainer = styled.div`
 interface UserAssignmentPageProps {
 	basePath: string
 }
+
 const UserAssignmentPage = ({ basePath }: UserAssignmentPageProps) => {
 	const { userId } = useParams()
-	const { isLoading, setIsLoading } = useUser()
+	const { isLoading, setIsLoading, getSpecificUserById } = useUser()
 	const [user, setUser] = useState<IUser>()
 	const [assignmentToChange, setAssignmentToChange] = useState<IUserRole>({
 		roleId: "",
@@ -39,10 +38,17 @@ const UserAssignmentPage = ({ basePath }: UserAssignmentPageProps) => {
 		const getUserById = () => {
 			if (userId) {
 				setIsLoading(true)
-				UsersRepository.getSpecificUserById(basePath, userId)
-					.then((response) => setUser(response.data))
-					.catch((err: AxiosError) => console.error(err))
-					.finally(() => setIsLoading(false))
+
+				getSpecificUserById(userId)
+					.then((user) => {
+						setUser(user)
+					})
+					.catch((error) => {
+						console.error("Error fetching user:", error)
+					})
+					.finally(() => {
+						setIsLoading(false)
+					})
 			}
 		}
 		getUserById()
@@ -77,30 +83,30 @@ const UserAssignmentPage = ({ basePath }: UserAssignmentPageProps) => {
 				<LoaderStyled size="3xlarge" title="Laster inn brukerdata..." />
 			) : (
 				<div>
-					<Panel>
+					<Box>
 						<Heading size={"small"}>Brukerinfo</Heading>
 						Navn: {user?.firstName} {user?.lastName}
-					</Panel>
+					</Box>
 
-					<Panel>
+					<Box>
 						<RoleOrgunitAssociationTable
 							user={user}
 							toggleChangeModal={toggleChangeModal}
 							toggleDeleteModal={toggleDeleteModal}
 						/>
-					</Panel>
+					</Box>
 				</div>
 			)}
 
 			{isModalOpen && (
-				<ChangeAssignmentsModal
+				<ChangeAssignment
 					assignmentToChange={assignmentToChange}
 					modalOpenProp={isModalOpen}
 					setIsModalOpen={setIsModalOpen}
 				/>
 			)}
 			{isDeleteModalOpen && assignmentToDelete && (
-				<DeleteAssignmentsModal
+				<DeleteAssignment
 					assignmentToDelete={assignmentToDelete}
 					modalOpenProp={isDeleteModalOpen}
 					setIsDeleteModalOpen={setIsDeleteModalOpen}

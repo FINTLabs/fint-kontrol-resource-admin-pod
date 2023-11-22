@@ -1,6 +1,7 @@
-import { IUserRole } from "../../../api/types"
+import { IUserRole } from "../../../../api/types"
 import { Button, Modal } from "@navikt/ds-react"
 import React, { useEffect, useRef } from "react"
+import { toast } from "react-toastify"
 
 interface DeleteAssignmentsModalProps {
 	assignmentToDelete: IUserRole
@@ -8,11 +9,7 @@ interface DeleteAssignmentsModalProps {
 	setIsDeleteModalOpen: (isOpen: boolean) => void
 }
 
-const DeleteAssignmentsModal = ({
-	setIsDeleteModalOpen,
-	modalOpenProp,
-	assignmentToDelete
-}: DeleteAssignmentsModalProps) => {
+const DeleteAssignment = ({ setIsDeleteModalOpen, modalOpenProp, assignmentToDelete }: DeleteAssignmentsModalProps) => {
 	const deleteRef = useRef<HTMLDialogElement>(null)
 
 	useEffect(() => {
@@ -28,7 +25,6 @@ const DeleteAssignmentsModal = ({
 	}
 
 	const closeModal = () => {
-		console.log("Is called")
 		setIsDeleteModalOpen(false)
 		deleteRef.current?.close()
 	}
@@ -36,6 +32,7 @@ const DeleteAssignmentsModal = ({
 	const handleDeleteAssignmentData = () => {
 		// TODO: Fix this when API is ready
 		// AssignmentRepository.putAccessRole(basePath, updatedAssignment)
+		toast.info("Sletting er foreløpig ikke mulig")
 		closeModal()
 	}
 
@@ -57,4 +54,4 @@ const DeleteAssignmentsModal = ({
 	)
 }
 
-export default DeleteAssignmentsModal
+export default DeleteAssignment

@@ -1,6 +1,6 @@
 import React from "react"
 import { PersonCheckmarkIcon, PersonPlusIcon } from "@navikt/aksel-icons"
-import { Loader, Tabs } from "@navikt/ds-react"
+import { Heading, Loader, Tabs } from "@navikt/ds-react"
 
 import AssignRolesMain from "./assignRolesTab/AssignRolesMain"
 import { PermissionsMain } from "./defineRoleTab/PermissionsMain"
@@ -9,6 +9,12 @@ import styled from "styled-components"
 import { useSafeTabChange } from "../api/SafeTabChangeContext"
 import { useLocation, useNavigate } from "react-router-dom"
 import FeaturesToRolesTab from "./featuresToRoles/featuresToRolesTab"
+
+const LandingContainer = styled.div`
+	h1 {
+		margin-bottom: 1rem;
+	}
+`
 
 export const LoaderStyled = styled(Loader)`
 	display: flex;
@@ -38,8 +44,10 @@ const LandingComponent = () => {
 	}
 
 	return (
-		<div>
-			<h2 id="tableTitle">Rettighetsstyring</h2>
+		<LandingContainer>
+			<Heading level={"1"} size={"large"} id="tableTitle">
+				Rettighetsstyring
+			</Heading>
 
 			<Tabs value={currentTab} id={"navigation-bar-id"} onChange={handleChangeTab}>
 				<Tabs.List>
@@ -89,7 +97,7 @@ const LandingComponent = () => {
 					<FeaturesToRolesTab />
 				</Tabs.Panel>
 			</Tabs>
-		</div>
+		</LandingContainer>
 	)
 }
 

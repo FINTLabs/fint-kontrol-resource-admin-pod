@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react"
 import styled from "styled-components"
 import { Search, Table } from "@navikt/ds-react"
 import { useUser } from "../../api/UserContext"
-import { UsersTable, UsersTableStyled } from "./users-table"
+import { UsersTable, UsersTableStyled } from "./UsersTable"
 
 const UsersWithRolesContainer = styled.div`
 	display: flex;

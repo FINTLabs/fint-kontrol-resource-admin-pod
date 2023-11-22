@@ -1,15 +1,15 @@
-import { IUserRole } from "../../../api/types"
+import { IUserRole } from "../../../../api/types"
 import { Button, Modal } from "@navikt/ds-react"
 import React, { useEffect, useRef, useState } from "react"
-import EditUserAssignment from "./edit-user-assignment"
-// import { useGeneral } from "../../../api/GeneralContext"
+import EditUserAssignment from "../EditUserAssignment"
+import { toast } from "react-toastify"
 
 interface ChangeAssignmentsModalProps {
 	assignmentToChange: IUserRole
 	modalOpenProp: boolean
 	setIsModalOpen: (isOpen: boolean) => void
 }
-const ChangeAssignmentsModal = ({ assignmentToChange, modalOpenProp, setIsModalOpen }: ChangeAssignmentsModalProps) => {
+const ChangeAssignment = ({ assignmentToChange, modalOpenProp, setIsModalOpen }: ChangeAssignmentsModalProps) => {
 	const ref = useRef<HTMLDialogElement>(null)
 	// const { basePath } = useGeneral()
 	const [updatedAssignment, setUpdatedAssignment] = useState<IUserRole>(assignmentToChange)
@@ -32,20 +32,15 @@ const ChangeAssignmentsModal = ({ assignmentToChange, modalOpenProp, setIsModalO
 	}
 
 	const handleSubmitChangesToRole = () => {
-		console.log(updatedAssignment)
 		// TODO: Fix this when API is ready
 		// AssignmentRepository.putAccessRole(basePath, updatedAssignment)
+		toast.info("Endring er foreløpig ikke mulig")
 		closeModal()
 	}
 
 	return (
 		<div className="py-16">
-			<Modal
-				ref={ref}
-				header={{ heading: `Endre ${assignmentToChange?.roleName}` }}
-				onCancel={closeModal}
-				onAbort={closeModal}
-			>
+			<Modal ref={ref} header={{ heading: `Endre ${assignmentToChange?.roleName}` }} onClose={closeModal}>
 				<Modal.Body>
 					<EditUserAssignment
 						assignmentDetails={updatedAssignment}
@@ -65,4 +60,4 @@ const ChangeAssignmentsModal = ({ assignmentToChange, modalOpenProp, setIsModalO
 	)
 }
 
-export default ChangeAssignmentsModal
+export default ChangeAssignment

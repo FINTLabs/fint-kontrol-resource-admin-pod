@@ -6,6 +6,7 @@ import { useSafeTabChange } from "./SafeTabChangeContext"
 
 interface UserContextType {
 	currentPage: number
+	getSpecificUserById: (userId: string) => Promise<IUser>
 	isLoading: boolean
 	itemsPerPage: number
 	orgUnitIds: string[]
@@ -57,6 +58,20 @@ export function UserProvider({ children, basePath }: { children: React.ReactNode
 		fetchUsersPage()
 	}, [basePath, currentPage, itemsPerPage, orgUnitIds, searchString])
 
+	const getSpecificUserById = async (userId: string): Promise<IUser> => {
+		try {
+			setIsLoading(true)
+			const response = await UsersRepository.getSpecificUserById(basePath, userId)
+			return response.data
+		} catch (error) {
+			// Handle errors here if necessary
+			console.error("Error fetching specific user:", error)
+			throw error // Throw the error to propagate it in case the caller wants to handle it
+		} finally {
+			setIsLoading(false)
+		}
+	}
+
 	const resetPagination = () => {
 		setCurrentPage(1)
 		setItemsPerPage(5)
@@ -66,6 +81,7 @@ export function UserProvider({ children, basePath }: { children: React.ReactNode
 		<UserContext.Provider
 			value={{
 				currentPage,
+				getSpecificUserById,
 				itemsPerPage,
 				isLoading,
 				orgUnitIds,
