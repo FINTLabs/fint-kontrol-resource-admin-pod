@@ -1,6 +1,6 @@
-import React from "react"
+import React, { useEffect, useState } from "react"
 import styled from "styled-components"
-import { Table } from "@navikt/ds-react"
+import { Search, Table } from "@navikt/ds-react"
 import { useUser } from "../../api/UserContext"
 import { UsersTable, UsersTableStyled } from "./users-table"
 
@@ -8,17 +8,47 @@ const UsersWithRolesContainer = styled.div`
 	display: flex;
 	flex-direction: column;
 	gap: 1rem;
+
+	.search-container {
+		width: fit-content;
+		align-self: end;
+	}
 `
 
 export const UsersRolesMain = () => {
 	const { usersPage } = useUser()
+	const { setSearchString } = useUser()
+	const [currentSearchString, setCurrentSearchString] = useState<string>("")
+
+	useEffect(() => {
+		setSearchString("")
+	}, [setSearchString])
 
 	if (!usersPage) {
 		return <BlankTable />
 	}
 
+	const triggerSearchString = (event?: React.FormEvent<HTMLFormElement>) => {
+		if (event) {
+			event.preventDefault() // This is to prevent complete page rerender on submit.
+		}
+		setSearchString(currentSearchString)
+	}
+
 	return (
 		<UsersWithRolesContainer>
+			<div className={"search-container"}>
+				<form onSubmit={(event) => triggerSearchString(event)}>
+					<Search
+						value={currentSearchString}
+						onChange={(currentValue) => setCurrentSearchString(currentValue)}
+						onSearchClick={() => triggerSearchString()}
+						label="Søk på personnavn"
+						hideLabel={false}
+						variant="secondary"
+					/>
+				</form>
+			</div>
 			<UsersTable />
 		</UsersWithRolesContainer>
 	)

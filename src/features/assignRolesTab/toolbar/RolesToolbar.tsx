@@ -1,6 +1,6 @@
 import styled from "styled-components"
 import UnitSelectDialog from "./UnitSelectDialog"
-import React, { useState } from "react"
+import React, { useEffect, useState } from "react"
 import { Buldings3Icon } from "@navikt/aksel-icons"
 import { Button, Search, Select } from "@navikt/ds-react"
 import { useRole } from "../../../api/RoleContext"
@@ -26,6 +26,10 @@ const RolesToolbar = ({ setSelectedAccessRole }: RolesToolbarProps) => {
 	const { roles } = useRole()
 	const [showUnitModal, setShowUnitModal] = useState(false)
 	const [currentSearchString, setCurrentSearchString] = useState<string>("")
+
+	useEffect(() => {
+		setSearchString("")
+	}, [setSearchString])
 
 	const closeModal = () => {
 		setShowUnitModal(false)
