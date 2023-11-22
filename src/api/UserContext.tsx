@@ -2,6 +2,7 @@ import React, { createContext, useContext, useState, useEffect } from "react"
 import { IUser, userContextDefaultValues, IUserPage } from "./types"
 import UsersRepository from "../repositories/UsersRepository"
 import { AxiosError } from "axios"
+import { useSafeTabChange } from "./SafeTabChangeContext"
 
 interface UserContextType {
 	currentPage: number
@@ -23,6 +24,7 @@ interface UserContextType {
 export const UserContext = createContext<UserContextType | undefined>(undefined)
 
 export function UserProvider({ children, basePath }: { children: React.ReactNode; basePath: string }) {
+	const { currentTab } = useSafeTabChange()
 	const [currentPage, setCurrentPage] = useState<number>(1)
 	const [isLoading, setIsLoading] = useState<boolean>(false)
 	const [itemsPerPage, setItemsPerPage] = useState<number>(5)
@@ -30,6 +32,10 @@ export function UserProvider({ children, basePath }: { children: React.ReactNode
 	const [selectedUser, setSelectedUser] = useState<IUser | null>(null)
 	const [usersPage, setUsersPage] = useState<IUserPage | null>(null)
 	const [searchString, setSearchString] = useState<string>("")
+
+	useEffect(() => {
+		resetPagination()
+	}, [currentTab])
 
 	const setUser = (data: IUserPage | null) => {
 		setUsersPage(data)
@@ -50,6 +56,11 @@ export function UserProvider({ children, basePath }: { children: React.ReactNode
 
 		fetchUsersPage()
 	}, [basePath, currentPage, itemsPerPage, orgUnitIds, searchString])
+
+	const resetPagination = () => {
+		setCurrentPage(1)
+		setItemsPerPage(5)
+	}
 
 	return (
 		<UserContext.Provider

@@ -10,6 +10,7 @@ import { AxiosError } from "axios"
 import { LoaderStyled } from "../../index"
 import RoleOrgunitAssociationTable from "./role-orgunit-association-table"
 import ChangeAssignmentsModal from "./ChangeAssignmentsModal"
+import DeleteAssignmentsModal from "./DeleteAssignmentsModal"
 
 const UserAssignmentContainer = styled.div`
 	display: flex;
@@ -30,6 +31,8 @@ const UserAssignmentPage = ({ basePath }: UserAssignmentPageProps) => {
 		scopes: []
 	})
 	const [isModalOpen, setIsModalOpen] = useState(false)
+	const [assignmentToDelete, setAssignmentToDelete] = useState<IUserRole | undefined>()
+	const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false)
 	const navigate = useNavigate()
 
 	useEffect(() => {
@@ -54,6 +57,11 @@ const UserAssignmentPage = ({ basePath }: UserAssignmentPageProps) => {
 		setIsModalOpen(true)
 	}
 
+	const toggleDeleteModal = (assignmentToChange: IUserRole) => {
+		setAssignmentToDelete(assignmentToChange)
+		setIsDeleteModalOpen(true)
+	}
+
 	if (isLoading) {
 		return <LoaderStyled size={"3xlarge"} />
 	}
@@ -75,7 +83,11 @@ const UserAssignmentPage = ({ basePath }: UserAssignmentPageProps) => {
 					</Panel>
 
 					<Panel>
-						<RoleOrgunitAssociationTable user={user} toggleChangeModal={toggleChangeModal} />
+						<RoleOrgunitAssociationTable
+							user={user}
+							toggleChangeModal={toggleChangeModal}
+							toggleDeleteModal={toggleDeleteModal}
+						/>
 					</Panel>
 				</div>
 			)}
@@ -85,6 +97,13 @@ const UserAssignmentPage = ({ basePath }: UserAssignmentPageProps) => {
 					assignmentToChange={assignmentToChange}
 					modalOpenProp={isModalOpen}
 					setIsModalOpen={setIsModalOpen}
+				/>
+			)}
+			{isDeleteModalOpen && assignmentToDelete && (
+				<DeleteAssignmentsModal
+					assignmentToDelete={assignmentToDelete}
+					modalOpenProp={isDeleteModalOpen}
+					setIsDeleteModalOpen={setIsDeleteModalOpen}
 				/>
 			)}
 		</UserAssignmentContainer>
