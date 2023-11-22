@@ -52,6 +52,8 @@ const UserAssignmentPage = ({ basePath }: UserAssignmentPageProps) => {
 			}
 		}
 		getUserById()
+		// Must add the eslint disable in order to avoid infinite loops cause by adding getUserById as a dependency.
+		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [setIsLoading, userId, basePath])
 
 	const goBack = () => {
