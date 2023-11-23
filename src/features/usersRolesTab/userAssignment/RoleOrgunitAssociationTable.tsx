@@ -16,7 +16,7 @@ const RoleOrgunitAssociationTable = ({
 			<Table.Header>
 				<Table.Row>
 					<Table.HeaderCell>Rolle</Table.HeaderCell>
-					<Table.HeaderCell>Tilhørende orgenhet</Table.HeaderCell>
+					<Table.HeaderCell align={"center"}>Tilhørende orgenhet</Table.HeaderCell>
 					<Table.HeaderCell align={"center"}>Slett</Table.HeaderCell>
 					<Table.HeaderCell align={"center"}>Endre</Table.HeaderCell>
 				</Table.Row>
@@ -25,6 +25,7 @@ const RoleOrgunitAssociationTable = ({
 				{user?.roles?.map((role) => (
 					<Table.Row key={role.roleId}>
 						<Table.DataCell>{role.roleName}</Table.DataCell>
+						{role.scopes.length <= 1 ? <>ll</> : <>ooo</>}
 						{role.scopes.map((scope) => (
 							<Table.DataCell key={scope.scopeId}>
 								{scope.orgUnits.map((orgUnit, index) => {

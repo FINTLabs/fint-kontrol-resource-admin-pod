@@ -1,4 +1,4 @@
-import { Button, Heading, HStack, Select, VStack } from "@navikt/ds-react"
+import { Button, Heading, HStack, VStack } from "@navikt/ds-react"
 import { Buldings3Icon, PersonIcon, ShieldLockIcon } from "@navikt/aksel-icons"
 import React, { useEffect, useState } from "react"
 import { IAssignment, IOrgUnit, IRole } from "../../../api/types"
@@ -42,11 +42,19 @@ const AssignRoleToUserConfirmation = ({
 	const { roles } = useRole()
 	const [orgUnitsForUser, setOrgUnitsForUser] = useState<IOrgUnit[]>([])
 	const [selectedAccessRole, setSelectedAccessRole] = useState<IRole>({ accessRoleId: "", name: "" })
+	const [hasChanges, setHasChanges] = useState(false)
 	const fullName = `${newAssignment.user?.firstName} ${newAssignment.user?.lastName}`
+
+	useEffect(() => {
+		orgUnitsForUser.length === 0 && selectedAccessRole.accessRoleId === ""
+			? setHasChanges(false)
+			: setHasChanges(true)
+	}, [orgUnitsForUser, selectedAccessRole])
 
 	const handleUpdateOrgUnitsInAssignment = () => {
 		setNewAssigment({ ...newAssignment, orgUnits: orgUnitsForUser })
 	}
+
 	useEffect(() => {
 		handleUpdateOrgUnitsInAssignment()
 		// eslint-disable-next-line react-hooks/exhaustive-deps
@@ -54,66 +62,67 @@ const AssignRoleToUserConfirmation = ({
 
 	const handleUpdateSelectedRole = (param: string) => {
 		let roleMatchedToId: IRole | undefined = roles.find((role) => role.accessRoleId === param)
-		roleMatchedToId ? setSelectedAccessRole(roleMatchedToId) : toast.error("Noe gikk galt ved valg av rolle")
-		const updatedAssignment: IAssignment = { ...newAssignment, accessRoleId: param }
-		setNewAssigment(updatedAssignment)
+		if (roleMatchedToId === undefined) {
+			console.log(roleMatchedToId)
+			toast.error("Rolle må velges")
+		} else {
+			setSelectedAccessRole(roleMatchedToId)
+			const updatedAssignment: IAssignment = { ...newAssignment, accessRoleId: param }
+			setNewAssigment(updatedAssignment)
+		}
+	}
+
+	const handleModalMapping = (scopeAccessRoleId: string, scopeOrgUnits: IOrgUnit[]) => {
+		handleUpdateSelectedRole(scopeAccessRoleId)
+		setOrgUnitsForUser(scopeOrgUnits)
+	}
+
+	const handleReset = () => {
+		setSelectedAccessRole({ accessRoleId: "", name: "" })
+		resetAssignment()
 	}
 
 	return (
 		<VStack gap={"4"}>
 			<HStackStyled>
-				<OrgUnitModal orgUnitsForUser={newAssignment.orgUnits} setOrgUnitsForUser={setOrgUnitsForUser} />
-				<Select
-					size={"medium"}
-					onChange={(e) => handleUpdateSelectedRole(e.target.value)}
-					id={"tildel-rolle"}
-					defaultValue={""}
-					label={"Tildel rolle"}
-				>
-					<option value="" disabled={true}>
-						Velg rolle
-					</option>
-					{roles.map((role) => (
-						<option value={role.accessRoleId} key={role.accessRoleId}>
-							{role.name}
-						</option>
-					))}
-				</Select>
-
-				<Button variant={"secondary"} onClick={resetAssignment}>
+				<OrgUnitModal handleModalMapping={handleModalMapping} />
+				<Button variant={"secondary"} onClick={handleReset}>
 					Nullstill tildeling
 				</Button>
 			</HStackStyled>
 
-			<Heading size={"small"}>Oppsummering</Heading>
-
 			<AssignmentSummaryContainer>
-				{selectedAccessRole.name && (
-					<div>
-						<ShieldLockIcon title="a11y-title" fontSize="1.5rem" />
-						Valgt rolle: <b>{selectedAccessRole.name}</b>
-					</div>
-				)}
-
-				{newAssignment.user.firstName.length > 0 && (
-					<div>
-						<PersonIcon title="a11y-title" fontSize="1.5rem" /> Valgt bruker: <b>{fullName}</b>
-					</div>
-				)}
-
-				{newAssignment.orgUnits.length > 0 && (
-					<div>
-						<div>
-							<Buldings3Icon title="a11y-title" fontSize="1.5rem" /> Valgte orgenheter brukeren skal ha:
-						</div>
-						<UlStyled>
-							{orgUnitsForUser.map((unit, index) => (
-								<li key={index}>
-									<b>{unit.name}</b>
-								</li>
-							))}
-						</UlStyled>
-					</div>
+				{hasChanges && (
+					<>
+						<Heading size={"small"}>Oppsummering</Heading>
+						<>Omfangsobjeket her</>
+						{selectedAccessRole.name && (
+							<div>
+								<ShieldLockIcon title="a11y-title" fontSize="1.5rem" />
+								Valgt rolle: <b>{selectedAccessRole.name}</b>
+							</div>
+						)}
+						{newAssignment.user.firstName.length > 0 && (
+							<div>
+								<PersonIcon title="a11y-title" fontSize="1.5rem" /> Valgt bruker: <b>{fullName}</b>
+							</div>
+						)}
+						{newAssignment.orgUnits.length > 0 && (
+							<div>
+								<div>
+									<Buldings3Icon title="a11y-title" fontSize="1.5rem" /> Valgte orgenheter brukeren
+									skal ha:
+								</div>
+								<UlStyled>
+									{orgUnitsForUser.map((unit, index) => (
+										<li key={index}>
+											<b>{unit.name}</b>
+										</li>
+									))}
+								</UlStyled>
+							</div>
+						)}
+					</>
 				)}
 			</AssignmentSummaryContainer>
 		</VStack>
