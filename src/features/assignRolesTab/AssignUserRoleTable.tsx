@@ -97,7 +97,7 @@ const AssignUserRoleTable = ({ newAssignment, setNewAssignment }: AssignUserRole
 						<Table.Row key={index} selected={newAssignment.user?.resourceId === user.resourceId}>
 							<Table.DataCell>{user.firstName + " " + user.lastName}</Table.DataCell>
 							{user.roles?.length === 0 ? (
-								<Table.DataCell>Ingen eksisterende tildeling</Table.DataCell>
+								<Table.DataCell align={"center"}>Ingen eksisterende tildeling</Table.DataCell>
 							) : (
 								<Table.DataCell align={"center"}>
 									<Button onClick={() => getExistingRoleData(user)}>Se tildelingsinformasjon</Button>
