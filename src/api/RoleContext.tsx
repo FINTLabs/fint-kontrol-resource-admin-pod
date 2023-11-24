@@ -3,6 +3,7 @@ import { IPermissionData, IRole, roleContextDefaultValues } from "./types"
 import { ErrorResponse } from "react-router-dom"
 import RolesRepositories from "../repositories/RolesRepositories"
 import { useSafeTabChange } from "./SafeTabChangeContext"
+import { toast } from "react-toastify"
 
 type RoleContextType = {
 	isLoading: boolean
@@ -75,6 +76,7 @@ export const RoleProvider = ({ children, basePath }: { children: React.ReactNode
 			await RolesRepositories.putPermissionDataForRole(basePath, updatedPermissionRole)
 				.then((response) => {
 					fetchPermissionDataForRole(updatedPermissionRole.accessRoleId)
+					toast.success("Rolle oppdatert")
 				})
 				.catch((err: ErrorResponse) => console.error(err))
 		}
