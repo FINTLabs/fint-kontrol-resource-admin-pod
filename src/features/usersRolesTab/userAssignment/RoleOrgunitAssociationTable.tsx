@@ -28,15 +28,15 @@ const RoleOrgunitAssociationTable = ({
 						<Table.DataCell align={"center"}>
 							{role.scopes.length <= 1 ? <>Foreløpig tom</> : <>Foreløpig tom</>}
 						</Table.DataCell>
-						{role.scopes.map((scope) => (
-							<Table.DataCell key={scope.scopeId}>
-								{scope.orgUnits.map((orgUnit, index) => {
-									if (scope.orgUnits.length === index + 1) {
-										return `${orgUnit.shortName}`
-									} else return `${orgUnit.shortName}, `
-								})}
-							</Table.DataCell>
-						))}
+						{/*{role.scopes.map((scope) => (*/}
+						{/*	<Table.DataCell key={scope.scopeId}>*/}
+						{/*		{scope.orgUnits.map((orgUnit, index) => {*/}
+						{/*			if (scope.orgUnits.length === index + 1) {*/}
+						{/*				return `${orgUnit.shortName}`*/}
+						{/*			} else return `${orgUnit.shortName}, `*/}
+						{/*		})}*/}
+						{/*	</Table.DataCell>*/}
+						{/*))}*/}
 						<Table.DataCell align={"center"}>
 							<Button variant={"danger"} onClick={() => toggleDeleteModal(role)}>
 								Slett
