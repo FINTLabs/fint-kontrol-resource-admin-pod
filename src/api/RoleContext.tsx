@@ -1,9 +1,9 @@
 import React, { createContext, useContext, useState, useEffect } from "react"
 import { IPermissionData, IRole, roleContextDefaultValues } from "./types"
-import { ErrorResponse } from "react-router-dom"
 import RolesRepositories from "../repositories/RolesRepositories"
 import { useSafeTabChange } from "./SafeTabChangeContext"
 import { toast } from "react-toastify"
+import { AxiosError } from "axios"
 
 type RoleContextType = {
 	isLoading: boolean
@@ -39,7 +39,7 @@ export const RoleProvider = ({ children, basePath }: { children: React.ReactNode
 					.then((response) => {
 						setRoles(response.data)
 					})
-					.catch((err: ErrorResponse) => console.error(err))
+					.catch((err: AxiosError) => console.error(err))
 			}
 		}
 
@@ -53,7 +53,7 @@ export const RoleProvider = ({ children, basePath }: { children: React.ReactNode
 				.then((response) => {
 					setRoles(response.data)
 				})
-				.catch((err: ErrorResponse) => console.error(err))
+				.catch((err: AxiosError) => console.error(err))
 				.finally(() => setIsLoading(false))
 		}
 	}
@@ -65,7 +65,7 @@ export const RoleProvider = ({ children, basePath }: { children: React.ReactNode
 				.then((response) => {
 					setPermissionDataForRole(response.data)
 				})
-				.catch((err: ErrorResponse) => console.error(err))
+				.catch((err: AxiosError) => console.error(err))
 				.finally(() => setIsLoading(false))
 		}
 	}
@@ -76,9 +76,12 @@ export const RoleProvider = ({ children, basePath }: { children: React.ReactNode
 			await RolesRepositories.putPermissionDataForRole(basePath, updatedPermissionRole)
 				.then((response) => {
 					fetchPermissionDataForRole(updatedPermissionRole.accessRoleId)
-					toast.success("Rolle oppdatert")
+					toast.success("Rolle oppdatert.")
 				})
-				.catch((err: ErrorResponse) => console.error(err))
+				.catch((err: AxiosError) => {
+					toast.error("Rolleoppdatering feilet.")
+					console.error(err)
+				})
 		}
 	}
 
