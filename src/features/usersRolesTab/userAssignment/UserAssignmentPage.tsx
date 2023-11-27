@@ -1,19 +1,25 @@
 import { useNavigate, useParams } from "react-router-dom"
 import styled from "styled-components"
-import { Box, Button, Heading } from "@navikt/ds-react"
+import { Box, Button, Heading, Select } from "@navikt/ds-react"
 import { ArrowBack } from "@mui/icons-material"
 import { useEffect, useState } from "react"
 import { useUser } from "../../../api/UserContext"
-import { IUser, IUserRole } from "../../../api/types"
+import { IRole, IUser, IUserRole } from "../../../api/types"
 import { LoaderStyled } from "../../index"
 import RoleOrgunitAssociationTable from "./RoleOrgunitAssociationTable"
 import ChangeAssignment from "./modals/ChangeAssignment"
 import DeleteAssignment from "./modals/DeleteAssignment"
+import { useRole } from "../../../api/RoleContext"
+import { toast } from "react-toastify"
 
 const UserAssignmentContainer = styled.div`
 	display: flex;
 	flex-direction: column;
 	gap: 2rem;
+
+	.navds-select__container {
+		width: fit-content;
+	}
 `
 
 interface UserAssignmentPageProps {
@@ -22,6 +28,7 @@ interface UserAssignmentPageProps {
 
 const UserAssignmentPage = ({ basePath }: UserAssignmentPageProps) => {
 	const { userId } = useParams()
+	const { roles } = useRole()
 	const { isLoading, setIsLoading, getSpecificUserById } = useUser()
 	const [user, setUser] = useState<IUser>()
 	const [assignmentToChange, setAssignmentToChange] = useState<IUserRole>({
@@ -32,6 +39,7 @@ const UserAssignmentPage = ({ basePath }: UserAssignmentPageProps) => {
 	const [isModalOpen, setIsModalOpen] = useState(false)
 	const [assignmentToDelete, setAssignmentToDelete] = useState<IUserRole | undefined>()
 	const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false)
+	const [selectedRole, setSelectedRole] = useState<IRole>({ accessRoleId: "", name: "" })
 	const navigate = useNavigate()
 
 	useEffect(() => {
@@ -60,6 +68,18 @@ const UserAssignmentPage = ({ basePath }: UserAssignmentPageProps) => {
 		navigate(-1) // Navigate back in the history
 	}
 
+	const handleChangeRole = (selectedRoleParam: string) => {
+		const paramMappedToAccessRoleType: IRole | undefined = roles.find(
+			(role) => role.accessRoleId === selectedRoleParam
+		)
+		if (paramMappedToAccessRoleType === undefined) {
+			setSelectedRole({ accessRoleId: "", name: "" })
+			toast.error("Noe gikk galt ved valg av rolle")
+		} else {
+			setSelectedRole(paramMappedToAccessRoleType)
+		}
+	}
+
 	const toggleChangeModal = (assignmentToChange: IUserRole) => {
 		setAssignmentToChange(assignmentToChange)
 		setIsModalOpen(true)
@@ -73,6 +93,9 @@ const UserAssignmentPage = ({ basePath }: UserAssignmentPageProps) => {
 	if (isLoading) {
 		return <LoaderStyled size={"3xlarge"} />
 	}
+
+	// Filter for data to feed into table component
+	const scopeFromUserRole = user?.roles?.find((role) => role.roleId === selectedRole.accessRoleId)
 
 	return (
 		<UserAssignmentContainer>
@@ -90,9 +113,23 @@ const UserAssignmentPage = ({ basePath }: UserAssignmentPageProps) => {
 						Navn: {user?.firstName} {user?.lastName}
 					</Box>
 
+					<Select
+						label={"Velg rolle"}
+						value={selectedRole.accessRoleId}
+						onChange={(event) => handleChangeRole(event.target.value)}
+					>
+						<option value={""}>Velg rolle</option>
+						{user?.roles?.map((role) => (
+							<option key={role.roleId} value={role.roleId}>
+								{role.roleName}
+							</option>
+						))}
+					</Select>
+
 					<Box>
 						<RoleOrgunitAssociationTable
 							user={user}
+							scopeFromUserRole={scopeFromUserRole}
 							toggleChangeModal={toggleChangeModal}
 							toggleDeleteModal={toggleDeleteModal}
 						/>

@@ -1,54 +1,50 @@
 import { Button, Table } from "@navikt/ds-react"
 import { IUser, IUserRole } from "../../../api/types"
+import React from "react"
 
 interface RoleOrgUnitAssociationTableProps {
 	user: IUser | undefined
 	toggleChangeModal: (assignmentToChange: IUserRole) => void
 	toggleDeleteModal: (assignmentToChange: IUserRole) => void
+	scopeFromUserRole: IUserRole | undefined
 }
 const RoleOrgunitAssociationTable = ({
 	user,
 	toggleChangeModal,
-	toggleDeleteModal
+	toggleDeleteModal,
+	scopeFromUserRole
 }: RoleOrgUnitAssociationTableProps) => {
 	return (
 		<Table>
 			<Table.Header>
 				<Table.Row>
-					<Table.HeaderCell>Rolle</Table.HeaderCell>
-					<Table.HeaderCell align={"center"}>Tilhørende orgenhet</Table.HeaderCell>
+					<Table.HeaderCell>Objekttype</Table.HeaderCell>
+					<Table.HeaderCell>Orgenhet</Table.HeaderCell>
 					<Table.HeaderCell align={"center"}>Slett</Table.HeaderCell>
-					<Table.HeaderCell align={"center"}>Endre</Table.HeaderCell>
 				</Table.Row>
 			</Table.Header>
 			<Table.Body>
-				{user?.roles?.map((role) => (
-					<Table.Row key={role.roleId}>
-						<Table.DataCell>{role.roleName}</Table.DataCell>
-						<Table.DataCell align={"center"}>
-							{role.scopes.length <= 1 ? <>Foreløpig tom</> : <>Foreløpig tom</>}
-						</Table.DataCell>
-						{/*{role.scopes.map((scope) => (*/}
-						{/*	<Table.DataCell key={scope.scopeId}>*/}
-						{/*		{scope.orgUnits.map((orgUnit, index) => {*/}
-						{/*			if (scope.orgUnits.length === index + 1) {*/}
-						{/*				return `${orgUnit.shortName}`*/}
-						{/*			} else return `${orgUnit.shortName}, `*/}
-						{/*		})}*/}
-						{/*	</Table.DataCell>*/}
-						{/*))}*/}
-						<Table.DataCell align={"center"}>
-							<Button variant={"danger"} onClick={() => toggleDeleteModal(role)}>
-								Slett
-							</Button>
-						</Table.DataCell>
-						<Table.DataCell align={"center"}>
-							<Button variant={"tertiary"} onClick={() => toggleChangeModal(role)}>
-								Endre
-							</Button>
+				{scopeFromUserRole ? (
+					scopeFromUserRole.scopes.map((scope) =>
+						scope.orgUnits.map((orgUnit) => (
+							<Table.Row key={scope + "," + orgUnit.orgUnitId}>
+								<Table.DataCell>{scope.objectType}</Table.DataCell>
+								<Table.DataCell>{orgUnit.shortName}</Table.DataCell>
+								<Table.DataCell align={"center"}>
+									<Button variant={"danger"} onClick={() => toggleDeleteModal(scopeFromUserRole)}>
+										Slett
+									</Button>
+								</Table.DataCell>
+							</Table.Row>
+						))
+					)
+				) : (
+					<Table.Row>
+						<Table.DataCell align={"center"} colSpan={4}>
+							Rolle må velges for å vise data...
 						</Table.DataCell>
 					</Table.Row>
-				))}
+				)}
 			</Table.Body>
 		</Table>
 	)
