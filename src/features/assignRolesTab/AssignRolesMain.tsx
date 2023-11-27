@@ -41,6 +41,7 @@ const AssignRolesMain = () => {
 		if (validateNewAssignment()) {
 			setIsTabModified(false)
 			postNewAssignment(newAssignment)
+			resetAll()
 		} else {
 			toast.info("Data mangler i tildelingen.")
 		}
@@ -64,6 +65,11 @@ const AssignRolesMain = () => {
 		setIsTabModified(false)
 	}
 
+	const resetAll = () => {
+		resetAssignment()
+		setSelectedAccessRole({ accessRoleId: "", name: "" })
+	}
+
 	return (
 		<AssignRolesContainer>
 			<ConfirmSafeRedirectModal />
@@ -76,6 +82,7 @@ const AssignRolesMain = () => {
 				newAssignment={newAssignment}
 				setNewAssigment={setNewAssigment}
 				selectedAccessRole={selectedAccessRole}
+				setSelectedAccessRole={setSelectedAccessRole}
 				resetAssignment={resetAssignment}
 			/>
 

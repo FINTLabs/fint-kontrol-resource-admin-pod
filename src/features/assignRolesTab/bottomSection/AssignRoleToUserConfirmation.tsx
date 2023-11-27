@@ -31,17 +31,19 @@ interface AssignRoleToUserConfirmationProps {
 	selectedAccessRole: IRole
 	newAssignment: IAssignment
 	setNewAssigment: (updatedAssignment: IAssignment) => void
+	setSelectedAccessRole: (newAccessRole: IRole) => void
 	resetAssignment: () => void
 }
 
 const AssignRoleToUserConfirmation = ({
 	newAssignment,
 	setNewAssigment,
-	resetAssignment
+	resetAssignment,
+	selectedAccessRole,
+	setSelectedAccessRole
 }: AssignRoleToUserConfirmationProps) => {
 	const { roles } = useRole()
 	const [orgUnitsForUser, setOrgUnitsForUser] = useState<IOrgUnit[]>([])
-	const [selectedAccessRole, setSelectedAccessRole] = useState<IRole>({ accessRoleId: "", name: "" })
 	const [hasChanges, setHasChanges] = useState(false)
 	const fullName = `${newAssignment.user?.firstName} ${newAssignment.user?.lastName}`
 
@@ -63,7 +65,6 @@ const AssignRoleToUserConfirmation = ({
 	const handleUpdateSelectedRole = (param: string) => {
 		let roleMatchedToId: IRole | undefined = roles.find((role) => role.accessRoleId === param)
 		if (roleMatchedToId === undefined) {
-			console.log(roleMatchedToId)
 			toast.error("Rolle må velges")
 		} else {
 			setSelectedAccessRole(roleMatchedToId)
