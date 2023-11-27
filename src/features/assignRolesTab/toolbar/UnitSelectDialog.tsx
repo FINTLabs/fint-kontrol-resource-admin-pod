@@ -13,6 +13,7 @@ import { Accordion } from "@navikt/ds-react"
 import { useOrgUnits } from "../../../api/OrgUnitContext"
 import { IOrgUnit } from "../../../api/types"
 import styled from "styled-components"
+import { useUser } from "../../../api/UserContext"
 
 const StyledAccordion = styled(Accordion)`
 	* {
@@ -44,6 +45,7 @@ interface DialogUnitProps {
 }
 
 const UnitSelectDialog = ({ open, onClose }: DialogUnitProps) => {
+	const { setOrgUnitIdsFilter } = useUser()
 	const { orgUnitsData, setSelectedOrgUnits, selectedOrgUnits } = useOrgUnits()
 	const [aggregated, setAggregated] = useState(false)
 
@@ -56,6 +58,11 @@ const UnitSelectDialog = ({ open, onClose }: DialogUnitProps) => {
 	}
 
 	const handleClose = () => {
+		onClose()
+	}
+
+	const submitFilters = () => {
+		setOrgUnitIdsFilter(selectedOrgUnits.flatMap((orgunit) => String(orgunit.id))) // TODO: Bound to be changed when orgunit and aggregation is deteremined
 		onClose()
 	}
 
@@ -192,7 +199,7 @@ const UnitSelectDialog = ({ open, onClose }: DialogUnitProps) => {
 				})}
 			</DialogContent>
 			<DialogActions>
-				<Button id={"closeDialog"} onClick={onClose}>
+				<Button id={"closeDialog"} onClick={submitFilters}>
 					Ferdig
 				</Button>
 			</DialogActions>
