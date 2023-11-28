@@ -28,7 +28,7 @@ const getUsersPage = (
 	}
 
 	if (roleFilter) {
-		queryParams.push(`rolefilter=${roleFilter}`)
+		queryParams.push(`accessroleid=${roleFilter}`)
 	}
 
 	const url = `${baseUrl}${queryParams.length > 0 ? "?" : ""}${queryParams.join("&")}`
