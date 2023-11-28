@@ -56,6 +56,16 @@ const FeaturesToRolesTab = () => {
 			const newFeatureList = updatedPermissionData.features
 			newFeatureList.push(featureConverted)
 			setUpdatedPermissionData({ ...updatedPermissionData, features: newFeatureList })
+		} else {
+			const featureConverted: IFeatureOperation = {
+				featureId: Number(feature.id),
+				featureName: feature.name,
+				operations: ["GET"]
+			}
+			const newFeatureList = updatedPermissionData.features.filter(
+				(ele) => ele.featureId !== featureConverted.featureId
+			)
+			setUpdatedPermissionData({ ...updatedPermissionData, features: newFeatureList })
 		}
 	}
 
@@ -119,7 +129,12 @@ const FeaturesToRolesTab = () => {
 														Lag knytning til bruker
 													</Button>
 												) : (
-													<span>Lagt til</span>
+													<Button
+														variant={"danger"}
+														onClick={() => handleUpdatePermissionData(feature)}
+													>
+														Fjern knytning
+													</Button>
 												)}
 											</Table.DataCell>
 										</Table.Row>
