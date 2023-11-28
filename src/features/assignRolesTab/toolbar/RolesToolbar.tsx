@@ -16,13 +16,8 @@ const ToolbarContainer = styled.div`
 	width: 100%;
 `
 
-interface RolesToolbarProps {
-	setSelectedAccessRole: (newSelectedRole: IRole) => void
-	setOrgUnitIdsFilter: (orgUnitIdsFilterList: string[]) => void
-}
-
-const RolesToolbar = ({ setSelectedAccessRole }: RolesToolbarProps) => {
-	const { setSearchString } = useUser()
+const RolesToolbar = () => {
+	const { setSearchString, setRoleFilter } = useUser()
 	const { roles } = useRole()
 	const [showUnitModal, setShowUnitModal] = useState(false)
 	const [currentSearchString, setCurrentSearchString] = useState<string>("")
@@ -36,8 +31,7 @@ const RolesToolbar = ({ setSelectedAccessRole }: RolesToolbarProps) => {
 	}
 
 	const handleUpdateSelectedRoleFilter = (param: string) => {
-		let roleMatchedToId: IRole | undefined = roles.find((role) => role.accessRoleId === param)
-		roleMatchedToId ? setSelectedAccessRole(roleMatchedToId) : console.log(roleMatchedToId)
+		setRoleFilter(param)
 	}
 
 	const triggerSearchString = (event?: React.FormEvent<HTMLFormElement>) => {
@@ -72,9 +66,7 @@ const RolesToolbar = ({ setSelectedAccessRole }: RolesToolbarProps) => {
 				id={"role-filter"}
 				defaultValue={""}
 			>
-				<option value="" disabled={true}>
-					Velg rolle
-				</option>
+				<option value="">Velg rolle</option>
 				{roles.map((role) => (
 					<option value={role.accessRoleId} key={role.accessRoleId}>
 						{role.name}

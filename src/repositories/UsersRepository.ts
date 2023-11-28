@@ -6,11 +6,11 @@ const getUsersPage = (
 	currentPage: number,
 	itemsPerPage: number,
 	orgUnitIds: string[],
-	searchString: string
+	searchString: string,
+	roleFilter: string
 ) => {
 	const baseUrl = `${basePath === "/" ? "" : basePath}/api/accessmanagement/v1/user`
 	let queryParams = []
-
 	if (currentPage) {
 		queryParams.push(`page=${currentPage - 1}`)
 	}
@@ -25,6 +25,10 @@ const getUsersPage = (
 
 	if (searchString) {
 		queryParams.push(`name=${searchString}`)
+	}
+
+	if (roleFilter) {
+		queryParams.push(`rolefilter=${roleFilter}`)
 	}
 
 	const url = `${baseUrl}${queryParams.length > 0 ? "?" : ""}${queryParams.join("&")}`

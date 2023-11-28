@@ -20,8 +20,8 @@ interface UserContextType {
 	setOrgUnitIdsFilter: (orgUnitIds: string[]) => void
 	setUser: (data: IUserPage | null) => void
 	setSearchString: (searchString: string) => void
-	setUserType: (newType: string) => void
-	userType: string
+	setRoleFilter: (roleFilterString: string) => void
+	roleFilter: string
 }
 
 export const UserContext = createContext<UserContextType | undefined>(undefined)
@@ -35,7 +35,7 @@ export function UserProvider({ children, basePath }: { children: React.ReactNode
 	const [selectedUser, setSelectedUser] = useState<IUser | null>(null)
 	const [usersPage, setUsersPage] = useState<IUserPage | null>(null)
 	const [searchString, setSearchString] = useState<string>("")
-	const [userType, setUserType] = useState("")
+	const [roleFilter, setRoleFilter] = useState("")
 
 	useEffect(() => {
 		resetPagination()
@@ -55,7 +55,7 @@ export function UserProvider({ children, basePath }: { children: React.ReactNode
 					itemsPerPage,
 					orgUnitIds,
 					searchString,
-					userType
+					roleFilter
 				)
 					.then((response) => {
 						setUsersPage(response.data)
@@ -66,7 +66,7 @@ export function UserProvider({ children, basePath }: { children: React.ReactNode
 		}
 
 		fetchUsersPage()
-	}, [basePath, currentPage, itemsPerPage, orgUnitIds, searchString, userType])
+	}, [basePath, currentPage, itemsPerPage, orgUnitIds, searchString, roleFilter])
 
 	const getSpecificUserById = async (userId: string): Promise<IUser> => {
 		try {
@@ -105,8 +105,8 @@ export function UserProvider({ children, basePath }: { children: React.ReactNode
 				setItemsPerPage,
 				setOrgUnitIdsFilter,
 				setSearchString,
-				setUserType,
-				userType
+				setRoleFilter,
+				roleFilter
 			}}
 		>
 			{children}
