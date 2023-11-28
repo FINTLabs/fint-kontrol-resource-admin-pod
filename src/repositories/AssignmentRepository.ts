@@ -16,7 +16,7 @@ const postNewAssignment = (basePath: string, newAssignment: IAssignment) => {
 		accessRoleId: newAssignment.accessRoleId,
 		orgUnitIds: newAssignment.orgUnits.map((orgunit) => String(orgunit.organisationUnitId))
 	}
-	return axios.post(url, preparedAssignmentBody)
+	return axios.post<IAssignment>(url, preparedAssignmentBody)
 }
 
 const AssignmentRepository = {

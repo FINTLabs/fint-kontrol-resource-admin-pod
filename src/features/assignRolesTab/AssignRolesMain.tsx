@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react"
+import React, { useState } from "react"
 import RolesToolbar from "./toolbar/RolesToolbar"
 import AssignUserRoleTable from "./AssignUserRoleTable"
 
@@ -11,7 +11,6 @@ import { ConfirmSafeRedirectModal } from "./confirmSafeRedirectModal"
 import { useAssignments } from "../../api/AssignmentContext"
 import { useForm } from "react-hook-form"
 import { toast } from "react-toastify"
-import { useUser } from "../../api/UserContext"
 
 const AssignRolesContainer = styled.div`
 	display: flex;
@@ -21,7 +20,6 @@ const AssignRolesContainer = styled.div`
 
 const AssignRolesMain = () => {
 	const { postNewAssignment } = useAssignments()
-	const { getUsersPage } = useUser()
 	const { setIsTabModified } = useSafeTabChange()
 	const [selectedAccessRole, setSelectedAccessRole] = useState<IRole>({ accessRoleId: "", name: "" })
 	const [newAssignment, setNewAssigment] = useState<IAssignment>({
@@ -31,16 +29,6 @@ const AssignRolesMain = () => {
 		orgUnits: []
 	})
 	const { handleSubmit } = useForm()
-
-	useEffect(() => {
-		const fetchDelay = setTimeout(() => {
-			getUsersPage()
-		}, 500)
-
-		return () => clearTimeout(fetchDelay)
-
-		// eslint-disable-next-line react-hooks/exhaustive-deps
-	}, [postNewAssignment])
 
 	const handleSaveRole = () => {
 		if (validateNewAssignment()) {

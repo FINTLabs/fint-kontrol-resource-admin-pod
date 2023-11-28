@@ -3,6 +3,7 @@ import { IAssignment } from "./types"
 import AssignmentRepository from "../repositories/AssignmentRepository"
 import { toast } from "react-toastify"
 import { AxiosError } from "axios"
+import { useUser } from "./UserContext"
 
 interface AssignmentContextType {
 	isLoading: boolean
@@ -13,14 +14,16 @@ const AssignmentContext = createContext<AssignmentContextType | undefined>(undef
 
 export const AssignmentProvider = ({ children, basePath }: { children: React.ReactNode; basePath: string }) => {
 	const [isLoading, setIsLoading] = useState(false)
+	const { getUsersPage } = useUser()
 
 	const postNewAssignment = async (newAssignment: IAssignment) => {
 		toast.dismiss()
 		if (basePath) {
 			setIsLoading(true)
 			await AssignmentRepository.postNewAssignment(basePath, newAssignment)
-				.then((res) => {
+				.then(() => {
 					toast.success("Ny rolletildeling utført!")
+					getUsersPage()
 				})
 				.catch((err: AxiosError) => {
 					toast.error("Rolletildeling feilet.")

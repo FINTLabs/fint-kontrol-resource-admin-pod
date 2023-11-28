@@ -48,6 +48,7 @@ export function UserProvider({ children, basePath }: { children: React.ReactNode
 
 	useEffect(() => {
 		getUsersPage()
+		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [basePath, currentPage, itemsPerPage, orgUnitIds, searchString, roleFilter])
 
 	const getUsersPage = async () => {
