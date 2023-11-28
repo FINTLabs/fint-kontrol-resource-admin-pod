@@ -6,6 +6,7 @@ import { useSafeTabChange } from "./SafeTabChangeContext"
 
 interface UserContextType {
 	currentPage: number
+	getUsersPage: () => void
 	getSpecificUserById: (userId: string) => Promise<IUser>
 	isLoading: boolean
 	itemsPerPage: number
@@ -46,27 +47,27 @@ export function UserProvider({ children, basePath }: { children: React.ReactNode
 	}
 
 	useEffect(() => {
-		const fetchUsersPage = async () => {
-			if (basePath) {
-				setIsLoading(true)
-				await UsersRepository.getUsersPage(
-					basePath,
-					currentPage,
-					itemsPerPage,
-					orgUnitIds,
-					searchString,
-					roleFilter
-				)
-					.then((response) => {
-						setUsersPage(response.data)
-					})
-					.catch((err: AxiosError) => console.error(err))
-					.finally(() => setIsLoading(false))
-			}
-		}
-
-		fetchUsersPage()
+		getUsersPage()
 	}, [basePath, currentPage, itemsPerPage, orgUnitIds, searchString, roleFilter])
+
+	const getUsersPage = async () => {
+		if (basePath) {
+			setIsLoading(true)
+			await UsersRepository.getUsersPage(
+				basePath,
+				currentPage,
+				itemsPerPage,
+				orgUnitIds,
+				searchString,
+				roleFilter
+			)
+				.then((response) => {
+					setUsersPage(response.data)
+				})
+				.catch((err: AxiosError) => console.error(err))
+				.finally(() => setIsLoading(false))
+		}
+	}
 
 	const getSpecificUserById = async (userId: string): Promise<IUser> => {
 		try {
@@ -91,6 +92,7 @@ export function UserProvider({ children, basePath }: { children: React.ReactNode
 		<UserContext.Provider
 			value={{
 				currentPage,
+				getUsersPage,
 				getSpecificUserById,
 				itemsPerPage,
 				isLoading,

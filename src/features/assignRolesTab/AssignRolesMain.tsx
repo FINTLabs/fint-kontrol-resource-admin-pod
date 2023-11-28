@@ -1,4 +1,4 @@
-import React, { useState } from "react"
+import React, { useEffect, useState } from "react"
 import RolesToolbar from "./toolbar/RolesToolbar"
 import AssignUserRoleTable from "./AssignUserRoleTable"
 
@@ -21,7 +21,7 @@ const AssignRolesContainer = styled.div`
 
 const AssignRolesMain = () => {
 	const { postNewAssignment } = useAssignments()
-	const { setCurrentPage } = useUser()
+	const { getUsersPage } = useUser()
 	const { setIsTabModified } = useSafeTabChange()
 	const [selectedAccessRole, setSelectedAccessRole] = useState<IRole>({ accessRoleId: "", name: "" })
 	const [newAssignment, setNewAssigment] = useState<IAssignment>({
@@ -32,11 +32,20 @@ const AssignRolesMain = () => {
 	})
 	const { handleSubmit } = useForm()
 
+	useEffect(() => {
+		const fetchDelay = setTimeout(() => {
+			getUsersPage()
+		}, 500)
+
+		return () => clearTimeout(fetchDelay)
+
+		// eslint-disable-next-line react-hooks/exhaustive-deps
+	}, [postNewAssignment])
+
 	const handleSaveRole = () => {
 		if (validateNewAssignment()) {
 			setIsTabModified(false)
 			postNewAssignment(newAssignment)
-			setCurrentPage(0)
 			resetAll()
 		} else {
 			toast.info("Data mangler i tildelingen.")
