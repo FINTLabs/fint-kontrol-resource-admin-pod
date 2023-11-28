@@ -53,18 +53,15 @@ const AssignRoleToUserConfirmation = ({
 			: setHasChanges(true)
 	}, [orgUnitsForUser, selectedAccessRole])
 
-	const handleUpdateOrgUnitsInAssignment = () => {
-		setNewAssigment({ ...newAssignment, orgUnits: orgUnitsForUser })
-	}
-
 	useEffect(() => {
-		handleUpdateOrgUnitsInAssignment()
+		setNewAssigment({ ...newAssignment, orgUnits: [...orgUnitsForUser] })
 		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [orgUnitsForUser])
 
 	const handleUpdateSelectedRole = (param: string) => {
 		let roleMatchedToId: IRole | undefined = roles.find((role) => role.accessRoleId === param)
 		if (roleMatchedToId === undefined) {
+			setSelectedAccessRole({ accessRoleId: "", name: "" })
 			toast.error("Rolle må velges")
 		} else {
 			setSelectedAccessRole(roleMatchedToId)
@@ -83,12 +80,14 @@ const AssignRoleToUserConfirmation = ({
 		resetAssignment()
 	}
 
+	const accessRoleNameMapped = roles.find((ele) => ele.accessRoleId === selectedAccessRole.accessRoleId) // Mapped because role selected in newAssignment only stores the ID and not the name.
+
 	return (
 		<VStack gap={"4"}>
 			<HStackStyled>
 				<OrgUnitModal handleModalMapping={handleModalMapping} />
 				<Button variant={"secondary"} onClick={handleReset}>
-					Nullstill tildeling
+					Nullstill ny tildeling
 				</Button>
 			</HStackStyled>
 
@@ -97,7 +96,7 @@ const AssignRoleToUserConfirmation = ({
 					<>
 						<Heading size={"small"}>Oppsummering</Heading>
 						<>Omfangsobjeket her</>
-						{selectedAccessRole.name && (
+						{accessRoleNameMapped && (
 							<div>
 								<ShieldLockIcon title="a11y-title" fontSize="1.5rem" />
 								Valgt rolle: <b>{selectedAccessRole.name}</b>

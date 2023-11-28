@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react"
+import React, { useState } from "react"
 import RolesToolbar from "./toolbar/RolesToolbar"
 import AssignUserRoleTable from "./AssignUserRoleTable"
 
@@ -31,11 +31,6 @@ const AssignRolesMain = () => {
 		orgUnits: []
 	})
 	const { handleSubmit } = useForm()
-
-	useEffect(() => {
-		setNewAssigment({ ...newAssignment, accessRoleId: selectedAccessRole.accessRoleId })
-		// eslint-disable-next-line react-hooks/exhaustive-deps
-	}, [selectedAccessRole])
 
 	const handleSaveRole = () => {
 		if (validateNewAssignment()) {
