@@ -4,7 +4,6 @@ import React, { useEffect, useState } from "react"
 import { Buldings3Icon } from "@navikt/aksel-icons"
 import { Button, Search, Select } from "@navikt/ds-react"
 import { useRole } from "../../../api/RoleContext"
-import { IRole } from "../../../api/types"
 import { useUser } from "../../../api/UserContext"
 
 const ToolbarContainer = styled.div`
