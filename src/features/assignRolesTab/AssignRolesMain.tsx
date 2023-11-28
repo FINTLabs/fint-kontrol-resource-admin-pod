@@ -1,5 +1,4 @@
 import React, { useEffect, useState } from "react"
-import { useUser } from "../../api/UserContext"
 import RolesToolbar from "./toolbar/RolesToolbar"
 import AssignUserRoleTable from "./AssignUserRoleTable"
 
@@ -12,6 +11,7 @@ import { ConfirmSafeRedirectModal } from "./confirmSafeRedirectModal"
 import { useAssignments } from "../../api/AssignmentContext"
 import { useForm } from "react-hook-form"
 import { toast } from "react-toastify"
+import { useUser } from "../../api/UserContext"
 
 const AssignRolesContainer = styled.div`
 	display: flex;
@@ -20,8 +20,8 @@ const AssignRolesContainer = styled.div`
 `
 
 const AssignRolesMain = () => {
-	const { setOrgUnitIdsFilter } = useUser()
 	const { postNewAssignment } = useAssignments()
+	const { setCurrentPage } = useUser()
 	const { setIsTabModified } = useSafeTabChange()
 	const [selectedAccessRole, setSelectedAccessRole] = useState<IRole>({ accessRoleId: "", name: "" })
 	const [newAssignment, setNewAssigment] = useState<IAssignment>({
@@ -41,6 +41,7 @@ const AssignRolesMain = () => {
 		if (validateNewAssignment()) {
 			setIsTabModified(false)
 			postNewAssignment(newAssignment)
+			setCurrentPage(0)
 			resetAll()
 		} else {
 			toast.info("Data mangler i tildelingen.")
@@ -74,7 +75,7 @@ const AssignRolesMain = () => {
 		<AssignRolesContainer>
 			<ConfirmSafeRedirectModal />
 
-			<RolesToolbar setSelectedAccessRole={setSelectedAccessRole} setOrgUnitIdsFilter={setOrgUnitIdsFilter} />
+			<RolesToolbar />
 
 			<AssignUserRoleTable newAssignment={newAssignment} setNewAssignment={setNewAssigment} />
 
