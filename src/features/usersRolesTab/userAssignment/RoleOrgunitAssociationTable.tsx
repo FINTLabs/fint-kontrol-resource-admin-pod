@@ -1,5 +1,5 @@
 import { Button, Table } from "@navikt/ds-react"
-import { IUser, IUserRole } from "../../../api/types"
+import { IUserRole } from "../../../api/types"
 import React from "react"
 
 interface RoleOrgUnitAssociationTableProps {
