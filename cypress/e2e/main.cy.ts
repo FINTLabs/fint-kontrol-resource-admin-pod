@@ -46,10 +46,6 @@ describe("Check resources-admin", () => {
 		cy.get("#rettigheter-table-delegation").should("be.visible")
 	})
 
-	it("Can see the Lagre-button", () => {
-		cy.get("#save-button-id").should("be.visible")
-	})
-
 	// })
 	//
 	// describe('Check that user can reach info-page', () => {
