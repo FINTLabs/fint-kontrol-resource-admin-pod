@@ -44,9 +44,10 @@ const LoaderWrapper = styled.div`
 interface AssignUserRoleTableProps {
 	newAssignment: IAssignment
 	setNewAssignment: (updatedAssignment: IAssignment) => void
+	setHasChanges: (hasChanges: boolean) => void
 }
 
-const AssignUserRoleTable = ({ newAssignment, setNewAssignment }: AssignUserRoleTableProps) => {
+const AssignUserRoleTable = ({ newAssignment, setNewAssignment, setHasChanges }: AssignUserRoleTableProps) => {
 	const { itemsPerPage, setItemsPerPage, currentPage, setCurrentPage, isLoading, usersPage } = useUser()
 	const { setIsTabModified } = useSafeTabChange()
 	const [isModalOpen, setIsModalOpen] = useState(false)
@@ -66,6 +67,7 @@ const AssignUserRoleTable = ({ newAssignment, setNewAssignment }: AssignUserRole
 
 	const handleSelectUser = (user: IUser) => {
 		setNewAssignment({ ...newAssignment, user: user })
+		setHasChanges(true)
 		setIsTabModified(true)
 	}
 

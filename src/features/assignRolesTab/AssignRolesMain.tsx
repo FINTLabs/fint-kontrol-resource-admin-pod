@@ -16,6 +16,11 @@ const AssignRolesContainer = styled.div`
 	display: flex;
 	flex-direction: column;
 	gap: 1rem;
+
+	.button-wrapper {
+		display: flex;
+		gap: 1rem;
+	}
 `
 
 const AssignRolesMain = () => {
@@ -29,6 +34,7 @@ const AssignRolesMain = () => {
 		orgUnits: []
 	})
 	const { handleSubmit } = useForm()
+	const [hasChanges, setHasChanges] = useState(false)
 
 	const handleSaveRole = () => {
 		if (validateNewAssignment()) {
@@ -61,6 +67,7 @@ const AssignRolesMain = () => {
 	const resetAll = () => {
 		resetAssignment()
 		setSelectedAccessRole({ accessRoleId: "", name: "" })
+		setHasChanges(false)
 	}
 
 	return (
@@ -69,23 +76,33 @@ const AssignRolesMain = () => {
 
 			<RolesToolbar />
 
-			<AssignUserRoleTable newAssignment={newAssignment} setNewAssignment={setNewAssigment} />
+			<AssignUserRoleTable
+				newAssignment={newAssignment}
+				setNewAssignment={setNewAssigment}
+				setHasChanges={setHasChanges}
+			/>
 
 			<AssignRoleToUserConfirmation
+				hasChanges={hasChanges}
 				newAssignment={newAssignment}
 				setNewAssigment={setNewAssigment}
 				selectedAccessRole={selectedAccessRole}
 				setSelectedAccessRole={setSelectedAccessRole}
-				resetAssignment={resetAssignment}
+				setHasChanges={setHasChanges}
 			/>
 
-			<form onSubmit={handleSubmit(handleSaveRole)}>
-				<div>
-					<Button variant={"primary"} id={"save-button-id"}>
-						Lagre rettigheter
-					</Button>
-				</div>
-			</form>
+			{hasChanges && (
+				<form onSubmit={handleSubmit(handleSaveRole)}>
+					<div className={"button-wrapper"}>
+						<Button variant={"secondary"} onClick={resetAll}>
+							Avbryt tildeling
+						</Button>
+						<Button variant={"primary"} id={"save-button-id"}>
+							Lagre rettigheter
+						</Button>
+					</div>
+				</form>
+			)}
 		</AssignRolesContainer>
 	)
 }

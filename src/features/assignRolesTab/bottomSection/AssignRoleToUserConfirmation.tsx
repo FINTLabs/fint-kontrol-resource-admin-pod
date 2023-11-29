@@ -1,4 +1,4 @@
-import { Button, Heading, HStack, VStack } from "@navikt/ds-react"
+import { Heading, VStack } from "@navikt/ds-react"
 import { Buldings3Icon, PersonIcon, ShieldLockIcon } from "@navikt/aksel-icons"
 import React, { useEffect, useState } from "react"
 import { IAssignment, IOrgUnit, IRole } from "../../../api/types"
@@ -22,29 +22,25 @@ const UlStyled = styled.ul`
 	padding: 0;
 `
 
-const HStackStyled = styled(HStack)`
-	align-items: flex-end;
-	gap: 0.5rem;
-`
-
 interface AssignRoleToUserConfirmationProps {
+	hasChanges: boolean
 	selectedAccessRole: IRole
 	newAssignment: IAssignment
 	setNewAssigment: (updatedAssignment: IAssignment) => void
 	setSelectedAccessRole: (newAccessRole: IRole) => void
-	resetAssignment: () => void
+	setHasChanges: (hasChanges: boolean) => void
 }
 
 const AssignRoleToUserConfirmation = ({
 	newAssignment,
+	hasChanges,
 	setNewAssigment,
-	resetAssignment,
 	selectedAccessRole,
-	setSelectedAccessRole
+	setSelectedAccessRole,
+	setHasChanges
 }: AssignRoleToUserConfirmationProps) => {
 	const { roles } = useRole()
 	const [orgUnitsForUser, setOrgUnitsForUser] = useState<IOrgUnit[]>([])
-	const [hasChanges, setHasChanges] = useState(false)
 	const fullName = `${newAssignment.user?.firstName} ${newAssignment.user?.lastName}`
 
 	useEffect(() => {
@@ -75,21 +71,11 @@ const AssignRoleToUserConfirmation = ({
 		setOrgUnitsForUser(scopeOrgUnits)
 	}
 
-	const handleReset = () => {
-		setSelectedAccessRole({ accessRoleId: "", name: "" })
-		resetAssignment()
-	}
-
 	const accessRoleNameMapped = roles.find((ele) => ele.accessRoleId === selectedAccessRole.accessRoleId) // Mapped because role selected in newAssignment only stores the ID and not the name.
 
 	return (
 		<VStack gap={"4"}>
-			<HStackStyled>
-				<OrgUnitModal handleModalMapping={handleModalMapping} />
-				<Button variant={"secondary"} onClick={handleReset}>
-					Nullstill ny tildeling
-				</Button>
-			</HStackStyled>
+			<OrgUnitModal handleModalMapping={handleModalMapping} />
 
 			<AssignmentSummaryContainer>
 				{hasChanges && (
