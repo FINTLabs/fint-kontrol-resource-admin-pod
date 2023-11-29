@@ -128,6 +128,7 @@ const OrgUnitTree = ({ orgUnitsForUser, nodes: IOrgUnit, setOrgUnitsForUser, agg
 
 	return (
 		<>
+			<b>Velg orgenheter</b>
 			{orgUnitsData?.orgUnits?.map((node: any) => {
 				if (node.parentRef !== node.organisationUnitId) {
 					return null

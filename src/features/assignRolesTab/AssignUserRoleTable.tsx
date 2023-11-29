@@ -45,9 +45,10 @@ interface AssignUserRoleTableProps {
 	newAssignment: IAssignment
 	setNewAssignment: (updatedAssignment: IAssignment) => void
 	setHasChanges: (hasChanges: boolean) => void
+	setUser: (user: IUser) => void
 }
 
-const AssignUserRoleTable = ({ newAssignment, setNewAssignment, setHasChanges }: AssignUserRoleTableProps) => {
+const AssignUserRoleTable = ({ newAssignment, setNewAssignment, setHasChanges, setUser }: AssignUserRoleTableProps) => {
 	const { itemsPerPage, setItemsPerPage, currentPage, setCurrentPage, isLoading, usersPage } = useUser()
 	const { setIsTabModified } = useSafeTabChange()
 	const [isModalOpen, setIsModalOpen] = useState(false)
@@ -69,6 +70,7 @@ const AssignUserRoleTable = ({ newAssignment, setNewAssignment, setHasChanges }:
 		setNewAssignment({ ...newAssignment, user: user })
 		setHasChanges(true)
 		setIsTabModified(true)
+		setUser(user)
 	}
 
 	const getExistingRoleData = (user: IUser) => {

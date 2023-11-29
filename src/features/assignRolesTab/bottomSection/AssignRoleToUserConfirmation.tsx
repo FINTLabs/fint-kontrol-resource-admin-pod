@@ -1,7 +1,7 @@
 import { Heading, VStack } from "@navikt/ds-react"
 import { Buldings3Icon, PersonIcon, ShieldLockIcon } from "@navikt/aksel-icons"
 import React, { useEffect, useState } from "react"
-import { IAssignment, IOrgUnit, IRole } from "../../../api/types"
+import { IAssignment, IOrgUnit, IRole, IUser } from "../../../api/types"
 import OrgUnitModal from "./OrgUnitModal"
 import styled from "styled-components"
 import { useRole } from "../../../api/RoleContext"
@@ -29,6 +29,7 @@ interface AssignRoleToUserConfirmationProps {
 	setNewAssigment: (updatedAssignment: IAssignment) => void
 	setSelectedAccessRole: (newAccessRole: IRole) => void
 	setHasChanges: (hasChanges: boolean) => void
+	user: IUser | undefined
 }
 
 const AssignRoleToUserConfirmation = ({
@@ -37,7 +38,8 @@ const AssignRoleToUserConfirmation = ({
 	setNewAssigment,
 	selectedAccessRole,
 	setSelectedAccessRole,
-	setHasChanges
+	setHasChanges,
+	user
 }: AssignRoleToUserConfirmationProps) => {
 	const { roles } = useRole()
 	const [orgUnitsForUser, setOrgUnitsForUser] = useState<IOrgUnit[]>([])
@@ -47,6 +49,7 @@ const AssignRoleToUserConfirmation = ({
 		orgUnitsForUser.length === 0 && selectedAccessRole.accessRoleId === ""
 			? setHasChanges(false)
 			: setHasChanges(true)
+		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [orgUnitsForUser, selectedAccessRole])
 
 	useEffect(() => {
@@ -75,7 +78,7 @@ const AssignRoleToUserConfirmation = ({
 
 	return (
 		<VStack gap={"4"}>
-			<OrgUnitModal handleModalMapping={handleModalMapping} />
+			<OrgUnitModal handleModalMapping={handleModalMapping} user={user} />
 
 			<AssignmentSummaryContainer>
 				{hasChanges && (

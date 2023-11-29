@@ -1,15 +1,27 @@
-import { Button, Modal, Select, Switch } from "@navikt/ds-react"
+import { Alert, Button, Modal, Select, Switch } from "@navikt/ds-react"
 import React, { useRef, useState } from "react"
 import OrgUnitTree from "./OrgUnitTree"
-import { IOrgUnit } from "../../../api/types"
+import { IOrgUnit, IUser } from "../../../api/types"
 import { Buldings3Icon } from "@navikt/aksel-icons"
 import { useRole } from "../../../api/RoleContext"
+import styled from "styled-components"
+
+const ModalBodyStyled = styled(Modal.Body)`
+	display: flex;
+	flex-direction: column;
+	gap: 1rem;
+
+	.select-wrapper {
+		width: fit-content;
+	}
+`
 
 interface OrgUnitModalProps {
 	handleModalMapping: (scopeAccessRoleId: string, scopeOrgUnits: IOrgUnit[]) => void
+	user: IUser | undefined
 }
 
-const OrgUnitModal = ({ handleModalMapping }: OrgUnitModalProps) => {
+const OrgUnitModal = ({ handleModalMapping, user }: OrgUnitModalProps) => {
 	const { roles } = useRole()
 	const ref = useRef<HTMLDialogElement>(null)
 	const [aggregated, setAggregated] = useState(false)
@@ -52,33 +64,44 @@ const OrgUnitModal = ({ handleModalMapping }: OrgUnitModalProps) => {
 				onAbort={handleClose}
 				onCancel={handleClose}
 			>
-				<Modal.Body>
-					<Select
-						size={"medium"}
-						value={scopeAccessRoleId}
-						onChange={(e) => setScopeAccessRoleId(e.target.value)}
-						id={"tildel-rolle"}
-						label={"Tildel rolle"}
-					>
-						<option value="" disabled={true}>
-							Velg rolle
-						</option>
-						{roles.map((role) => (
-							<option value={role.accessRoleId} key={role.accessRoleId}>
-								{role.name}
+				<ModalBodyStyled>
+					<div className={"select-wrapper"}>
+						<Select
+							size={"medium"}
+							value={scopeAccessRoleId}
+							onChange={(e) => setScopeAccessRoleId(e.target.value)}
+							id={"tildel-rolle"}
+							label={"Tildel rolle"}
+						>
+							<option value="" disabled={true}>
+								Velg rolle
 							</option>
-						))}
-					</Select>
+							{roles.map((role) => (
+								<option value={role.accessRoleId} key={role.accessRoleId}>
+									{role.name}
+								</option>
+							))}
+						</Select>
+					</div>
 
-					<Switch onClick={() => setAggregated(!aggregated)} checked={aggregated}>
-						Inkluder underliggende enheter
-					</Switch>
-					<OrgUnitTree
-						orgUnitsForUser={scopeOrgUnits}
-						setOrgUnitsForUser={setScopeOrgUnits}
-						aggregated={aggregated}
-					/>
-				</Modal.Body>
+					{user?.roles?.some((role) => role.roleId === scopeAccessRoleId) && (
+						<Alert variant={"info"}>
+							Denne rollen eksisterer allerede på brukeren. En ny tildeling vil overskrive eksisterende
+							tildelingsdata!
+						</Alert>
+					)}
+
+					<>
+						<Switch onClick={() => setAggregated(!aggregated)} checked={aggregated}>
+							Inkluder underliggende enheter
+						</Switch>
+						<OrgUnitTree
+							orgUnitsForUser={scopeOrgUnits}
+							setOrgUnitsForUser={setScopeOrgUnits}
+							aggregated={aggregated}
+						/>
+					</>
+				</ModalBodyStyled>
 				<Modal.Footer>
 					<Button type="button" onClick={handleSubmit}>
 						Velg orgenhet

@@ -8,6 +8,7 @@ import { useUser } from "./UserContext"
 interface AssignmentContextType {
 	isLoading: boolean
 	postNewAssignment: (newAssignment: IAssignment) => void
+	putNewAssignment: (newAssignment: IAssignment) => void
 }
 
 const AssignmentContext = createContext<AssignmentContextType | undefined>(undefined)
@@ -26,13 +27,35 @@ export const AssignmentProvider = ({ children, basePath }: { children: React.Rea
 					getUsersPage()
 				})
 				.catch((err: AxiosError) => {
-					toast.error("Rolletildeling feilet.")
+					toast.error("Ny rolletildeling feilet.")
 					console.log(err)
 				})
 				.finally(() => setIsLoading(false))
 		}
 	}
-	return <AssignmentContext.Provider value={{ isLoading, postNewAssignment }}>{children}</AssignmentContext.Provider>
+
+	const putNewAssignment = async (newAssignment: IAssignment) => {
+		toast.dismiss()
+		if (basePath) {
+			setIsLoading(true)
+			await AssignmentRepository.putNewAssignment(basePath, newAssignment)
+				.then(() => {
+					toast.success("Oppdatert rolletildeling utført!")
+					getUsersPage()
+				})
+				.catch((err: AxiosError) => {
+					toast.error("Oppdatering av tildeling feilet.")
+					console.log(err)
+				})
+				.finally(() => setIsLoading(false))
+		}
+	}
+
+	return (
+		<AssignmentContext.Provider value={{ isLoading, postNewAssignment, putNewAssignment }}>
+			{children}
+		</AssignmentContext.Provider>
+	)
 }
 
 export const useAssignments = (): AssignmentContextType => {

@@ -1,4 +1,4 @@
-import React, { useState } from "react"
+import React, { useEffect, useState } from "react"
 import RolesToolbar from "./toolbar/RolesToolbar"
 import AssignUserRoleTable from "./AssignUserRoleTable"
 
@@ -24,7 +24,7 @@ const AssignRolesContainer = styled.div`
 `
 
 const AssignRolesMain = () => {
-	const { postNewAssignment } = useAssignments()
+	const { postNewAssignment, putNewAssignment } = useAssignments()
 	const { setIsTabModified } = useSafeTabChange()
 	const [selectedAccessRole, setSelectedAccessRole] = useState<IRole>({ accessRoleId: "", name: "" })
 	const [newAssignment, setNewAssigment] = useState<IAssignment>({
@@ -35,11 +35,26 @@ const AssignRolesMain = () => {
 	})
 	const { handleSubmit } = useForm()
 	const [hasChanges, setHasChanges] = useState(false)
+	const [user, setUser] = useState<IUser | undefined>()
+	const [roleExists, setRoleExists] = useState(false)
+
+	useEffect(() => {
+		if (user?.roles?.some((role) => role.roleId === newAssignment.accessRoleId)) {
+			setRoleExists(true)
+		} else {
+			setRoleExists(false)
+		}
+		// eslint-disable-next-line react-hooks/exhaustive-deps
+	}, [newAssignment])
 
 	const handleSaveRole = () => {
 		if (validateNewAssignment()) {
 			setIsTabModified(false)
-			postNewAssignment(newAssignment)
+			if (roleExists) {
+				putNewAssignment(newAssignment)
+			} else {
+				postNewAssignment(newAssignment)
+			}
 			resetAll()
 		} else {
 			toast.info("Data mangler i tildelingen.")
@@ -80,6 +95,7 @@ const AssignRolesMain = () => {
 				newAssignment={newAssignment}
 				setNewAssignment={setNewAssigment}
 				setHasChanges={setHasChanges}
+				setUser={setUser}
 			/>
 
 			<AssignRoleToUserConfirmation
@@ -89,6 +105,7 @@ const AssignRolesMain = () => {
 				selectedAccessRole={selectedAccessRole}
 				setSelectedAccessRole={setSelectedAccessRole}
 				setHasChanges={setHasChanges}
+				user={user}
 			/>
 
 			{hasChanges && (

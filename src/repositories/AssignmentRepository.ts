@@ -19,8 +19,21 @@ const postNewAssignment = (basePath: string, newAssignment: IAssignment) => {
 	return axios.post<IAssignment>(url, preparedAssignmentBody)
 }
 
+const putNewAssignment = (basePath: string, newAssignment: IAssignment) => {
+	const baseUrl = `${basePath === "/" ? "" : basePath}/api/accessmanagement/v1/accessassignment`
+	const url = `${baseUrl}`
+	const preparedAssignmentBody: IPreparedAssignment = {
+		userId: String(newAssignment.user.resourceId),
+		scopeId: newAssignment.scopeId,
+		accessRoleId: newAssignment.accessRoleId,
+		orgUnitIds: newAssignment.orgUnits.map((orgunit) => String(orgunit.organisationUnitId))
+	}
+	return axios.put<IAssignment>(url, preparedAssignmentBody)
+}
+
 const AssignmentRepository = {
-	postNewAssignment
+	postNewAssignment,
+	putNewAssignment
 }
 
 export default AssignmentRepository
