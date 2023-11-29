@@ -1,6 +1,6 @@
 import { useNavigate, useParams } from "react-router-dom"
 import styled from "styled-components"
-import { Box, Button, Heading, Select } from "@navikt/ds-react"
+import { Box, Button, Heading, HStack, Select, VStack } from "@navikt/ds-react"
 import { ArrowBack } from "@mui/icons-material"
 import { useEffect, useState } from "react"
 import { useUser } from "../../../api/UserContext"
@@ -37,7 +37,6 @@ const UserAssignmentPage = ({ basePath }: UserAssignmentPageProps) => {
 		scopes: []
 	})
 	const [isModalOpen, setIsModalOpen] = useState(false)
-	const [assignmentToDelete, setAssignmentToDelete] = useState<IUserRole | undefined>()
 	const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false)
 	const [selectedRole, setSelectedRole] = useState<IRole>({ accessRoleId: "", name: "" })
 	const navigate = useNavigate()
@@ -85,13 +84,16 @@ const UserAssignmentPage = ({ basePath }: UserAssignmentPageProps) => {
 		setIsModalOpen(true)
 	}
 
-	const toggleDeleteModal = (assignmentToChange: IUserRole) => {
-		setAssignmentToDelete(assignmentToChange)
+	const toggleDeleteModal = () => {
 		setIsDeleteModalOpen(true)
 	}
 
 	if (isLoading) {
 		return <LoaderStyled size={"3xlarge"} />
+	}
+
+	if (!user) {
+		return <></>
 	}
 
 	// Filter for data to feed into table component
@@ -107,34 +109,48 @@ const UserAssignmentPage = ({ basePath }: UserAssignmentPageProps) => {
 			{isLoading ? (
 				<LoaderStyled size="3xlarge" title="Laster inn brukerdata..." />
 			) : (
-				<div>
+				<VStack gap={"4"}>
 					<Box>
 						<Heading size={"small"}>Brukerinfo</Heading>
 						Navn: {user?.firstName} {user?.lastName}
 					</Box>
 
-					<Select
-						label={"Velg rolle"}
-						value={selectedRole.accessRoleId}
-						onChange={(event) => handleChangeRole(event.target.value)}
-					>
-						<option value={""}>Velg rolle</option>
-						{user?.roles?.map((role) => (
-							<option key={role.roleId} value={role.roleId}>
-								{role.roleName}
+					<HStack justify={"space-between"} align={"end"}>
+						<Select
+							label={"Velg rolle"}
+							value={selectedRole.accessRoleId}
+							onChange={(event) => handleChangeRole(event.target.value)}
+						>
+							<option value={""} disabled={true}>
+								Velg rolle
 							</option>
-						))}
-					</Select>
+							{user?.roles?.map((role) => (
+								<option key={role.roleId} value={role.roleId}>
+									{role.roleName}
+								</option>
+							))}
+						</Select>
+						<div>
+							{selectedRole.accessRoleId !== "" && (
+								<Button variant={"danger"} onClick={toggleDeleteModal}>
+									Slett rolleobjekt
+								</Button>
+							)}
+						</div>
+					</HStack>
 
 					<Box>
-						<RoleOrgunitAssociationTable
-							user={user}
-							scopeFromUserRole={scopeFromUserRole}
-							toggleChangeModal={toggleChangeModal}
-							toggleDeleteModal={toggleDeleteModal}
-						/>
+						{user?.roles?.length === 0 ? (
+							<>Brukeren har ingen roller</>
+						) : (
+							<RoleOrgunitAssociationTable
+								scopeFromUserRole={scopeFromUserRole}
+								toggleChangeModal={toggleChangeModal}
+								toggleDeleteModal={toggleDeleteModal}
+							/>
+						)}
 					</Box>
-				</div>
+				</VStack>
 			)}
 
 			{isModalOpen && (
@@ -144,9 +160,10 @@ const UserAssignmentPage = ({ basePath }: UserAssignmentPageProps) => {
 					setIsModalOpen={setIsModalOpen}
 				/>
 			)}
-			{isDeleteModalOpen && assignmentToDelete && (
+			{isDeleteModalOpen && selectedRole && (
 				<DeleteAssignment
-					assignmentToDelete={assignmentToDelete}
+					userData={user}
+					selectedRoleToDeleteFrom={selectedRole}
 					modalOpenProp={isDeleteModalOpen}
 					setIsDeleteModalOpen={setIsDeleteModalOpen}
 				/>

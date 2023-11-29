@@ -1,23 +1,37 @@
-import { IUserRole } from "../../../../api/types"
-import { Button, Modal } from "@navikt/ds-react"
-import React, { useEffect, useRef } from "react"
+import { Button, Modal, Select, Switch } from "@navikt/ds-react"
+import React, { useEffect, useRef, useState } from "react"
 import { toast } from "react-toastify"
+import { IRole, IUser } from "../../../../api/types"
+import styled from "styled-components"
+
+const ModalBodyStyled = styled(Modal.Body)`
+	display: flex;
+	flex-direction: column;
+	gap: 1rem;
+`
 
 interface DeleteAssignmentsModalProps {
-	assignmentToDelete: IUserRole
+	selectedRoleToDeleteFrom: IRole
 	modalOpenProp: boolean
 	setIsDeleteModalOpen: (isOpen: boolean) => void
+	userData: IUser
 }
 
-const DeleteAssignment = ({ setIsDeleteModalOpen, modalOpenProp, assignmentToDelete }: DeleteAssignmentsModalProps) => {
+const DeleteAssignment = ({
+	setIsDeleteModalOpen,
+	modalOpenProp,
+	selectedRoleToDeleteFrom,
+	userData
+}: DeleteAssignmentsModalProps) => {
 	const deleteRef = useRef<HTMLDialogElement>(null)
+	const [completeDelete, setCompleteDelete] = useState(false)
 
 	useEffect(() => {
-		if (assignmentToDelete.roleId.length > 0 || modalOpenProp) {
+		if (selectedRoleToDeleteFrom.accessRoleId.length > 0 || modalOpenProp) {
 			openModal()
 		}
 		// eslint-disable-next-line react-hooks/exhaustive-deps
-	}, [assignmentToDelete, modalOpenProp])
+	}, [selectedRoleToDeleteFrom, modalOpenProp])
 
 	const openModal = () => {
 		setIsDeleteModalOpen(true)
@@ -32,16 +46,30 @@ const DeleteAssignment = ({ setIsDeleteModalOpen, modalOpenProp, assignmentToDel
 	const handleDeleteAssignmentData = () => {
 		// TODO: Fix this when API is ready
 		// AssignmentRepository.putAccessRole(basePath, updatedAssignment)
-		toast.info("Sletting er foreløpig ikke mulig")
+		toast.info("Sletting er foreløpig ikke mulig.")
 		closeModal()
 	}
 
+	const objectTypesInUser = userData.roles?.flatMap((role) => role.scopes.map((scope) => scope.objectType))
+	// Use Set to get unique values
+	const uniqueObjectTypes = Array.from(new Set(objectTypesInUser))
+
 	return (
-		<Modal ref={deleteRef} header={{ heading: `Endre ${assignmentToDelete?.roleName}` }} onClose={closeModal}>
-			<Modal.Body>
-				Ønsker du å slette brukertilknytningen til {assignmentToDelete.roleName} og de underliggende
+		<Modal ref={deleteRef} header={{ heading: `Slett ${selectedRoleToDeleteFrom.name}?` }} onClose={closeModal}>
+			<ModalBodyStyled>
+				Ønsker du å slette brukertilknytningen til {selectedRoleToDeleteFrom.name} og de underliggende
 				orgenhetene?
-			</Modal.Body>
+				<Switch onClick={() => setCompleteDelete(!completeDelete)} checked={completeDelete}>
+					Fjern hele knytningen uavhengig objekttyper?{" "}
+				</Switch>
+				{!completeDelete && (
+					<Select label={"Velg objekttype å inkludere i sletting"}>
+						{uniqueObjectTypes.map((objectType, index) => (
+							<option key={index}>{objectType}</option>
+						))}
+					</Select>
+				)}
+			</ModalBodyStyled>
 			<Modal.Footer>
 				<Button type="button" variant={"danger"} onClick={() => handleDeleteAssignmentData()}>
 					Slett

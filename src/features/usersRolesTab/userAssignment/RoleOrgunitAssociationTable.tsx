@@ -3,17 +3,18 @@ import { IUser, IUserRole } from "../../../api/types"
 import React from "react"
 
 interface RoleOrgUnitAssociationTableProps {
-	user: IUser | undefined
 	toggleChangeModal: (assignmentToChange: IUserRole) => void
 	toggleDeleteModal: (assignmentToChange: IUserRole) => void
 	scopeFromUserRole: IUserRole | undefined
 }
 const RoleOrgunitAssociationTable = ({
-	user,
 	toggleChangeModal,
 	toggleDeleteModal,
 	scopeFromUserRole
 }: RoleOrgUnitAssociationTableProps) => {
+	if (!scopeFromUserRole) {
+		return <></>
+	}
 	return (
 		<Table>
 			<Table.Header>
@@ -24,7 +25,7 @@ const RoleOrgunitAssociationTable = ({
 				</Table.Row>
 			</Table.Header>
 			<Table.Body>
-				{scopeFromUserRole ? (
+				{scopeFromUserRole?.scopes.length !== 0 ? (
 					scopeFromUserRole.scopes.map((scope) =>
 						scope.orgUnits.map((orgUnit) => (
 							<Table.Row key={scope + "," + orgUnit.orgUnitId}>
@@ -41,7 +42,7 @@ const RoleOrgunitAssociationTable = ({
 				) : (
 					<Table.Row>
 						<Table.DataCell align={"center"} colSpan={4}>
-							Rolle må velges for å vise data...
+							Det fins ingen objekter knyttet til denne rollen.
 						</Table.DataCell>
 					</Table.Row>
 				)}
