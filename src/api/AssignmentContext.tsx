@@ -6,6 +6,14 @@ import { AxiosError } from "axios"
 import { useUser } from "./UserContext"
 
 interface AssignmentContextType {
+	deleteAllAssignmentsOnUser: (resourceId: string) => void
+	deleteAssignmentById: (assignmentId: string) => void
+	deleteOrgUnitFromAssignment: (
+		userId: string,
+		scopeId: string,
+		orgUnitId: string,
+		reFetchUserById: () => void
+	) => void
 	isLoading: boolean
 	postNewAssignment: (newAssignment: IAssignment) => void
 	putNewAssignment: (newAssignment: IAssignment) => void
@@ -15,7 +23,7 @@ const AssignmentContext = createContext<AssignmentContextType | undefined>(undef
 
 export const AssignmentProvider = ({ children, basePath }: { children: React.ReactNode; basePath: string }) => {
 	const [isLoading, setIsLoading] = useState(false)
-	const { getUsersPage } = useUser()
+	const { getUsersPage, getSpecificUserById } = useUser()
 
 	const postNewAssignment = async (newAssignment: IAssignment) => {
 		toast.dismiss()
@@ -51,8 +59,74 @@ export const AssignmentProvider = ({ children, basePath }: { children: React.Rea
 		}
 	}
 
+	const deleteAssignmentById = async (assignmentId: string) => {
+		// TODO: API not ready, so this data might be wrong
+		if (basePath) {
+			setIsLoading(true)
+			await AssignmentRepository.deleteAssignmentById(basePath, assignmentId)
+				.then(() => {
+					toast.success("Sletting av rolleknytning utført!")
+					getUsersPage()
+				})
+				.catch((err: AxiosError) => {
+					toast.error("Sletting av rolleknytning feilet.")
+					console.log(err)
+				})
+				.finally(() => setIsLoading(false))
+		}
+	}
+
+	const deleteOrgUnitFromAssignment = async (
+		userId: string,
+		scopeId: string,
+		orgUnitId: string,
+		reFetchUserById: () => void
+	) => {
+		if (basePath) {
+			setIsLoading(true)
+			await AssignmentRepository.deleteOrgUnitFromAssignment(basePath, scopeId, orgUnitId)
+				.then(() => {
+					toast.success("Sletting av orgenhetsknytning utført!")
+					reFetchUserById()
+				})
+				.catch((err: AxiosError) => {
+					toast.error("Sletting av orgenhetsknytning feilet.")
+					console.log(err)
+				})
+				.finally(() => {
+					setIsLoading(false)
+					getSpecificUserById(userId)
+				})
+		}
+	}
+
+	const deleteAllAssignmentsOnUser = async (resourceId: string) => {
+		if (basePath) {
+			setIsLoading(true)
+			await AssignmentRepository.deleteAllAssignmentsOnUser(basePath, resourceId)
+				.then(() => {
+					toast.success("Alle rolleknytninger slettet!")
+					getUsersPage()
+				})
+				.catch((err: AxiosError) => {
+					toast.error("Sletting av rolleknytninger feilet.")
+					console.log(err)
+				})
+				.finally(() => setIsLoading(false))
+		}
+	}
+
 	return (
-		<AssignmentContext.Provider value={{ isLoading, postNewAssignment, putNewAssignment }}>
+		<AssignmentContext.Provider
+			value={{
+				deleteAllAssignmentsOnUser,
+				deleteAssignmentById,
+				deleteOrgUnitFromAssignment,
+				isLoading,
+				postNewAssignment,
+				putNewAssignment
+			}}
+		>
 			{children}
 		</AssignmentContext.Provider>
 	)

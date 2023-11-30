@@ -39,29 +39,37 @@ const UserAssignmentPage = ({ basePath }: UserAssignmentPageProps) => {
 	const [isModalOpen, setIsModalOpen] = useState(false)
 	const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false)
 	const [selectedRole, setSelectedRole] = useState<IRole>({ accessRoleId: "", name: "" })
+	const [shouldRefetch, setShouldRefetch] = useState(true)
 	const navigate = useNavigate()
 
 	useEffect(() => {
 		const getUserById = () => {
-			if (userId) {
-				setIsLoading(true)
-
-				getSpecificUserById(userId)
-					.then((user) => {
-						setUser(user)
-					})
-					.catch((error) => {
-						console.error("Error fetching user:", error)
-					})
-					.finally(() => {
-						setIsLoading(false)
-					})
-			}
+			reFetchUserById()
 		}
-		getUserById()
+		if (shouldRefetch) {
+			getUserById()
+		}
 		// Must add the eslint disable in order to avoid infinite loops cause by adding getUserById as a dependency.
 		// eslint-disable-next-line react-hooks/exhaustive-deps
-	}, [setIsLoading, userId, basePath])
+	}, [isLoading, userId, basePath])
+
+	const reFetchUserById = () => {
+		if (userId) {
+			setIsLoading(true)
+
+			getSpecificUserById(userId)
+				.then((user) => {
+					setUser(user)
+				})
+				.catch((error) => {
+					console.error("Error fetching user:", error)
+				})
+				.finally(() => {
+					setIsLoading(false)
+					setShouldRefetch(false)
+				})
+		}
+	}
 
 	const goBack = () => {
 		navigate(-1) // Navigate back in the history
@@ -92,7 +100,7 @@ const UserAssignmentPage = ({ basePath }: UserAssignmentPageProps) => {
 		return <LoaderStyled size={"3xlarge"} />
 	}
 
-	if (!user) {
+	if (!user || !userId) {
 		return <></>
 	}
 
@@ -144,9 +152,12 @@ const UserAssignmentPage = ({ basePath }: UserAssignmentPageProps) => {
 							<>Brukeren har ingen roller</>
 						) : (
 							<RoleOrgunitAssociationTable
+								selectedRole={selectedRole}
 								scopeFromUserRole={scopeFromUserRole}
 								toggleChangeModal={toggleChangeModal}
 								toggleDeleteModal={toggleDeleteModal}
+								userId={userId}
+								reFetchUserById={reFetchUserById}
 							/>
 						)}
 					</Box>
