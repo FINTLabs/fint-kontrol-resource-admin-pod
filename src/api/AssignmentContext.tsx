@@ -8,12 +8,7 @@ import { useUser } from "./UserContext"
 interface AssignmentContextType {
 	deleteAllAssignmentsOnUser: (resourceId: string) => void
 	deleteAssignmentById: (assignmentId: string) => void
-	deleteOrgUnitFromAssignment: (
-		userId: string,
-		scopeId: string,
-		orgUnitId: string,
-		reFetchUserById: () => void
-	) => void
+	deleteOrgUnitFromAssignment: (userId: string, scopeId: string, orgUnitId: string) => void
 	isLoading: boolean
 	postNewAssignment: (newAssignment: IAssignment) => void
 	putNewAssignment: (newAssignment: IAssignment) => void
@@ -76,18 +71,12 @@ export const AssignmentProvider = ({ children, basePath }: { children: React.Rea
 		}
 	}
 
-	const deleteOrgUnitFromAssignment = async (
-		userId: string,
-		scopeId: string,
-		orgUnitId: string,
-		reFetchUserById: () => void
-	) => {
+	const deleteOrgUnitFromAssignment = async (userId: string, scopeId: string, orgUnitId: string) => {
 		if (basePath) {
 			setIsLoading(true)
 			await AssignmentRepository.deleteOrgUnitFromAssignment(basePath, scopeId, orgUnitId)
 				.then(() => {
 					toast.success("Sletting av orgenhetsknytning utført!")
-					reFetchUserById()
 				})
 				.catch((err: AxiosError) => {
 					toast.error("Sletting av orgenhetsknytning feilet.")
@@ -119,9 +108,9 @@ export const AssignmentProvider = ({ children, basePath }: { children: React.Rea
 	return (
 		<AssignmentContext.Provider
 			value={{
+				deleteOrgUnitFromAssignment,
 				deleteAllAssignmentsOnUser,
 				deleteAssignmentById,
-				deleteOrgUnitFromAssignment,
 				isLoading,
 				postNewAssignment,
 				putNewAssignment

@@ -7,7 +7,7 @@ import { useSafeTabChange } from "./SafeTabChangeContext"
 interface UserContextType {
 	currentPage: number
 	getUsersPage: () => void
-	getSpecificUserById: (userId: string) => Promise<IUser>
+	getSpecificUserById: (userId: string) => void
 	isLoading: boolean
 	itemsPerPage: number
 	orgUnitIds: string[]
@@ -22,6 +22,8 @@ interface UserContextType {
 	setUser: (data: IUserPage | null) => void
 	setSearchString: (searchString: string) => void
 	setRoleFilter: (roleFilterString: string) => void
+	setSpecificUser: (user: IUser | null) => void
+	specificUser: IUser | null
 	roleFilter: string
 }
 
@@ -37,6 +39,7 @@ export function UserProvider({ children, basePath }: { children: React.ReactNode
 	const [usersPage, setUsersPage] = useState<IUserPage | null>(null)
 	const [searchString, setSearchString] = useState<string>("")
 	const [roleFilter, setRoleFilter] = useState("")
+	const [specificUser, setSpecificUser] = useState<IUser | null>(null)
 
 	useEffect(() => {
 		resetPagination()
@@ -70,11 +73,11 @@ export function UserProvider({ children, basePath }: { children: React.ReactNode
 		}
 	}
 
-	const getSpecificUserById = async (userId: string): Promise<IUser> => {
+	const getSpecificUserById = async (userId: string) => {
 		try {
 			setIsLoading(true)
 			const response = await UsersRepository.getSpecificUserById(basePath, userId)
-			return response.data
+			setSpecificUser(response.data)
 		} catch (error) {
 			// Handle errors here if necessary
 			console.error("Error fetching specific user:", error)
@@ -109,6 +112,8 @@ export function UserProvider({ children, basePath }: { children: React.ReactNode
 				setOrgUnitIdsFilter,
 				setSearchString,
 				setRoleFilter,
+				setSpecificUser,
+				specificUser,
 				roleFilter
 			}}
 		>

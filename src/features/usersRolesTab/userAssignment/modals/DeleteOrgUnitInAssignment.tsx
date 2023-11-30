@@ -17,7 +17,6 @@ interface DeleteOrgUnitsInAssignmentProps {
 	scopeId: string
 	orgUnitToDelete: IOrgUnitForScope
 	userId: string
-	reFetchUserById: () => void
 }
 
 const DeleteOrgUnitInAssignment = ({
@@ -26,8 +25,7 @@ const DeleteOrgUnitInAssignment = ({
 	roleToDeleteFrom,
 	setIsDeleteModalOpen,
 	scopeId,
-	userId,
-	reFetchUserById
+	userId
 }: DeleteOrgUnitsInAssignmentProps) => {
 	const { deleteOrgUnitFromAssignment } = useAssignments()
 	const deleteRef = useRef<HTMLDialogElement>(null)
@@ -47,7 +45,7 @@ const DeleteOrgUnitInAssignment = ({
 	}
 
 	const handleDeleteAssignmentData = () => {
-		deleteOrgUnitFromAssignment(userId, scopeId, orgUnitToDelete.orgUnitId, reFetchUserById)
+		deleteOrgUnitFromAssignment(userId, scopeId, orgUnitToDelete.orgUnitId)
 		closeModal()
 	}
 

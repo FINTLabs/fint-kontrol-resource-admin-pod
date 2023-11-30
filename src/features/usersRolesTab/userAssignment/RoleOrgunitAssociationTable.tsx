@@ -9,15 +9,13 @@ interface RoleOrgUnitAssociationTableProps {
 	scopeFromUserRole: IUserRole | undefined
 	selectedRole: IRole
 	userId: string
-	reFetchUserById: () => void
 }
 const RoleOrgunitAssociationTable = ({
 	toggleChangeModal,
 	toggleDeleteModal,
 	scopeFromUserRole,
 	selectedRole,
-	userId,
-	reFetchUserById
+	userId
 }: RoleOrgUnitAssociationTableProps) => {
 	const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false)
 	const [orgUnit, setOrgUnit] = useState<IOrgUnitForScope | undefined>()
@@ -43,7 +41,6 @@ const RoleOrgunitAssociationTable = ({
 					scopeId={scopeId}
 					orgUnitToDelete={orgUnit}
 					userId={userId}
-					reFetchUserById={reFetchUserById}
 				/>
 			)}
 

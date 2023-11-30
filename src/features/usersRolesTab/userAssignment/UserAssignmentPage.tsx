@@ -27,10 +27,9 @@ interface UserAssignmentPageProps {
 }
 
 const UserAssignmentPage = ({ basePath }: UserAssignmentPageProps) => {
+	const { isLoading, setIsLoading, getSpecificUserById, specificUser, setSpecificUser } = useUser()
 	const { userId } = useParams()
 	const { roles } = useRole()
-	const { isLoading, setIsLoading, getSpecificUserById } = useUser()
-	const [user, setUser] = useState<IUser>()
 	const [assignmentToChange, setAssignmentToChange] = useState<IUserRole>({
 		roleId: "",
 		roleName: "",
@@ -39,37 +38,22 @@ const UserAssignmentPage = ({ basePath }: UserAssignmentPageProps) => {
 	const [isModalOpen, setIsModalOpen] = useState(false)
 	const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false)
 	const [selectedRole, setSelectedRole] = useState<IRole>({ accessRoleId: "", name: "" })
-	const [shouldRefetch, setShouldRefetch] = useState(true)
 	const navigate = useNavigate()
 
 	useEffect(() => {
+		setSpecificUser(null)
+	}, [])
+
+	useEffect(() => {
 		const getUserById = () => {
-			reFetchUserById()
+			if (userId) {
+				getSpecificUserById(userId)
+			}
 		}
-		if (shouldRefetch) {
-			getUserById()
-		}
+		getUserById()
 		// Must add the eslint disable in order to avoid infinite loops cause by adding getUserById as a dependency.
 		// eslint-disable-next-line react-hooks/exhaustive-deps
-	}, [isLoading, userId, basePath])
-
-	const reFetchUserById = () => {
-		if (userId) {
-			setIsLoading(true)
-
-			getSpecificUserById(userId)
-				.then((user) => {
-					setUser(user)
-				})
-				.catch((error) => {
-					console.error("Error fetching user:", error)
-				})
-				.finally(() => {
-					setIsLoading(false)
-					setShouldRefetch(false)
-				})
-		}
-	}
+	}, [setIsLoading, userId, basePath])
 
 	const goBack = () => {
 		navigate(-1) // Navigate back in the history
@@ -100,12 +84,12 @@ const UserAssignmentPage = ({ basePath }: UserAssignmentPageProps) => {
 		return <LoaderStyled size={"3xlarge"} />
 	}
 
-	if (!user || !userId) {
+	if (!specificUser || !userId) {
 		return <></>
 	}
 
 	// Filter for data to feed into table component
-	const scopeFromUserRole = user?.roles?.find((role) => role.roleId === selectedRole.accessRoleId)
+	const scopeFromUserRole = specificUser?.roles?.find((role) => role.roleId === selectedRole.accessRoleId)
 
 	return (
 		<UserAssignmentContainer>
@@ -120,7 +104,7 @@ const UserAssignmentPage = ({ basePath }: UserAssignmentPageProps) => {
 				<VStack gap={"4"}>
 					<Box>
 						<Heading size={"small"}>Brukerinfo</Heading>
-						Navn: {user?.firstName} {user?.lastName}
+						Navn: {specificUser?.firstName} {specificUser?.lastName}
 					</Box>
 
 					<HStack justify={"space-between"} align={"end"}>
@@ -132,7 +116,7 @@ const UserAssignmentPage = ({ basePath }: UserAssignmentPageProps) => {
 							<option value={""} disabled={true}>
 								Velg rolle
 							</option>
-							{user?.roles?.map((role) => (
+							{specificUser?.roles?.map((role) => (
 								<option key={role.roleId} value={role.roleId}>
 									{role.roleName}
 								</option>
@@ -148,7 +132,7 @@ const UserAssignmentPage = ({ basePath }: UserAssignmentPageProps) => {
 					</HStack>
 
 					<Box>
-						{user?.roles?.length === 0 ? (
+						{specificUser?.roles?.length === 0 ? (
 							<>Brukeren har ingen roller</>
 						) : (
 							<RoleOrgunitAssociationTable
@@ -157,7 +141,6 @@ const UserAssignmentPage = ({ basePath }: UserAssignmentPageProps) => {
 								toggleChangeModal={toggleChangeModal}
 								toggleDeleteModal={toggleDeleteModal}
 								userId={userId}
-								reFetchUserById={reFetchUserById}
 							/>
 						)}
 					</Box>
@@ -173,7 +156,7 @@ const UserAssignmentPage = ({ basePath }: UserAssignmentPageProps) => {
 			)}
 			{isDeleteModalOpen && selectedRole && (
 				<DeleteAssignment
-					userData={user}
+					userData={specificUser}
 					selectedRoleToDeleteFrom={selectedRole}
 					modalOpenProp={isDeleteModalOpen}
 					setIsDeleteModalOpen={setIsDeleteModalOpen}
