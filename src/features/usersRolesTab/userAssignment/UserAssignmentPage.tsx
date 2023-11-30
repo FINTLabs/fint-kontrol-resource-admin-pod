@@ -4,7 +4,7 @@ import { Box, Button, Heading, HStack, Select, VStack } from "@navikt/ds-react"
 import { ArrowBack } from "@mui/icons-material"
 import { useEffect, useState } from "react"
 import { useUser } from "../../../api/UserContext"
-import { IRole, IUser, IUserRole } from "../../../api/types"
+import { IRole, IUserRole } from "../../../api/types"
 import { LoaderStyled } from "../../index"
 import RoleOrgunitAssociationTable from "./RoleOrgunitAssociationTable"
 import ChangeAssignment from "./modals/ChangeAssignment"
@@ -42,7 +42,7 @@ const UserAssignmentPage = ({ basePath }: UserAssignmentPageProps) => {
 
 	useEffect(() => {
 		setSpecificUser(null)
-	}, [])
+	}, [setSpecificUser])
 
 	useEffect(() => {
 		const getUserById = () => {
