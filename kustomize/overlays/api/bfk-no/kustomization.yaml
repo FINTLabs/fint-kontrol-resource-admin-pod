@@ -1,0 +1,23 @@
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+resources:
+  - ../../../base
+commonLabels:
+    app.kubernetes.io/name: fint-kontroll-resource-admin-pod
+    app.kubernetes.io/instance: fint-kontroll-resource-admin-pod_bfk-no
+    app.kubernetes.io/version: "latest"
+    app.kubernetes.io/managed-by: GA
+    app.kubernetes.io/component: podlet
+    app.kubernetes.io/part-of: fint-kontroll
+    fintlabs.no/team: bas
+    fintlabs.no/org-id: bfk.no
+patches:
+  - patch: |-
+      - op: add
+        path: "/spec/env/-"
+        value:
+          name: ENVIRONMENT
+          value: api
+    target:
+      kind: Application
+      name: fint-kontroll-resource-admin-pod
