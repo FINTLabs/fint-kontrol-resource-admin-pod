@@ -4,11 +4,11 @@ import { Heading, Loader, Tabs } from "@navikt/ds-react"
 
 import AssignRolesMain from "./assignRolesTab/AssignRolesMain"
 import { PermissionsMain } from "./defineRoleTab/PermissionsMain"
-import { UsersRolesMain } from "./usersRolesTab"
+import { UsersRolesMain } from "./administerRightsTab"
 import styled from "styled-components"
 import { useSafeTabChange } from "../api/SafeTabChangeContext"
 import { useLocation, useNavigate } from "react-router-dom"
-import FeaturesToRolesTab from "./featuresToRoles/featuresToRolesTab"
+import TieFeaturesToRolesTab from "./tieFeatureToRoleTab/tieFeaturesToRolesTab"
 
 const LandingContainer = styled.div`
 	h1 {
@@ -94,7 +94,7 @@ const LandingComponent = () => {
 				</Tabs.Panel>
 
 				<Tabs.Panel value="featureRole" className="h-24 w-full bg-gray-50 p-4">
-					<FeaturesToRolesTab />
+					<TieFeaturesToRolesTab />
 				</Tabs.Panel>
 			</Tabs>
 		</LandingContainer>

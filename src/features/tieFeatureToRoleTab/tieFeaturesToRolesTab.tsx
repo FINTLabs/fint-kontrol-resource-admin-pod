@@ -27,7 +27,7 @@ const ConnectionContainer = styled.div`
 	}
 `
 
-const FeaturesToRolesTab = () => {
+const TieFeaturesToRolesTab = () => {
 	const { roles, fetchPermissionDataForRole, permissionDataForRole, isLoading, resetPermissionData } = useRole()
 	const { allFeatures, putFeaturesToRole } = useFeatures()
 	const [updatedPermissionData, setUpdatedPermissionData] = useState<IPermissionData>(permissionDataForRole)
@@ -161,4 +161,4 @@ const FeaturesToRolesTab = () => {
 	)
 }
 
-export default FeaturesToRolesTab
+export default TieFeaturesToRolesTab

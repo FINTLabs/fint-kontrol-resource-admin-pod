@@ -7,7 +7,7 @@ import { UserProvider } from "./api/UserContext"
 import { SafeTabChangeProvider } from "./api/SafeTabChangeContext"
 import { AssignmentProvider } from "./api/AssignmentContext"
 import SuccessfulCreation from "./features/successfulCreation"
-import UserAssignmentPage from "./features/usersRolesTab/userAssignment/UserAssignmentPage"
+import UserAssignmentPage from "./features/administerRightsTab/userAssignment/UserAssignmentPage"
 import { useGeneral } from "./api/GeneralContext"
 import { FeaturesProvider } from "./api/FeatureContext"
 
