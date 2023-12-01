@@ -11,14 +11,12 @@ export const ConfirmSafeRedirectModal = () => {
 	const { tabToRouteTo, setCurrentTab, setIsTabModified, isModalVisible, setIsModalVisible } = useSafeTabChange()
 
 	useEffect(() => {
-		isModalVisible ? handleOpenModal() : handleCloseModal()
+		isModalVisible ? handleOpenModal() : handleSaveChanges()
 		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [isModalVisible])
 
-	const handleCloseModal = (shouldSave?: boolean) => {
+	const handleSaveChanges = (shouldSave?: boolean) => {
 		if (shouldSave) {
-			// update the assignmentData if save is true
-			// SAVE()
 			setIsTabModified(false)
 			setIsModalVisible(false)
 			setCurrentTab(tabToRouteTo)
@@ -42,12 +40,12 @@ export const ConfirmSafeRedirectModal = () => {
 			<Modal
 				ref={ref}
 				header={{ heading: "Lagre endringer" }}
-				onClose={() => handleCloseModal()}
-				onCancel={(e) => e.preventDefault()}
+				onClose={handleDiscardChanges}
+				onCancel={handleDiscardChanges}
 			>
 				<Modal.Body>Du har data som ikke er lagret. Ønsker du å forkaste endringene?</Modal.Body>
 				<Modal.Footer>
-					<Button type="button" onClick={() => handleCloseModal(true)}>
+					<Button type="button" onClick={() => handleSaveChanges(true)}>
 						Lagre endringer
 					</Button>
 					<Button type="button" variant="secondary" onClick={() => handleDiscardChanges()}>

@@ -32,7 +32,6 @@ const LandingComponent = () => {
 		if (isTabModified) {
 			setIsModalVisible(true)
 			setTabToRouteTo(tabClicked)
-			navigate(`?tab=${tabClicked}`)
 		} else {
 			setCurrentTab(tabClicked)
 			navigate(`?tab=${tabClicked}`)
