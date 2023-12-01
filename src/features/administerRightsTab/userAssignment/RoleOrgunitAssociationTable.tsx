@@ -1,7 +1,19 @@
 import { Button, Table } from "@navikt/ds-react"
+import { TrashIcon } from "@navikt/aksel-icons"
 import { IOrgUnitForScope, IRole, IScope, IUserRole } from "../../../api/types"
 import React, { useState } from "react"
 import DeleteOrgUnitInAssignment from "./modals/DeleteOrgUnitInAssignment"
+import styled from "styled-components"
+
+const ButtonStyled = styled(Button)`
+	color: var(--a-nav-red);
+	box-shadow: inset 0 0 0 2px var(--ac-button-secondary-border, var(--ac-button-danger-bg, var(--a-surface-danger)));
+
+	&:hover {
+		color: var(--ac-button-danger-text, var(--a-text-on-danger));
+		background-color: var(--ac-button-danger-hover-bg, var(--a-surface-danger-hover));
+	}
+`
 
 interface RoleOrgUnitAssociationTableProps {
 	toggleChangeModal: (assignmentToChange: IUserRole) => void
@@ -60,12 +72,14 @@ const RoleOrgunitAssociationTable = ({
 									<Table.DataCell>{scope.objectType}</Table.DataCell>
 									<Table.DataCell>{orgUnit.shortName}</Table.DataCell>
 									<Table.DataCell align={"center"}>
-										<Button
-											variant={"danger"}
+										<ButtonStyled
+											variant={"secondary"}
 											onClick={() => toggleDeleteOrgUnitModal(scope, orgUnit)}
+											icon={<TrashIcon title="a11y-title" fontSize="1.5rem" />}
+											iconPosition={"right"}
 										>
 											Slett
-										</Button>
+										</ButtonStyled>
 									</Table.DataCell>
 								</Table.Row>
 							))

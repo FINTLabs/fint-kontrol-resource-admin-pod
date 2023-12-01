@@ -95,13 +95,15 @@ export const AssignmentProvider = ({ children, basePath }: { children: React.Rea
 			await AssignmentRepository.deleteAllAssignmentsOnUser(basePath, resourceId)
 				.then(() => {
 					toast.success("Alle rolleknytninger slettet!")
-					getUsersPage()
 				})
 				.catch((err: AxiosError) => {
 					toast.error("Sletting av rolleknytninger feilet.")
 					console.log(err)
 				})
-				.finally(() => setIsLoading(false))
+				.finally(() => {
+					setIsLoading(false)
+					getSpecificUserById(resourceId)
+				})
 		}
 	}
 

@@ -2,7 +2,7 @@ import { useNavigate, useParams } from "react-router-dom"
 import styled from "styled-components"
 import { Box, Button, Heading, HStack, Select, VStack } from "@navikt/ds-react"
 import { ArrowBack } from "@mui/icons-material"
-import { useEffect, useState } from "react"
+import React, { useEffect, useState } from "react"
 import { useUser } from "../../../api/UserContext"
 import { IRole, IUserRole } from "../../../api/types"
 import { LoaderStyled } from "../../index"
@@ -11,6 +11,8 @@ import ChangeAssignment from "./modals/ChangeAssignment"
 import DeleteAssignment from "./modals/DeleteAssignment"
 import { useRole } from "../../../api/RoleContext"
 import { toast } from "react-toastify"
+import ResetUserModal from "./modals/ResetUserModal"
+import { TrashIcon } from "@navikt/aksel-icons"
 
 const UserAssignmentContainer = styled.div`
 	display: flex;
@@ -37,6 +39,8 @@ const UserAssignmentPage = ({ basePath }: UserAssignmentPageProps) => {
 	})
 	const [isModalOpen, setIsModalOpen] = useState(false)
 	const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false)
+	const [isResetRolesModalOpen, setIsResetRolesModalOpen] = useState(false)
+
 	const [selectedRole, setSelectedRole] = useState<IRole>({ accessRoleId: "", name: "" })
 	const navigate = useNavigate()
 
@@ -71,6 +75,10 @@ const UserAssignmentPage = ({ basePath }: UserAssignmentPageProps) => {
 		}
 	}
 
+	const toggleRolesResetModal = (value: boolean) => {
+		setIsResetRolesModalOpen(value)
+	}
+
 	const toggleChangeModal = (assignmentToChange: IUserRole) => {
 		setAssignmentToChange(assignmentToChange)
 		setIsModalOpen(true)
@@ -102,10 +110,20 @@ const UserAssignmentPage = ({ basePath }: UserAssignmentPageProps) => {
 				<LoaderStyled size="3xlarge" title="Laster inn brukerdata..." />
 			) : (
 				<VStack gap={"4"}>
-					<Box>
-						<Heading size={"small"}>Brukerinfo</Heading>
-						Navn: {specificUser?.firstName} {specificUser?.lastName}
-					</Box>
+					<HStack justify={"space-between"}>
+						<div>
+							<Heading size={"small"}>Brukerinfo</Heading>
+							Navn: {specificUser?.firstName} {specificUser?.lastName}
+						</div>
+						<Button
+							variant={"danger"}
+							onClick={() => toggleRolesResetModal(true)}
+							icon={<TrashIcon title="a11y-title" fontSize="1.5rem" />}
+							iconPosition={"right"}
+						>
+							Nullstill brukerroller
+						</Button>
+					</HStack>
 
 					<HStack justify={"space-between"} align={"end"}>
 						<Select
@@ -124,7 +142,12 @@ const UserAssignmentPage = ({ basePath }: UserAssignmentPageProps) => {
 						</Select>
 						<div>
 							{selectedRole.accessRoleId !== "" && (
-								<Button variant={"danger"} onClick={toggleDeleteModal}>
+								<Button
+									variant={"danger"}
+									onClick={toggleDeleteModal}
+									icon={<TrashIcon title="a11y-title" fontSize="1.5rem" />}
+									iconPosition={"right"}
+								>
 									Slett rolleobjekt
 								</Button>
 							)}
@@ -147,6 +170,13 @@ const UserAssignmentPage = ({ basePath }: UserAssignmentPageProps) => {
 				</VStack>
 			)}
 
+			{isResetRolesModalOpen && (
+				<ResetUserModal
+					isResetRolesModalOpen={isResetRolesModalOpen}
+					setIsResetRolesModalOpen={(value) => setIsResetRolesModalOpen(value)}
+					user={specificUser}
+				/>
+			)}
 			{isModalOpen && (
 				<ChangeAssignment
 					assignmentToChange={assignmentToChange}
