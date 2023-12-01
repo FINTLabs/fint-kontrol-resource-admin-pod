@@ -10,6 +10,7 @@ import SuccessfulCreation from "./features/successfulCreation"
 import UserAssignmentPage from "./features/administerRightsTab/userAssignment/UserAssignmentPage"
 import { useGeneral } from "./api/GeneralContext"
 import { FeaturesProvider } from "./api/FeatureContext"
+import NotFound from "./features/404"
 
 function App() {
 	const { basePath, isLoading } = useGeneral()
@@ -38,6 +39,8 @@ function App() {
 										path={`${basePath}/ressurser-admin/tildelingsadmin/id/:userId`}
 										element={<UserAssignmentPage basePath={basePath} />}
 									/>
+
+									<Route path="*" element={<NotFound />} />
 								</Routes>
 							</FeaturesProvider>
 						</AssignmentProvider>
