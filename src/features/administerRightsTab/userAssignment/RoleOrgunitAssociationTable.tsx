@@ -1,9 +1,10 @@
-import { Button, Table } from "@navikt/ds-react"
+import { Button, Pagination, Select, Table } from "@navikt/ds-react"
 import { TrashIcon } from "@navikt/aksel-icons"
 import { IOrgUnitForScope, IRole, IScope, IUserRole } from "../../../api/types"
 import React, { useState } from "react"
 import DeleteOrgUnitInAssignment from "./modals/DeleteOrgUnitInAssignment"
 import styled from "styled-components"
+import { useAssignments } from "../../../api/AssignmentContext"
 
 const ButtonStyled = styled(Button)`
 	color: var(--a-nav-red);
@@ -13,6 +14,13 @@ const ButtonStyled = styled(Button)`
 		color: var(--ac-button-danger-text, var(--a-text-on-danger));
 		background-color: var(--ac-button-danger-hover-bg, var(--a-surface-danger-hover));
 	}
+`
+
+const PaginationWrapper = styled.div`
+	display: flex;
+	justify-content: flex-end;
+	align-items: flex-end;
+	gap: 1rem;
 `
 
 interface RoleOrgUnitAssociationTableProps {
@@ -29,6 +37,7 @@ const RoleOrgunitAssociationTable = ({
 	selectedRole,
 	userId
 }: RoleOrgUnitAssociationTableProps) => {
+	const { itemsPerPage, setItemsPerPage, currentPage, setCurrentPage, userDetailsPage } = useAssignments()
 	const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false)
 	const [orgUnit, setOrgUnit] = useState<IOrgUnitForScope | undefined>()
 	const [scopeId, setScopeId] = useState("")
@@ -41,6 +50,11 @@ const RoleOrgunitAssociationTable = ({
 		setOrgUnit(orgUnit)
 		setScopeId(scopeFromUserRole.scopeId)
 		setIsDeleteModalOpen(true)
+	}
+
+	const handleChangeRowsPerPage = (event: React.ChangeEvent<HTMLSelectElement | HTMLOptionElement>) => {
+		setItemsPerPage(parseInt(event.target.value, 10))
+		setCurrentPage(1)
 	}
 
 	return (
@@ -93,6 +107,27 @@ const RoleOrgunitAssociationTable = ({
 					)}
 				</Table.Body>
 			</Table>
+
+			<PaginationWrapper>
+				<Select
+					label="Rader per side"
+					size="small"
+					onChange={handleChangeRowsPerPage}
+					defaultValue={itemsPerPage}
+				>
+					<option value={5}>5</option>
+					<option value={10}>10</option>
+					<option value={25}>25</option>
+					<option value={50}>50</option>
+				</Select>
+				<Pagination
+					id="pagination"
+					page={currentPage}
+					onPageChange={setCurrentPage}
+					count={Math.ceil((userDetailsPage ? userDetailsPage.totalItems : 1) / itemsPerPage)}
+					size="small"
+				/>
+			</PaginationWrapper>
 		</>
 	)
 }

@@ -13,40 +13,45 @@ import { useRole } from "../../../api/RoleContext"
 import { toast } from "react-toastify"
 import ResetUserModal from "./modals/ResetUserModal"
 import { TrashIcon } from "@navikt/aksel-icons"
+import Toolbar from "./Toolbar"
+import { useAssignments } from "../../../api/AssignmentContext"
 
 const UserAssignmentContainer = styled.div`
 	display: flex;
 	flex-direction: column;
 	gap: 2rem;
-
-	.navds-select__container {
-		width: fit-content;
-	}
 `
 
 interface UserAssignmentPageProps {
 	basePath: string
 }
 
-const UserAssignmentPage = ({ basePath }: UserAssignmentPageProps) => {
+const Index = ({ basePath }: UserAssignmentPageProps) => {
 	const { isLoading, setIsLoading, getSpecificUserById, specificUser, setSpecificUser } = useUser()
-	const { userId } = useParams()
 	const { roles } = useRole()
+	const { setSelectedRoleFilter } = useAssignments()
+
+	const { userId } = useParams()
+	const navigate = useNavigate()
+
 	const [assignmentToChange, setAssignmentToChange] = useState<IUserRole>({
 		roleId: "",
 		roleName: "",
 		scopes: []
 	})
+	const [selectedRole, setSelectedRole] = useState<IRole>({ accessRoleId: "", name: "" })
+
 	const [isModalOpen, setIsModalOpen] = useState(false)
 	const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false)
 	const [isResetRolesModalOpen, setIsResetRolesModalOpen] = useState(false)
 
-	const [selectedRole, setSelectedRole] = useState<IRole>({ accessRoleId: "", name: "" })
-	const navigate = useNavigate()
-
 	useEffect(() => {
 		setSpecificUser(null)
 	}, [setSpecificUser])
+
+	useEffect(() => {
+		setSelectedRoleFilter(selectedRole.accessRoleId)
+	}, [selectedRole])
 
 	useEffect(() => {
 		const getUserById = () => {
@@ -69,6 +74,7 @@ const UserAssignmentPage = ({ basePath }: UserAssignmentPageProps) => {
 		)
 		if (paramMappedToAccessRoleType === undefined) {
 			setSelectedRole({ accessRoleId: "", name: "" })
+
 			toast.error("Noe gikk galt ved valg av rolle")
 		} else {
 			setSelectedRole(paramMappedToAccessRoleType)
@@ -112,7 +118,9 @@ const UserAssignmentPage = ({ basePath }: UserAssignmentPageProps) => {
 				<VStack gap={"4"}>
 					<HStack justify={"space-between"}>
 						<div>
-							<Heading size={"small"}>Brukerinfo</Heading>
+							<Heading level={"2"} size={"small"}>
+								Brukerinfo
+							</Heading>
 							Navn: {specificUser?.firstName} {specificUser?.lastName}
 						</div>
 						<Button
@@ -158,13 +166,16 @@ const UserAssignmentPage = ({ basePath }: UserAssignmentPageProps) => {
 						{specificUser?.roles?.length === 0 ? (
 							<>Brukeren har ingen roller</>
 						) : (
-							<RoleOrgunitAssociationTable
-								selectedRole={selectedRole}
-								scopeFromUserRole={scopeFromUserRole}
-								toggleChangeModal={toggleChangeModal}
-								toggleDeleteModal={toggleDeleteModal}
-								userId={userId}
-							/>
+							<>
+								<Toolbar />
+								<RoleOrgunitAssociationTable
+									selectedRole={selectedRole}
+									scopeFromUserRole={scopeFromUserRole}
+									toggleChangeModal={toggleChangeModal}
+									toggleDeleteModal={toggleDeleteModal}
+									userId={userId}
+								/>
+							</>
 						)}
 					</Box>
 				</VStack>
@@ -196,4 +207,4 @@ const UserAssignmentPage = ({ basePath }: UserAssignmentPageProps) => {
 	)
 }
 
-export default UserAssignmentPage
+export default Index

@@ -53,6 +53,7 @@ export const UsersTable = () => {
 					<Table.Row>
 						<Table.HeaderCell scope="col">Fult navn</Table.HeaderCell>
 						<Table.HeaderCell scope="col">Epost</Table.HeaderCell>
+						<Table.HeaderCell scope="col">Har tildeling</Table.HeaderCell>
 						<Table.HeaderCell scope="col" align={"center"}>
 							Administrer tildeling
 						</Table.HeaderCell>
@@ -72,6 +73,7 @@ export const UsersTable = () => {
 									{user.firstName} {user.lastName}
 								</Table.DataCell>
 								<Table.DataCell>{user.userName}</Table.DataCell>
+								<Table.DataCell>{user.roles && user.roles?.length > 0 ? "Ja" : "Nei"}</Table.DataCell>
 								<Table.DataCell align={"center"}>
 									<Button
 										variant={"secondary"}

@@ -57,6 +57,15 @@ export interface IUserPage {
 	currentPage: number
 }
 
+export interface IUserDetailsPage {
+	totalItems: number
+	totalPages: number
+	currentPage: number
+	roleId: string
+	roleName: string
+	scopes: IScope[]
+}
+
 export interface IUser {
 	id: number
 	resourceId: string

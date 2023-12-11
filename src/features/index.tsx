@@ -44,7 +44,7 @@ const LandingComponent = () => {
 
 	return (
 		<LandingContainer>
-			<Heading level={"1"} size={"large"} id="tableTitle">
+			<Heading level={"2"} size={"large"} id="tableTitle">
 				Rettighetsstyring
 			</Heading>
 

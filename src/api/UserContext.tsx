@@ -3,43 +3,54 @@ import { IUser, userContextDefaultValues, IUserPage } from "./types"
 import UsersRepository from "../repositories/UsersRepository"
 import { AxiosError } from "axios"
 import { useSafeTabChange } from "./SafeTabChangeContext"
+import { toast } from "react-toastify"
 
 interface UserContextType {
-	currentPage: number
 	getUsersPage: () => void
 	getSpecificUserById: (userId: string) => void
-	isLoading: boolean
-	itemsPerPage: number
-	orgUnitIds: string[]
 	usersPage: IUserPage | null
-	searchString: string
-	selectedUser: IUser | null
-	setCurrentPage: (currentPage: number) => void
+	specificUser: IUser | null
+	setSpecificUser: (user: IUser | null) => void
 	setIsLoading: (isLoading: boolean) => void
+	selectedUser: IUser | null
+	setUser: (data: IUserPage | null) => void
+
+	isLoading: boolean
+
+	// 	Pagination
+	currentPage: number
+	itemsPerPage: number
+	setCurrentPage: (currentPage: number) => void
 	setItemsPerPage: (itemsPerUSer: number) => void
 	setSelectedUser: (user: IUser | null) => void
+
+	// 	Search and filters
+	orgUnitIds: string[]
+	searchString: string
+	roleFilter: string
 	setOrgUnitIdsFilter: (orgUnitIds: string[]) => void
-	setUser: (data: IUserPage | null) => void
 	setSearchString: (searchString: string) => void
 	setRoleFilter: (roleFilterString: string) => void
-	setSpecificUser: (user: IUser | null) => void
-	specificUser: IUser | null
-	roleFilter: string
 }
 
 export const UserContext = createContext<UserContextType | undefined>(undefined)
 
 export function UserProvider({ children, basePath }: { children: React.ReactNode; basePath: string }) {
 	const { currentTab } = useSafeTabChange()
-	const [currentPage, setCurrentPage] = useState<number>(1)
 	const [isLoading, setIsLoading] = useState<boolean>(false)
-	const [itemsPerPage, setItemsPerPage] = useState<number>(5)
-	const [orgUnitIds, setOrgUnitIdsFilter] = useState<string[]>(userContextDefaultValues.orgUnitIds)
-	const [selectedUser, setSelectedUser] = useState<IUser | null>(null)
+
+	// Pagination
 	const [usersPage, setUsersPage] = useState<IUserPage | null>(null)
+	const [currentPage, setCurrentPage] = useState<number>(1)
+	const [itemsPerPage, setItemsPerPage] = useState<number>(5)
+
+	const [selectedUser, setSelectedUser] = useState<IUser | null>(null)
+	const [specificUser, setSpecificUser] = useState<IUser | null>(null)
+
+	// Search and filters
+	const [orgUnitIds, setOrgUnitIdsFilter] = useState<string[]>(userContextDefaultValues.orgUnitIds)
 	const [searchString, setSearchString] = useState<string>("")
 	const [roleFilter, setRoleFilter] = useState("")
-	const [specificUser, setSpecificUser] = useState<IUser | null>(null)
 
 	useEffect(() => {
 		resetPagination()
@@ -50,7 +61,7 @@ export function UserProvider({ children, basePath }: { children: React.ReactNode
 	}
 
 	useEffect(() => {
-		getUsersPage()
+		getUsersPage().catch((err) => toast.error("Klarte ikke å hente brukerlisten."))
 		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [basePath, currentPage, itemsPerPage, orgUnitIds, searchString, roleFilter])
 

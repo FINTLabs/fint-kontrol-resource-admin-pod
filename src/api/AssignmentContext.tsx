@@ -1,5 +1,5 @@
-import React, { createContext, useContext, useState } from "react"
-import { IAssignment } from "./types"
+import React, { createContext, useContext, useEffect, useState } from "react"
+import { IAssignment, IUserDetailsPage } from "./types"
 import AssignmentRepository from "../repositories/AssignmentRepository"
 import { toast } from "react-toastify"
 import { AxiosError } from "axios"
@@ -9,16 +9,43 @@ interface AssignmentContextType {
 	deleteAllAssignmentsOnUser: (resourceId: string) => void
 	deleteAssignmentById: (assignmentId: string) => void
 	deleteOrgUnitFromAssignment: (userId: string, scopeId: string, orgUnitId: string) => void
-	isLoading: boolean
 	postNewAssignment: (newAssignment: IAssignment) => void
 	putNewAssignment: (newAssignment: IAssignment) => void
+	isLoading: boolean
+
+	// Pagination
+	currentPage: number
+	itemsPerPage: number
+	userDetailsPage: IUserDetailsPage | null
+	setCurrentPage: (val: number) => void
+	setItemsPerPage: (val: number) => void
+	setUserDetailsPage: (val: IUserDetailsPage) => void
+
+	// Filters
+	objectTypeFilter: string
+	setObjectTypeFilter: (val: string) => void
+	setOrgUnitSearchString: (val: string) => void
+	setSelectedRoleFilter: (val: string) => void
 }
 
 const AssignmentContext = createContext<AssignmentContextType | undefined>(undefined)
 
 export const AssignmentProvider = ({ children, basePath }: { children: React.ReactNode; basePath: string }) => {
-	const [isLoading, setIsLoading] = useState(false)
 	const { getUsersPage, getSpecificUserById } = useUser()
+	const [isLoading, setIsLoading] = useState(false)
+	// Pagination
+	const [userDetailsPage, setUserDetailsPage] = useState<IUserDetailsPage | null>(null)
+	const [currentPage, setCurrentPage] = useState<number>(1)
+	const [itemsPerPage, setItemsPerPage] = useState<number>(5)
+
+	// Filters and search
+	const [selectedRoleFilter, setSelectedRoleFilter] = useState("")
+	const [objectTypeFilter, setObjectTypeFilter] = useState("")
+	const [orgUnitSearchString, setOrgUnitSearchString] = useState("")
+
+	useEffect(() => {
+		console.log("querying underway: ", selectedRoleFilter, ", ", objectTypeFilter, ", ", orgUnitSearchString)
+	}, [selectedRoleFilter, objectTypeFilter, orgUnitSearchString])
 
 	const postNewAssignment = async (newAssignment: IAssignment) => {
 		toast.dismiss()
@@ -110,12 +137,22 @@ export const AssignmentProvider = ({ children, basePath }: { children: React.Rea
 	return (
 		<AssignmentContext.Provider
 			value={{
+				currentPage,
 				deleteOrgUnitFromAssignment,
 				deleteAllAssignmentsOnUser,
 				deleteAssignmentById,
 				isLoading,
+				itemsPerPage,
+				objectTypeFilter,
 				postNewAssignment,
-				putNewAssignment
+				putNewAssignment,
+				setCurrentPage,
+				setItemsPerPage,
+				setObjectTypeFilter,
+				setOrgUnitSearchString,
+				setSelectedRoleFilter,
+				setUserDetailsPage,
+				userDetailsPage
 			}}
 		>
 			{children}
