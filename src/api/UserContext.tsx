@@ -60,28 +60,17 @@ export function UserProvider({ children, basePath }: { children: React.ReactNode
 		setUsersPage(data)
 	}
 
-	useEffect(() => {
-		getUsersPage().catch((err) => toast.error("Klarte ikke å hente brukerlisten."))
-		// eslint-disable-next-line react-hooks/exhaustive-deps
-	}, [basePath, currentPage, itemsPerPage, orgUnitIds, searchString, roleFilter])
-
 	const getUsersPage = async () => {
-		if (basePath) {
-			setIsLoading(true)
-			await UsersRepository.getUsersPage(
-				basePath,
-				currentPage,
-				itemsPerPage,
-				orgUnitIds,
-				searchString,
-				roleFilter
-			)
-				.then((response) => {
-					setUsersPage(response.data)
-				})
-				.catch((err: AxiosError) => console.error(err))
-				.finally(() => setIsLoading(false))
-		}
+		setIsLoading(true)
+		await UsersRepository.getUsersPage(basePath, currentPage, itemsPerPage, orgUnitIds, searchString, roleFilter)
+			.then((response) => {
+				setUsersPage(response.data)
+			})
+			.catch((err: AxiosError) => {
+				console.error(err)
+				toast.error("Klarte ikke å hente brukerlisten.")
+			})
+			.finally(() => setIsLoading(false))
 	}
 
 	const getSpecificUserById = async (userId: string) => {

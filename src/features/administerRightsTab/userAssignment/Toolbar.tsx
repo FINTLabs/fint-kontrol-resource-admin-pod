@@ -12,7 +12,7 @@ const HStackStyled = styled(HStack)`
 
 const Toolbar = () => {
 	const { setObjectTypeFilter, setOrgUnitSearchString } = useAssignments()
-	const objectTypes = ["License", "Device", "Orgunit"] // This will change when API is ready
+	const objectTypes = ["license", "device", "orgunit", "user", "role", "resource"] // This will change when API is ready
 
 	const [searchString, setSearchString] = useState("")
 

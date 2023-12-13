@@ -1,6 +1,6 @@
 import { Button, Modal } from "@navikt/ds-react"
 import React, { useEffect, useRef } from "react"
-import { IOrgUnitForScope } from "../../../../api/types"
+import { IOrgUnitDetail } from "../../../../api/types"
 import styled from "styled-components"
 import { useAssignments } from "../../../../api/AssignmentContext"
 
@@ -15,7 +15,7 @@ interface DeleteOrgUnitsInAssignmentProps {
 	setIsDeleteModalOpen: (isOpen: boolean) => void
 	roleToDeleteFrom: string
 	scopeId: string
-	orgUnitToDelete: IOrgUnitForScope
+	orgUnitToDelete: IOrgUnitDetail
 	userId: string
 }
 

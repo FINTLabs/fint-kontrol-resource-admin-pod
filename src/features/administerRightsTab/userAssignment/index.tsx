@@ -10,7 +10,6 @@ import RoleOrgunitAssociationTable from "./RoleOrgunitAssociationTable"
 import ChangeAssignment from "./modals/ChangeAssignment"
 import DeleteAssignment from "./modals/DeleteAssignment"
 import { useRole } from "../../../api/RoleContext"
-import { toast } from "react-toastify"
 import ResetUserModal from "./modals/ResetUserModal"
 import { TrashIcon } from "@navikt/aksel-icons"
 import Toolbar from "./Toolbar"
@@ -29,7 +28,15 @@ interface UserAssignmentPageProps {
 const Index = ({ basePath }: UserAssignmentPageProps) => {
 	const { isLoading, setIsLoading, getSpecificUserById, specificUser, setSpecificUser } = useUser()
 	const { roles } = useRole()
-	const { setSelectedRoleFilter } = useAssignments()
+	const {
+		currentPage,
+		itemsPerPage,
+		selectedRoleFilter,
+		objectTypeFilter,
+		orgUnitSearchString,
+		getUserAssignmentDetailsPage,
+		setSelectedRoleFilter
+	} = useAssignments()
 
 	const { userId } = useParams()
 	const navigate = useNavigate()
@@ -46,11 +53,19 @@ const Index = ({ basePath }: UserAssignmentPageProps) => {
 	const [isResetRolesModalOpen, setIsResetRolesModalOpen] = useState(false)
 
 	useEffect(() => {
+		if (userId) {
+			getUserAssignmentDetailsPage(userId)
+		}
+		// eslint-disable-next-line react-hooks/exhaustive-deps
+	}, [currentPage, itemsPerPage, selectedRoleFilter, objectTypeFilter, orgUnitSearchString])
+
+	useEffect(() => {
 		setSpecificUser(null)
 	}, [setSpecificUser])
 
 	useEffect(() => {
 		setSelectedRoleFilter(selectedRole.accessRoleId)
+		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [selectedRole])
 
 	useEffect(() => {
@@ -74,8 +89,6 @@ const Index = ({ basePath }: UserAssignmentPageProps) => {
 		)
 		if (paramMappedToAccessRoleType === undefined) {
 			setSelectedRole({ accessRoleId: "", name: "" })
-
-			toast.error("Noe gikk galt ved valg av rolle")
 		} else {
 			setSelectedRole(paramMappedToAccessRoleType)
 		}
@@ -101,9 +114,6 @@ const Index = ({ basePath }: UserAssignmentPageProps) => {
 	if (!specificUser || !userId) {
 		return <></>
 	}
-
-	// Filter for data to feed into table component
-	const scopeFromUserRole = specificUser?.roles?.find((role) => role.roleId === selectedRole.accessRoleId)
 
 	return (
 		<UserAssignmentContainer>
@@ -139,9 +149,7 @@ const Index = ({ basePath }: UserAssignmentPageProps) => {
 							value={selectedRole.accessRoleId}
 							onChange={(event) => handleChangeRole(event.target.value)}
 						>
-							<option value={""} disabled={true}>
-								Velg rolle
-							</option>
+							<option value={""}>Alle</option>
 							{specificUser?.roles?.map((role) => (
 								<option key={role.roleId} value={role.roleId}>
 									{role.roleName}
@@ -170,7 +178,6 @@ const Index = ({ basePath }: UserAssignmentPageProps) => {
 								<Toolbar />
 								<RoleOrgunitAssociationTable
 									selectedRole={selectedRole}
-									scopeFromUserRole={scopeFromUserRole}
 									toggleChangeModal={toggleChangeModal}
 									toggleDeleteModal={toggleDeleteModal}
 									userId={userId}

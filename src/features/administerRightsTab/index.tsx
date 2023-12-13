@@ -3,6 +3,7 @@ import styled from "styled-components"
 import { Search, Table } from "@navikt/ds-react"
 import { useUser } from "../../api/UserContext"
 import { UsersTable, UsersTableStyled } from "./UsersTable"
+import { useGeneral } from "../../api/GeneralContext"
 
 const UsersWithRolesContainer = styled.div`
 	display: flex;
@@ -16,9 +17,15 @@ const UsersWithRolesContainer = styled.div`
 `
 
 export const UsersRolesMain = () => {
-	const { usersPage } = useUser()
+	const { basePath } = useGeneral()
+	const { usersPage, getUsersPage, currentPage, itemsPerPage, orgUnitIds, searchString, roleFilter } = useUser()
 	const { setSearchString } = useUser()
 	const [currentSearchString, setCurrentSearchString] = useState<string>("")
+
+	useEffect(() => {
+		getUsersPage()
+		// eslint-disable-next-line react-hooks/exhaustive-deps
+	}, [basePath, currentPage, itemsPerPage, orgUnitIds, searchString, roleFilter])
 
 	useEffect(() => {
 		setSearchString("")

@@ -76,14 +76,17 @@ export const UsersTable = () => {
 								<Table.DataCell>{user.roles && user.roles?.length > 0 ? "Ja" : "Nei"}</Table.DataCell>
 								<Table.DataCell align={"center"}>
 									<Button
+										disabled={user.roles && user.roles?.length === 0}
 										variant={"secondary"}
-										onClick={() =>
-											navigate(
-												`${
-													basePath === "/" ? "/" : basePath + "/"
-												}ressurser-admin/tildelingsadmin/id/${user.resourceId}`
-											)
-										}
+										onClick={() => {
+											if (user.roles && user.roles?.length > 0) {
+												navigate(
+													`${
+														basePath === "/" ? "/" : basePath + "/"
+													}ressurser-admin/tildelingsadmin/id/${user.resourceId}`
+												)
+											}
+										}}
 									>
 										Administrer
 									</Button>

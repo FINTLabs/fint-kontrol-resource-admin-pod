@@ -57,14 +57,24 @@ export interface IUserPage {
 	currentPage: number
 }
 
+// Used for a User's tildelingsadministrasjon page
 export interface IUserDetailsPage {
 	totalItems: number
 	totalPages: number
 	currentPage: number
-	roleId: string
-	roleName: string
-	scopes: IScope[]
+	accessRoles: IUserDetail[]
 }
+export interface IUserDetail {
+	accessRoleId: string
+	orgUnits: IOrgUnitDetail[]
+}
+export interface IOrgUnitDetail {
+	scopeId: number
+	objectType: string
+	orgUnitId: string
+	name: string
+}
+// ----
 
 export interface IUser {
 	id: number

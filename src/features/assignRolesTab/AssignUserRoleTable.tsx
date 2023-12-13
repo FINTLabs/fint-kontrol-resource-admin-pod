@@ -1,10 +1,11 @@
 import { Button, Loader, Pagination, Select, Table } from "@navikt/ds-react"
-import React, { useState } from "react"
+import React, { useEffect, useState } from "react"
 import styled from "styled-components"
 import { useUser } from "../../api/UserContext"
 import { IAssignment, IUser } from "../../api/types"
 import { useSafeTabChange } from "../../api/SafeTabChangeContext"
 import ExistingAssignmentModal from "./ExistingAssignmentModal"
+import { useGeneral } from "../../api/GeneralContext"
 
 const PaginationWrapper = styled.div`
 	display: flex;
@@ -49,10 +50,16 @@ interface AssignUserRoleTableProps {
 }
 
 const AssignUserRoleTable = ({ newAssignment, setNewAssignment, setHasChanges, setUser }: AssignUserRoleTableProps) => {
-	const { itemsPerPage, setItemsPerPage, currentPage, setCurrentPage, isLoading, usersPage } = useUser()
+	const { basePath } = useGeneral()
+	const { itemsPerPage, setItemsPerPage, currentPage, setCurrentPage, isLoading, usersPage, getUsersPage } = useUser()
 	const { setIsTabModified } = useSafeTabChange()
 	const [isModalOpen, setIsModalOpen] = useState(false)
 	const [roleDataForModal, setRoleDataForModal] = useState<IUser | undefined>()
+
+	useEffect(() => {
+		getUsersPage()
+		// eslint-disable-next-line react-hooks/exhaustive-deps
+	}, [basePath, currentPage, itemsPerPage])
 	const handleChangeRowsPerPage = (event: React.ChangeEvent<HTMLSelectElement | HTMLOptionElement>) => {
 		setItemsPerPage(parseInt(event.target.value, 10))
 		setCurrentPage(1)

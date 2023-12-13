@@ -1,6 +1,6 @@
 import { Button, Pagination, Select, Table } from "@navikt/ds-react"
 import { TrashIcon } from "@navikt/aksel-icons"
-import { IOrgUnitForScope, IRole, IScope, IUserRole } from "../../../api/types"
+import { IOrgUnitDetail, IRole, IUserRole } from "../../../api/types"
 import React, { useState } from "react"
 import DeleteOrgUnitInAssignment from "./modals/DeleteOrgUnitInAssignment"
 import styled from "styled-components"
@@ -26,29 +26,23 @@ const PaginationWrapper = styled.div`
 interface RoleOrgUnitAssociationTableProps {
 	toggleChangeModal: (assignmentToChange: IUserRole) => void
 	toggleDeleteModal: (assignmentToChange: IUserRole) => void
-	scopeFromUserRole: IUserRole | undefined
 	selectedRole: IRole
 	userId: string
 }
 const RoleOrgunitAssociationTable = ({
 	toggleChangeModal,
 	toggleDeleteModal,
-	scopeFromUserRole,
 	selectedRole,
 	userId
 }: RoleOrgUnitAssociationTableProps) => {
 	const { itemsPerPage, setItemsPerPage, currentPage, setCurrentPage, userDetailsPage } = useAssignments()
 	const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false)
-	const [orgUnit, setOrgUnit] = useState<IOrgUnitForScope | undefined>()
+	const [orgUnit, setOrgUnit] = useState<IOrgUnitDetail | undefined>()
 	const [scopeId, setScopeId] = useState("")
 
-	if (!scopeFromUserRole) {
-		return <></>
-	}
-
-	const toggleDeleteOrgUnitModal = (scopeFromUserRole: IScope, orgUnit: IOrgUnitForScope) => {
+	const toggleDeleteOrgUnitModal = (scopeId: number, orgUnit: IOrgUnitDetail) => {
 		setOrgUnit(orgUnit)
-		setScopeId(scopeFromUserRole.scopeId)
+		setScopeId(String(scopeId))
 		setIsDeleteModalOpen(true)
 	}
 
@@ -75,20 +69,33 @@ const RoleOrgunitAssociationTable = ({
 					<Table.Row>
 						<Table.HeaderCell>Objekttype</Table.HeaderCell>
 						<Table.HeaderCell>Orgenhet</Table.HeaderCell>
+						{selectedRole.accessRoleId === "" && <Table.HeaderCell>Rolle</Table.HeaderCell>}
 						<Table.HeaderCell align={"center"}>Slett</Table.HeaderCell>
 					</Table.Row>
 				</Table.Header>
 				<Table.Body>
-					{scopeFromUserRole?.scopes.length !== 0 ? (
-						scopeFromUserRole.scopes.map((scope) =>
+					{userDetailsPage?.accessRoles.length !== 0 ? (
+						userDetailsPage?.accessRoles.map((scope) =>
 							scope.orgUnits.map((orgUnit) => (
-								<Table.Row key={scope + "," + orgUnit.orgUnitId}>
-									<Table.DataCell>{scope.objectType}</Table.DataCell>
-									<Table.DataCell>{orgUnit.shortName}</Table.DataCell>
+								<Table.Row
+									key={
+										scope.accessRoleId +
+										"," +
+										orgUnit.scopeId +
+										"," +
+										orgUnit.orgUnitId +
+										orgUnit.name
+									}
+								>
+									<Table.DataCell>{orgUnit.objectType}</Table.DataCell>
+									<Table.DataCell>{orgUnit.name}</Table.DataCell>
+									{selectedRole.accessRoleId === "" && (
+										<Table.DataCell>{scope.accessRoleId}</Table.DataCell>
+									)}
 									<Table.DataCell align={"center"}>
 										<ButtonStyled
 											variant={"secondary"}
-											onClick={() => toggleDeleteOrgUnitModal(scope, orgUnit)}
+											onClick={() => toggleDeleteOrgUnitModal(orgUnit.scopeId, orgUnit)}
 											icon={<TrashIcon title="a11y-title" fontSize="1.5rem" />}
 											iconPosition={"right"}
 										>
