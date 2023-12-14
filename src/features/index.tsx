@@ -2,7 +2,7 @@ import React from "react"
 import { PersonCheckmarkIcon, PersonPlusIcon } from "@navikt/aksel-icons"
 import { Heading, Loader, Tabs } from "@navikt/ds-react"
 
-import AssignRolesMain from "./assignRolesTab/AssignRolesMain"
+import Index from "./assignRolesTab"
 import { PermissionsMain } from "./defineRoleTab/PermissionsMain"
 import { UsersRolesMain } from "./administerRightsTab"
 import styled from "styled-components"
@@ -54,25 +54,25 @@ const LandingComponent = () => {
 						value="tildel"
 						label="Tildel rettigheter"
 						icon={<PersonPlusIcon title="historielogg" />}
-						id={"assign-role-tab-id"}
+						id={"assign-role-tab"}
 					/>
 					<Tabs.Tab
 						value="define"
 						label="Definer rolle"
 						icon={<PersonCheckmarkIcon title="inbox" />}
-						id={"defineRoleTab-id"}
+						id={"define-role-tab"}
 					/>
 					<Tabs.Tab
 						value="tildelingsadmin"
 						label="Tildelingsadministrasjon"
 						icon={<PersonCheckmarkIcon title="inbox" />}
-						id={"see-users-tab-id"}
+						id={"see-users-tab"}
 					/>
 					<Tabs.Tab
 						value="featureRole"
 						label="Knytt features til roller"
 						icon={<PersonCheckmarkIcon title="inbox" />}
-						id={"feature-role-id"}
+						id={"feature-role-tab"}
 					/>
 				</Tabs.List>
 
@@ -80,19 +80,28 @@ const LandingComponent = () => {
 					value="tildel"
 					className="h-24 w-full bg-gray-50 p-4"
 					onSelect={(event) => event.preventDefault()}
+					aria-labelledby="assign-role-tab"
 				>
-					<AssignRolesMain />
+					<Index />
 				</Tabs.Panel>
 
-				<Tabs.Panel value="define" className="h-24 w-full bg-gray-50 p-4">
+				<Tabs.Panel value="define" className="h-24 w-full bg-gray-50 p-4" aria-labelledby={"define-role-tab"}>
 					<PermissionsMain />
 				</Tabs.Panel>
 
-				<Tabs.Panel value="tildelingsadmin" className="h-24 w-full bg-gray-50 p-4">
+				<Tabs.Panel
+					value="tildelingsadmin"
+					className="h-24 w-full bg-gray-50 p-4"
+					aria-labelledby={"see-users-tab"}
+				>
 					<UsersRolesMain />
 				</Tabs.Panel>
 
-				<Tabs.Panel value="featureRole" className="h-24 w-full bg-gray-50 p-4">
+				<Tabs.Panel
+					value="featureRole"
+					className="h-24 w-full bg-gray-50 p-4"
+					aria-labelledby={"feature-role-tab"}
+				>
 					<TieFeaturesToRolesTab />
 				</Tabs.Panel>
 			</Tabs>
