@@ -11,7 +11,7 @@ root.render(
 	<React.StrictMode>
 		<BrowserRouter>
 			<GeneralProvider>
-				<ToastContainer autoClose={5000} newestOnTop={true} />
+				<ToastContainer autoClose={5000} newestOnTop={true} role="alert" />
 				<GlobalStyle />
 				<App />
 			</GeneralProvider>

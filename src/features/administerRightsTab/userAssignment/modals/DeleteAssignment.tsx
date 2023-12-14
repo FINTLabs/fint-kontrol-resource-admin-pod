@@ -46,7 +46,9 @@ const DeleteAssignment = ({
 	const handleDeleteAssignmentData = () => {
 		// TODO: Fix this when API is ready
 		// AssignmentRepository. (basePath, assignmentId, orgUnitsToInclude[], booleanForJustDeleteEverything)
-		toast.info("Sletting er foreløpig ikke mulig.")
+		toast.info("Sletting er foreløpig ikke mulig.", {
+			role: "alert"
+		})
 		closeModal()
 	}
 

@@ -68,7 +68,9 @@ export function UserProvider({ children, basePath }: { children: React.ReactNode
 			})
 			.catch((err: AxiosError) => {
 				console.error(err)
-				toast.error("Klarte ikke å hente brukerlisten.")
+				toast.error("Klarte ikke å hente brukerlisten.", {
+					role: "alert"
+				})
 			})
 			.finally(() => setIsLoading(false))
 	}

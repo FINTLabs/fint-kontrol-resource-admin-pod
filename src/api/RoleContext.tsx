@@ -76,10 +76,14 @@ export const RoleProvider = ({ children, basePath }: { children: React.ReactNode
 			await RolesRepositories.putPermissionDataForRole(basePath, updatedPermissionRole)
 				.then((response) => {
 					fetchPermissionDataForRole(updatedPermissionRole.accessRoleId)
-					toast.success("Rolle oppdatert.")
+					toast.success("Rolle oppdatert.", {
+						role: "alert"
+					})
 				})
 				.catch((err: AxiosError) => {
-					toast.error("Rolleoppdatering feilet.")
+					toast.error("Rolleoppdatering feilet.", {
+						role: "alert"
+					})
 					console.error(err)
 				})
 		}

@@ -34,7 +34,9 @@ const ChangeAssignment = ({ assignmentToChange, modalOpenProp, setIsModalOpen }:
 	const handleSubmitChangesToRole = () => {
 		// TODO: Fix this when API is ready
 		// AssignmentRepository.putAccessRole(basePath, updatedAssignment)
-		toast.info("Endring er foreløpig ikke mulig")
+		toast.info("Endring er foreløpig ikke mulig", {
+			role: "alert"
+		})
 		closeModal()
 	}
 

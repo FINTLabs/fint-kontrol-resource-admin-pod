@@ -61,7 +61,9 @@ const AssignRoleToUserConfirmation = ({
 		let roleMatchedToId: IRole | undefined = roles.find((role) => role.accessRoleId === param)
 		if (roleMatchedToId === undefined) {
 			setSelectedAccessRole({ accessRoleId: "", name: "" })
-			toast.error("Rolle må velges")
+			toast.error("Rolle må velges", {
+				role: "alert"
+			})
 		} else {
 			setSelectedAccessRole(roleMatchedToId)
 			const updatedAssignment: IAssignment = { ...newAssignment, accessRoleId: param }

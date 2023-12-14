@@ -57,7 +57,9 @@ const AssignRolesMain = () => {
 			}
 			resetAll()
 		} else {
-			toast.info("Data mangler i tildelingen.")
+			toast.info("Data mangler i tildelingen.", {
+				role: "alert"
+			})
 		}
 	}
 

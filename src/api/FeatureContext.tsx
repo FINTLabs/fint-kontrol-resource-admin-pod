@@ -42,11 +42,15 @@ export const FeaturesProvider = ({ children, basePath }: { children: React.React
 			setIsLoading(true)
 			await RolesRepositories.putAssignment(basePath, updatedPermissionData)
 				.then(() => {
-					toast.success("Features ble lagt til")
+					toast.success("Features ble lagt til", {
+						role: "alert"
+					})
 				})
 				.catch((err: AxiosError) => {
 					console.log(err)
-					toast.error("Noe gikk galt, Feilkode: " + err.code)
+					toast.error("Noe gikk galt, Feilkode: " + err.code, {
+						role: "alert"
+					})
 				})
 				.finally(() => setIsLoading(false))
 		}

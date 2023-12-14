@@ -5,6 +5,8 @@ import { toast } from "react-toastify"
 import { AxiosError } from "axios"
 import { useUser } from "./UserContext"
 import UsersRepository from "../repositories/UsersRepository"
+import { useNavigate } from "react-router-dom"
+import { useSafeTabChange } from "./SafeTabChangeContext"
 
 interface AssignmentContextType {
 	deleteAllAssignmentsOnUser: (resourceId: string) => void
@@ -37,6 +39,9 @@ const AssignmentContext = createContext<AssignmentContextType | undefined>(undef
 export const AssignmentProvider = ({ children, basePath }: { children: React.ReactNode; basePath: string }) => {
 	const { getUsersPage, getSpecificUserById } = useUser()
 	const [isLoading, setIsLoading] = useState(false)
+
+	const { currentTab } = useSafeTabChange()
+	const navigate = useNavigate()
 
 	// Pagination
 	const [userDetailsPage, setUserDetailsPage] = useState<IUserDetailsPage | null>(null)
@@ -72,11 +77,15 @@ export const AssignmentProvider = ({ children, basePath }: { children: React.Rea
 			setIsLoading(true)
 			await AssignmentRepository.postNewAssignment(basePath, newAssignment)
 				.then(() => {
-					toast.success("Ny rolletildeling utført!")
+					toast.success("Ny rolletildeling utført!", {
+						role: "alert"
+					})
 					getUsersPage()
 				})
 				.catch((err: AxiosError) => {
-					toast.error("Ny rolletildeling feilet.")
+					toast.error("Ny rolletildeling feilet.", {
+						role: "alert"
+					})
 					console.log(err)
 				})
 				.finally(() => setIsLoading(false))
@@ -89,11 +98,15 @@ export const AssignmentProvider = ({ children, basePath }: { children: React.Rea
 			setIsLoading(true)
 			await AssignmentRepository.putNewAssignment(basePath, newAssignment)
 				.then(() => {
-					toast.success("Oppdatert rolletildeling utført!")
+					toast.success("Oppdatert rolletildeling utført!", {
+						role: "alert"
+					})
 					getUsersPage()
 				})
 				.catch((err: AxiosError) => {
-					toast.error("Oppdatering av tildeling feilet.")
+					toast.error("Oppdatering av tildeling feilet.", {
+						role: "alert"
+					})
 					console.log(err)
 				})
 				.finally(() => setIsLoading(false))
@@ -106,11 +119,15 @@ export const AssignmentProvider = ({ children, basePath }: { children: React.Rea
 			setIsLoading(true)
 			await AssignmentRepository.deleteAssignmentById(basePath, assignmentId)
 				.then(() => {
-					toast.success("Sletting av rolleknytning utført!")
+					toast.success("Sletting av rolleknytning utført!", {
+						role: "alert"
+					})
 					getUsersPage()
 				})
 				.catch((err: AxiosError) => {
-					toast.error("Sletting av rolleknytning feilet.")
+					toast.error("Sletting av rolleknytning feilet.", {
+						role: "alert"
+					})
 					console.log(err)
 				})
 				.finally(() => setIsLoading(false))
@@ -122,10 +139,14 @@ export const AssignmentProvider = ({ children, basePath }: { children: React.Rea
 			setIsLoading(true)
 			await AssignmentRepository.deleteOrgUnitFromAssignment(basePath, scopeId, orgUnitId)
 				.then(() => {
-					toast.success("Sletting av orgenhetsknytning utført!")
+					toast.success("Sletting av orgenhetsknytning utført!", {
+						role: "alert"
+					})
 				})
 				.catch((err: AxiosError) => {
-					toast.error("Sletting av orgenhetsknytning feilet.")
+					toast.error("Sletting av orgenhetsknytning feilet.", {
+						role: "alert"
+					})
 					console.log(err)
 				})
 				.finally(() => {
@@ -140,10 +161,15 @@ export const AssignmentProvider = ({ children, basePath }: { children: React.Rea
 			setIsLoading(true)
 			await AssignmentRepository.deleteAllAssignmentsOnUser(basePath, resourceId)
 				.then(() => {
-					toast.success("Alle rolleknytninger slettet!")
+					toast.success("Alle rolleknytninger slettet!", {
+						role: "alert"
+					})
+					navigate(`/ressurser-admin/?tab=${currentTab}`)
 				})
 				.catch((err: AxiosError) => {
-					toast.error("Sletting av rolleknytninger feilet.")
+					toast.error("Sletting av rolleknytninger feilet.", {
+						role: "alert"
+					})
 					console.log(err)
 				})
 				.finally(() => {

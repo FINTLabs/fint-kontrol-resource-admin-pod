@@ -36,7 +36,9 @@ const putAssignment = (basePath: string, updatedAssignment: IPermissionData) => 
 const putAccessRole = (basePath: string, updatedAssignment: IUserRole) => {
 	const baseUrl = `${basePath === "/" ? "" : basePath}/api/accessmanagement/v1/accesspermission`
 	const url = `${baseUrl}`
-	toast.info("Lagring forsøkt, men feilet.")
+	toast.info("Lagring forsøkt, men feilet.", {
+		role: "alert"
+	})
 	// TODO: fix this when API is ready
 	return axios.post(url, updatedAssignment)
 }
