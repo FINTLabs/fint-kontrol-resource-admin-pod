@@ -67,7 +67,7 @@ const CenteredDataCell = styled(Table.DataCell)`
 
 const BlankTable = () => {
 	return (
-		<UsersTableStyled id="users-table-id">
+		<UsersTableStyled id="users-table">
 			<Table.Header>
 				<Table.Row>
 					<Table.HeaderCell scope="col">Ressurs</Table.HeaderCell>

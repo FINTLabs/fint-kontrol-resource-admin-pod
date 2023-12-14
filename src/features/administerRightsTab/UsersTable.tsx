@@ -48,7 +48,7 @@ export const UsersTable = () => {
 
 	return (
 		<>
-			<UsersTableStyled id="users-table-id">
+			<UsersTableStyled id="users-table">
 				<Table.Header>
 					<Table.Row>
 						<Table.HeaderCell scope="col">Fult navn</Table.HeaderCell>

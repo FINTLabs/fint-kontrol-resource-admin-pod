@@ -48,7 +48,7 @@ const LandingComponent = () => {
 				Rettighetsstyring
 			</Heading>
 
-			<Tabs value={currentTab} id={"navigation-bar-id"} onChange={handleChangeTab}>
+			<Tabs value={currentTab} id={"navigation-bar"} onChange={handleChangeTab}>
 				<Tabs.List>
 					<Tabs.Tab
 						value="tildel"
