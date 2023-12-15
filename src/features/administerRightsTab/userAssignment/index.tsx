@@ -35,8 +35,7 @@ const Index = ({ basePath }: UserAssignmentPageProps) => {
 		objectTypeFilter,
 		orgUnitSearchString,
 		getUserAssignmentDetailsPage,
-		setSelectedRoleFilter,
-		userDetailsPage
+		setSelectedRoleFilter
 	} = useAssignments()
 
 	const { userId } = useParams()
