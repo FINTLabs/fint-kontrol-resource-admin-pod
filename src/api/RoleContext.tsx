@@ -58,6 +58,11 @@ export const RoleProvider = ({ children, basePath }: { children: React.ReactNode
 		}
 	}
 
+	const getRoleNameFromId = (roleId: string) => {
+		const nameFromId = roles.find((role) => role.accessRoleId === roleId)
+		return nameFromId ? nameFromId.name : ""
+	}
+
 	const fetchPermissionDataForRole = async (roleId: string) => {
 		if (basePath) {
 			setIsLoading(true)
@@ -87,11 +92,6 @@ export const RoleProvider = ({ children, basePath }: { children: React.ReactNode
 					console.error(err)
 				})
 		}
-	}
-
-	const getRoleNameFromId = (roleId: string) => {
-		const nameFromId = roles.find((role) => role.accessRoleId === roleId)
-		return nameFromId ? nameFromId.name : ""
 	}
 
 	const resetPermissionData = () => {

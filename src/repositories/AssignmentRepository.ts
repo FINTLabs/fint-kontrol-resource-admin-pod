@@ -38,9 +38,19 @@ const deleteOrgUnitFromAssignment = (basePath: string, scopeId: string, orgUnitI
 	return axios.delete<IAssignment>(url)
 }
 
-const deleteAssignmentById = (basePath: string, assignmentId: string) => {
-	// TODO: API not ready, so this data might be wrong
-	const url = `${basePath === "/" ? "" : basePath}/api/accessmanagement/v1/accessassignment/user/${assignmentId}`
+const deleteAssignmentById = (basePath: string, resourceId: string, roleId: string, objectTypeToDelete: string) => {
+	// resourceId is the user id for the time being (matches API)
+	const baseUrl = `${
+		basePath === "/" ? "" : basePath
+	}/api/accessmanagement/v1/accessassignment/user/${resourceId}/role/${roleId}`
+
+	let queryParams = []
+
+	if (objectTypeToDelete !== "") {
+		queryParams.push(`objectType=${objectTypeToDelete}`)
+	}
+
+	const url = `${baseUrl}${queryParams.length > 0 ? "?" : ""}${queryParams.join("&")}`
 	return axios.delete<IAssignment>(url)
 }
 

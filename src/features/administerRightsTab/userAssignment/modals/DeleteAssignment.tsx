@@ -1,8 +1,8 @@
 import { Button, Modal, Select, Switch } from "@navikt/ds-react"
 import React, { useEffect, useRef, useState } from "react"
-import { toast } from "react-toastify"
 import { IRole, IUser } from "../../../../api/types"
 import styled from "styled-components"
+import { useAssignments } from "../../../../api/AssignmentContext"
 
 const ModalBodyStyled = styled(Modal.Body)`
 	display: flex;
@@ -25,6 +25,19 @@ const DeleteAssignment = ({
 }: DeleteAssignmentsModalProps) => {
 	const deleteRef = useRef<HTMLDialogElement>(null)
 	const [completeDelete, setCompleteDelete] = useState(false)
+	const [objectTypesInUser, setObjectTypesInUser] = useState<string[]>([])
+
+	const [objectTypeToDelete, setObjectTypeToDelete] = useState("")
+
+	const { deleteAssignmentById } = useAssignments()
+
+	useEffect(() => {
+		const mapOfObjectTypes = userData.roles?.flatMap((role) => role.scopes.map((scope) => scope.objectType))
+		if (mapOfObjectTypes) {
+			setObjectTypeToDelete(mapOfObjectTypes[0])
+			setObjectTypesInUser(mapOfObjectTypes)
+		}
+	}, [userData.roles])
 
 	useEffect(() => {
 		if (selectedRoleToDeleteFrom.accessRoleId.length > 0 || modalOpenProp) {
@@ -32,6 +45,12 @@ const DeleteAssignment = ({
 		}
 		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [selectedRoleToDeleteFrom, modalOpenProp])
+
+	useEffect(() => {
+		if (completeDelete) {
+			setObjectTypeToDelete("")
+		}
+	}, [completeDelete])
 
 	const openModal = () => {
 		setIsDeleteModalOpen(true)
@@ -44,15 +63,10 @@ const DeleteAssignment = ({
 	}
 
 	const handleDeleteAssignmentData = () => {
-		// TODO: Fix this when API is ready
-		// AssignmentRepository. (basePath, assignmentId, orgUnitsToInclude[], booleanForJustDeleteEverything)
-		toast.info("Sletting er foreløpig ikke mulig.", {
-			role: "alert"
-		})
+		deleteAssignmentById(userData.resourceId, selectedRoleToDeleteFrom.accessRoleId, objectTypeToDelete)
 		closeModal()
 	}
 
-	const objectTypesInUser = userData.roles?.flatMap((role) => role.scopes.map((scope) => scope.objectType))
 	// Use Set to get unique values
 	const uniqueObjectTypes = Array.from(new Set(objectTypesInUser))
 
@@ -65,7 +79,10 @@ const DeleteAssignment = ({
 					Fjern hele knytningen uavhengig objekttyper?{" "}
 				</Switch>
 				{!completeDelete && (
-					<Select label={"Velg objekttype å inkludere i sletting"}>
+					<Select
+						label={"Velg objekttype å inkludere i sletting"}
+						onChange={(e) => setObjectTypeToDelete(e.target.value)}
+					>
 						{uniqueObjectTypes.map((objectType, index) => (
 							<option key={index}>{objectType}</option>
 						))}

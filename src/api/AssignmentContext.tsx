@@ -10,7 +10,7 @@ import { useSafeTabChange } from "./SafeTabChangeContext"
 
 interface AssignmentContextType {
 	deleteAllAssignmentsOnUser: (resourceId: string) => void
-	deleteAssignmentById: (assignmentId: string) => void
+	deleteAssignmentById: (resourceId: string, roleId: string, objectTypeToDelete: string) => void
 	deleteOrgUnitFromAssignment: (userId: string, scopeId: string, orgUnitId: string) => void
 	getUserAssignmentDetailsPage: (resourceId: string) => void
 	postNewAssignment: (newAssignment: IAssignment) => void
@@ -113,16 +113,14 @@ export const AssignmentProvider = ({ children, basePath }: { children: React.Rea
 		}
 	}
 
-	const deleteAssignmentById = async (assignmentId: string) => {
-		// TODO: API not ready, so this data might be wrong
+	const deleteAssignmentById = async (resourceId: string, roleId: string, objectTypeToDelete: string) => {
 		if (basePath) {
 			setIsLoading(true)
-			await AssignmentRepository.deleteAssignmentById(basePath, assignmentId)
+			await AssignmentRepository.deleteAssignmentById(basePath, resourceId, roleId, objectTypeToDelete)
 				.then(() => {
 					toast.success("Sletting av rolleknytning utført!", {
 						role: "alert"
 					})
-					getUsersPage()
 				})
 				.catch((err: AxiosError) => {
 					toast.error("Sletting av rolleknytning feilet.", {
@@ -130,7 +128,10 @@ export const AssignmentProvider = ({ children, basePath }: { children: React.Rea
 					})
 					console.log(err)
 				})
-				.finally(() => setIsLoading(false))
+				.finally(() => {
+					setIsLoading(false)
+					getUserAssignmentDetailsPage(resourceId)
+				})
 		}
 	}
 
