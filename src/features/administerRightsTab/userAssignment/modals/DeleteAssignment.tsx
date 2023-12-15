@@ -21,7 +21,7 @@ const DeleteAssignment = ({
 	setIsDeleteModalOpen,
 	modalOpenProp,
 	selectedRoleToDeleteFrom,
-	userData
+	userData // TODO: userData will be updated in API, this requires refactoring when done.
 }: DeleteAssignmentsModalProps) => {
 	const deleteRef = useRef<HTMLDialogElement>(null)
 	const [completeDelete, setCompleteDelete] = useState(false)
@@ -29,15 +29,20 @@ const DeleteAssignment = ({
 
 	const [objectTypeToDelete, setObjectTypeToDelete] = useState("")
 
-	const { deleteAssignmentById } = useAssignments()
+	const { deleteAssignmentById, userDetailsPage } = useAssignments()
 
 	useEffect(() => {
-		const mapOfObjectTypes = userData.roles?.flatMap((role) => role.scopes.map((scope) => scope.objectType))
-		if (mapOfObjectTypes) {
-			setObjectTypeToDelete(mapOfObjectTypes[0])
-			setObjectTypesInUser(mapOfObjectTypes)
+		// TODO: This must be refactored when an API endpoint is avaialble to retrieve objectTypesInUserOrgUnits. This is to reduce frontend load scalability.
+		const objectTypesInUserOrgUnits = userDetailsPage?.accessRoles.flatMap((role) =>
+			role.orgUnits.map((orgUnit) => orgUnit.objectType)
+		)
+
+		if (objectTypesInUserOrgUnits) {
+			setObjectTypeToDelete(objectTypesInUserOrgUnits[0])
+			setObjectTypesInUser(objectTypesInUserOrgUnits)
 		}
-	}, [userData.roles])
+		// eslint-disable-next-line react-hooks/exhaustive-deps
+	}, [userData])
 
 	useEffect(() => {
 		if (selectedRoleToDeleteFrom.accessRoleId.length > 0 || modalOpenProp) {
