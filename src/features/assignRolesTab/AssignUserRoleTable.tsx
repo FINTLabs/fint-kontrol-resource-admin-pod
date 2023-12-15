@@ -51,15 +51,27 @@ interface AssignUserRoleTableProps {
 
 const AssignUserRoleTable = ({ newAssignment, setNewAssignment, setHasChanges, setUser }: AssignUserRoleTableProps) => {
 	const { basePath } = useGeneral()
-	const { itemsPerPage, setItemsPerPage, currentPage, setCurrentPage, isLoading, usersPage, getUsersPage } = useUser()
 	const { setIsTabModified } = useSafeTabChange()
+	const {
+		currentPage,
+		itemsPerPage,
+		isLoading,
+		orgUnitIds,
+		getUsersPage,
+		setItemsPerPage,
+		setCurrentPage,
+		searchString,
+		roleFilter,
+		usersPage
+	} = useUser()
+
 	const [isModalOpen, setIsModalOpen] = useState(false)
 	const [roleDataForModal, setRoleDataForModal] = useState<IUser | undefined>()
 
 	useEffect(() => {
 		getUsersPage()
 		// eslint-disable-next-line react-hooks/exhaustive-deps
-	}, [basePath, currentPage, itemsPerPage])
+	}, [basePath, currentPage, itemsPerPage, searchString, orgUnitIds, roleFilter])
 	const handleChangeRowsPerPage = (event: React.ChangeEvent<HTMLSelectElement | HTMLOptionElement>) => {
 		setItemsPerPage(parseInt(event.target.value, 10))
 		setCurrentPage(1)

@@ -26,6 +26,7 @@ const AssignRolesContainer = styled.div`
 const Index = () => {
 	const { postNewAssignment, putNewAssignment } = useAssignments()
 	const { setIsTabModified } = useSafeTabChange()
+
 	const [selectedAccessRole, setSelectedAccessRole] = useState<IRole>({ accessRoleId: "", name: "" })
 	const [newAssignment, setNewAssigment] = useState<IAssignment>({
 		user: emptyUser,
@@ -33,10 +34,11 @@ const Index = () => {
 		accessRoleId: "",
 		orgUnits: []
 	})
-	const { handleSubmit } = useForm()
 	const [hasChanges, setHasChanges] = useState(false)
 	const [user, setUser] = useState<IUser | undefined>()
 	const [roleExists, setRoleExists] = useState(false)
+
+	const { handleSubmit } = useForm()
 
 	useEffect(() => {
 		if (user?.roles?.some((role) => role.roleId === newAssignment.accessRoleId)) {
