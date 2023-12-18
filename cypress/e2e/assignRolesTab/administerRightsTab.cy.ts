@@ -1,16 +1,7 @@
 import { wait } from "@testing-library/user-event/dist/utils"
+import { setupFetchMocks } from "../../support/commands"
 
-beforeEach(() => {
-	const baseUrl = "http://localhost:3000/api"
-	cy.interceptAndReturnFile("GET", `${baseUrl}/accessmanagement/v1/user*`, "users.json")
-	cy.interceptAndReturnFile("GET", `${baseUrl}/orgunits`, "orgunits.json")
-	cy.interceptAndReturnFile("GET", `${baseUrl}/accessmanagement/v1/accessrole`, "allAccessRoles.json")
-	cy.interceptAndReturnFile(
-		"GET",
-		`${baseUrl}/accessmanagement/v1/accesspermission/accessrole/*`,
-		"singleAccessRole.json"
-	)
-})
+setupFetchMocks()
 
 describe("Test suite for 'Se brukere med roller'", () => {
 	it("can render home page", () => {

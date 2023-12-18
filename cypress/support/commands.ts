@@ -42,6 +42,7 @@ declare global {
 		interface Chainable {
 			goToHome: typeof goToHome
 			interceptAndReturnFile: typeof interceptAndReturnFile
+			setupFetchMocks: typeof setupFetchMocks
 		}
 	}
 }
@@ -57,3 +58,18 @@ export function goToHome() {
 	return cy.visit("http://localhost:3000/ressurser-admin")
 }
 Cypress.Commands.add("goToHome", goToHome)
+
+export const setupFetchMocks = () => {
+	beforeEach(() => {
+		const baseUrl = "http://localhost:3000/api"
+		cy.interceptAndReturnFile("GET", `${baseUrl}/accessmanagement/v1/user*`, "users.json")
+		cy.interceptAndReturnFile("GET", `${baseUrl}/orgunits`, "orgunits.json")
+		cy.interceptAndReturnFile("GET", `${baseUrl}/accessmanagement/v1/accessrole`, "allAccessRoles.json")
+		cy.interceptAndReturnFile(
+			"GET",
+			`${baseUrl}/accessmanagement/v1/accesspermission/accessrole/*`,
+			"singleAccessRole.json"
+		)
+	})
+}
+Cypress.Commands.add("setupFetchMocks", setupFetchMocks)
