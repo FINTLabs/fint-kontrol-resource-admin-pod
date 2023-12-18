@@ -1,4 +1,3 @@
-import React, { useEffect } from "react"
 import { PersonCheckmarkIcon, PersonPlusIcon } from "@navikt/aksel-icons"
 import { Heading, Loader, Tabs } from "@navikt/ds-react"
 
@@ -9,7 +8,6 @@ import styled from "styled-components"
 import { useSafeTabChange } from "../api/SafeTabChangeContext"
 import { useLocation, useNavigate } from "react-router-dom"
 import TieFeaturesToRolesTab from "./tieFeatureToRoleTab/tieFeaturesToRolesTab"
-import { useUser } from "../api/UserContext"
 
 const LandingContainer = styled.div`
 	h1 {

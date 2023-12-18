@@ -1,10 +1,9 @@
 import styled from "styled-components"
 import React, { useEffect, useState } from "react"
-import { Button, Chips, Search, Select } from "@navikt/ds-react"
+import { Search, Select } from "@navikt/ds-react"
 import { useRole } from "../../../api/RoleContext"
 import { useUser } from "../../../api/UserContext"
 import OrgUnitFilterModal from "./orgUnitFilter/OrgUnitFilterModal"
-import { Chip } from "@mui/material"
 
 const ToolbarContainer = styled.div`
 	display: flex;
