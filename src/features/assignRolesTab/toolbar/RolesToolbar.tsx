@@ -1,10 +1,10 @@
 import styled from "styled-components"
-import UnitSelectDialog from "./UnitSelectDialog"
 import React, { useEffect, useState } from "react"
-import { Buldings3Icon } from "@navikt/aksel-icons"
-import { Button, Search, Select } from "@navikt/ds-react"
+import { Button, Chips, Search, Select } from "@navikt/ds-react"
 import { useRole } from "../../../api/RoleContext"
 import { useUser } from "../../../api/UserContext"
+import OrgUnitFilterModal from "./orgUnitFilter/OrgUnitFilterModal"
+import { Chip } from "@mui/material"
 
 const ToolbarContainer = styled.div`
 	display: flex;
@@ -16,17 +16,17 @@ const ToolbarContainer = styled.div`
 `
 
 const RolesToolbar = () => {
-	const { setSearchString, setRoleFilter } = useUser()
+	const { searchString, roleFilter, setSearchString, setRoleFilter, setOrgUnitIdsFilter } = useUser()
 	const { roles } = useRole()
-	const [showUnitModal, setShowUnitModal] = useState(false)
-	const [currentSearchString, setCurrentSearchString] = useState<string>("")
+	const [currentSearchString, setCurrentSearchString] = useState<string>(searchString)
 
 	useEffect(() => {
 		setSearchString("")
-	}, [setSearchString])
+		setCurrentSearchString("")
+	}, [searchString, setSearchString])
 
-	const closeModal = () => {
-		setShowUnitModal(false)
+	const handleChangeOrgUnitFilter = (orgUnitsFromFilter: string[]) => {
+		setOrgUnitIdsFilter(orgUnitsFromFilter)
 	}
 
 	const handleUpdateSelectedRoleFilter = (param: string) => {
@@ -42,30 +42,18 @@ const RolesToolbar = () => {
 
 	return (
 		<ToolbarContainer id={"toolbar-id"}>
-			<UnitSelectDialog open={showUnitModal} onClose={closeModal} />
-
-			<div>
-				<Button
-					iconPosition="right"
-					icon={<Buldings3Icon aria-hidden />}
-					id={"selectUnitsIcon"}
-					variant={"secondary"}
-					onClick={() => {
-						setShowUnitModal(true)
-					}}
-				>
-					Orgenhetsfilter
-				</Button>
-			</div>
+			<OrgUnitFilterModal
+				handleChangeOrgUnitFilter={(orgUnitsFromFilter) => handleChangeOrgUnitFilter(orgUnitsFromFilter)}
+			/>
 
 			<Select
 				label="Rollefilter"
 				size={"medium"}
 				onChange={(e) => handleUpdateSelectedRoleFilter(e.target.value)}
 				id={"role-filter"}
-				defaultValue={""}
+				value={roleFilter}
 			>
-				<option value="">Velg rolle</option>
+				<option value="">Alle</option>
 				{roles.map((role) => (
 					<option value={role.accessRoleId} key={role.accessRoleId}>
 						{role.name}

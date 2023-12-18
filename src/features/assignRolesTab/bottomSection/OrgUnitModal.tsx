@@ -1,10 +1,10 @@
 import { Alert, Button, Modal, Select, Switch } from "@navikt/ds-react"
 import React, { useRef, useState } from "react"
-import OrgUnitTree from "./OrgUnitTree"
 import { IOrgUnit, IUser } from "../../../api/types"
 import { Buldings3Icon } from "@navikt/aksel-icons"
 import { useRole } from "../../../api/RoleContext"
 import styled from "styled-components"
+import OrgUnitTreeWithUserConnectionOrganism from "../../../organisms/orgUnitTree/OrgUnitTreeWithUserConnectionOrganism"
 
 const ModalBodyStyled = styled(Modal.Body)`
 	display: flex;
@@ -95,9 +95,9 @@ const OrgUnitModal = ({ handleModalMapping, user }: OrgUnitModalProps) => {
 						<Switch onClick={() => setAggregated(!aggregated)} checked={aggregated}>
 							Inkluder underliggende enheter
 						</Switch>
-						<OrgUnitTree
-							orgUnitsForUser={scopeOrgUnits}
-							setOrgUnitsForUser={setScopeOrgUnits}
+						<OrgUnitTreeWithUserConnectionOrganism
+							selectedOrgUnits={scopeOrgUnits}
+							setSelectedOrgUnits={setScopeOrgUnits}
 							aggregated={aggregated}
 						/>
 					</>

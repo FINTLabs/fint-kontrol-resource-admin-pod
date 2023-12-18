@@ -11,6 +11,7 @@ import { ConfirmSafeRedirectModal } from "./confirmSafeRedirectModal"
 import { useAssignments } from "../../api/AssignmentContext"
 import { useForm } from "react-hook-form"
 import { toast } from "react-toastify"
+import FilterChips from "./FilterChips"
 
 const AssignRolesContainer = styled.div`
 	display: flex;
@@ -94,6 +95,8 @@ const Index = () => {
 			<ConfirmSafeRedirectModal />
 
 			<RolesToolbar />
+
+			<FilterChips />
 
 			<AssignUserRoleTable
 				newAssignment={newAssignment}
