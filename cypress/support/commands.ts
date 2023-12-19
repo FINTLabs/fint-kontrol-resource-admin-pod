@@ -70,6 +70,7 @@ export const setupFetchMocks = () => {
 			`${baseUrl}/accessmanagement/v1/accesspermission/accessrole/*`,
 			"singleAccessRole.json"
 		)
+		cy.interceptAndReturnFile("GET", `${baseUrl}/accessmanagement/v1/accesspermission/accessrole*`, "features.json")
 	})
 }
 Cypress.Commands.add("setupFetchMocks", setupFetchMocks)

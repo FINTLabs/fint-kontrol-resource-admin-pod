@@ -1,0 +1,22 @@
+[
+	{
+		"featureId": "1",
+		"featureName": "Alle brukere"
+	},
+	{
+		"featureId": "2",
+		"featureName": "En bruker"
+	},
+	{
+		"featureId": "3",
+		"featureName": "Grupper"
+	},
+	{
+		"featureId": "4",
+		"featureName": "En gruppe"
+	},
+	{
+		"featureId": "5",
+		"featureName": "Ressurser"
+	}
+]
