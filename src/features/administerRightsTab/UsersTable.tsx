@@ -36,7 +36,10 @@ const PaginationWrapper = styled.div`
 	gap: 1rem;
 `
 
-export const UsersTable = () => {
+interface UsersTableProps {
+	handlePagination: (newPage: number) => void
+}
+export const UsersTable = ({ handlePagination }: UsersTableProps) => {
 	const { currentPage, isLoading, itemsPerPage, setCurrentPage, setItemsPerPage, usersPage } = useUser()
 	const navigate = useNavigate()
 	const { basePath } = useGeneral()
@@ -112,7 +115,7 @@ export const UsersTable = () => {
 				<Pagination
 					id="pagination"
 					page={currentPage ? currentPage : 1}
-					onPageChange={setCurrentPage}
+					onPageChange={handlePagination}
 					count={Math.ceil((usersPage ? usersPage.totalItems : 1) / itemsPerPage)}
 					size="small"
 				/>

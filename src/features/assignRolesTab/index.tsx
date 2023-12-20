@@ -23,8 +23,10 @@ const AssignRolesContainer = styled.div`
 		gap: 1rem;
 	}
 `
-
-const Index = () => {
+interface AssignRolesTabProps {
+	handlePagination: (newPage: number) => void
+}
+const AssignRolesTab = ({ handlePagination }: AssignRolesTabProps) => {
 	const { postNewAssignment, putNewAssignment } = useAssignments()
 	const { setIsTabModified } = useSafeTabChange()
 
@@ -103,6 +105,7 @@ const Index = () => {
 				setNewAssignment={setNewAssigment}
 				setHasChanges={setHasChanges}
 				setUser={setUser}
+				handlePagination={handlePagination}
 			/>
 
 			<AssignRoleToUserConfirmation
@@ -131,7 +134,7 @@ const Index = () => {
 	)
 }
 
-export default Index
+export default AssignRolesTab
 
 const emptyUser: IUser = {
 	id: 1,

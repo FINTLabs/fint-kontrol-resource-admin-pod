@@ -2,13 +2,12 @@ import { PersonCheckmarkIcon, PersonPlusIcon } from "@navikt/aksel-icons"
 import { Heading, Loader, Tabs } from "@navikt/ds-react"
 import styled from "styled-components"
 
-import Index from "./assignRolesTab"
+import AssignRolesTab from "./assignRolesTab"
 import { DefineRoleTab } from "./defineRoleTab"
 import { UsersRolesMain } from "./administerRightsTab"
 import { useSafeTabChange } from "../api/SafeTabChangeContext"
 import { useLocation, useNavigate } from "react-router-dom"
 import TieFeaturesToRolesTab from "./tieFeatureToRoleTab/tieFeaturesToRolesTab"
-import { useEffect } from "react"
 import { useUser } from "../api/UserContext"
 
 const LandingContainer = styled.div`
@@ -25,30 +24,12 @@ export const LoaderStyled = styled(Loader)`
 const LandingComponent = () => {
 	const { currentTab, isTabModified, setCurrentTab, setIsModalVisible, setTabToRouteTo } = useSafeTabChange()
 
-	const { currentPage, setCurrentPage, resetPagination } = useUser()
+	const { setCurrentPage, resetPagination } = useUser()
 
 	const location = useLocation()
 	const searchParams = new URLSearchParams(location.search)
 	const tab = searchParams.get("tab")
-	const page = searchParams.get("page")
 	const navigate = useNavigate()
-
-	useEffect(() => {
-		if (page) {
-			setCurrentPage(Number(page))
-		} else {
-			setCurrentPage(1)
-		}
-		// eslint-disable-next-line react-hooks/exhaustive-deps
-	}, [])
-
-	useEffect(() => {
-		if (currentPage) {
-			const queryString = `?tab=${tab}&page=${currentPage}`
-			navigate(queryString)
-		}
-		// eslint-disable-next-line react-hooks/exhaustive-deps
-	}, [currentPage])
 
 	const handleChangeTab = (tabClicked: string) => {
 		if (isTabModified) {
@@ -59,6 +40,12 @@ const LandingComponent = () => {
 			resetPagination()
 			navigate(`?tab=${tabClicked}`)
 		}
+	}
+
+	const handlePagination = (newPage: number) => {
+		setCurrentPage(newPage)
+		const queryString = `?tab=${tab}&page=${newPage}`
+		navigate(queryString)
 	}
 
 	if (!tab) {
@@ -105,7 +92,7 @@ const LandingComponent = () => {
 					onSelect={(event) => event.preventDefault()}
 					aria-labelledby="assign-role-tab"
 				>
-					<Index />
+					<AssignRolesTab handlePagination={handlePagination} />
 				</Tabs.Panel>
 
 				<Tabs.Panel value="define" className="h-24 w-full bg-gray-50 p-4" aria-labelledby={"define-role-tab"}>
@@ -117,7 +104,7 @@ const LandingComponent = () => {
 					className="h-24 w-full bg-gray-50 p-4"
 					aria-labelledby={"see-users-tab"}
 				>
-					<UsersRolesMain />
+					<UsersRolesMain handlePagination={handlePagination} />
 				</Tabs.Panel>
 
 				<Tabs.Panel

@@ -7,6 +7,7 @@ import { useSafeTabChange } from "../../api/SafeTabChangeContext"
 import ExistingAssignmentModal from "./ExistingAssignmentModal"
 import { useGeneral } from "../../api/GeneralContext"
 import { useAssignments } from "../../api/AssignmentContext"
+import { useLocation } from "react-router-dom"
 
 const PaginationWrapper = styled.div`
 	display: flex;
@@ -48,11 +49,23 @@ interface AssignUserRoleTableProps {
 	setNewAssignment: (updatedAssignment: IAssignment) => void
 	setHasChanges: (hasChanges: boolean) => void
 	setUser: (user: IUser) => void
+	handlePagination: (newPage: number) => void
 }
 
-const AssignUserRoleTable = ({ newAssignment, setNewAssignment, setHasChanges, setUser }: AssignUserRoleTableProps) => {
+const AssignUserRoleTable = ({
+	newAssignment,
+	setNewAssignment,
+	setHasChanges,
+	setUser,
+	handlePagination
+}: AssignUserRoleTableProps) => {
 	const { basePath } = useGeneral()
 	const { setIsTabModified } = useSafeTabChange()
+
+	const location = useLocation()
+	const searchParams = new URLSearchParams(location.search)
+	const page = searchParams.get("page")
+
 	const {
 		currentPage,
 		itemsPerPage,
@@ -69,6 +82,15 @@ const AssignUserRoleTable = ({ newAssignment, setNewAssignment, setHasChanges, s
 
 	const [isModalOpen, setIsModalOpen] = useState(false)
 	const [roleDataForModal, setRoleDataForModal] = useState<IUser | undefined>()
+
+	useEffect(() => {
+		if (page) {
+			setCurrentPage(Number(page))
+		} else {
+			setCurrentPage(1)
+		}
+		// eslint-disable-next-line react-hooks/exhaustive-deps
+	}, [])
 
 	useEffect(() => {
 		getUsersPage()
@@ -161,7 +183,7 @@ const AssignUserRoleTable = ({ newAssignment, setNewAssignment, setHasChanges, s
 				<Pagination
 					id="pagination"
 					page={currentPage ? currentPage : 1}
-					onPageChange={setCurrentPage}
+					onPageChange={handlePagination}
 					count={Math.ceil((usersPage ? usersPage.totalItems : 1) / itemsPerPage)}
 					size="small"
 				/>

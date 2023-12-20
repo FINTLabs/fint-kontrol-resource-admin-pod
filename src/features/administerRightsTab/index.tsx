@@ -16,8 +16,10 @@ const UsersWithRolesContainer = styled.div`
 		align-self: end;
 	}
 `
-
-export const UsersRolesMain = () => {
+interface UserRolesMainProps {
+	handlePagination: (newPage: number) => void
+}
+export const UsersRolesMain = ({ handlePagination }: UserRolesMainProps) => {
 	const { basePath } = useGeneral()
 	const { currentPage, usersPage, getUsersPage, itemsPerPage, orgUnitIds, searchString, setCurrentPage, roleFilter } =
 		useUser()
@@ -72,7 +74,7 @@ export const UsersRolesMain = () => {
 					/>
 				</form>
 			</div>
-			<UsersTable />
+			<UsersTable handlePagination={handlePagination} />
 		</UsersWithRolesContainer>
 	)
 }
