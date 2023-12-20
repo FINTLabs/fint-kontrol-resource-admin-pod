@@ -80,10 +80,17 @@ const getUserDetails = (
 	return axios.get<IUserDetailsPage>(url)
 }
 
+const getUserDetailsNoPagination = (basePath: string, resourceId: string) => {
+	const url = `${basePath === "/" ? "" : basePath}/api/accessmanagement/v1/user/${resourceId}/orgunits`
+
+	return axios.get<IUserDetailsPage>(url)
+}
+
 const UsersRepository = {
 	getUsersPage,
 	getSpecificUserById,
-	getUserDetails
+	getUserDetails,
+	getUserDetailsNoPagination
 }
 
 export default UsersRepository

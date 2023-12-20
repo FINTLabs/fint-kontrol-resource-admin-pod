@@ -66,6 +66,7 @@ export interface IUserDetailsPage {
 }
 export interface IUserDetail {
 	accessRoleId: string
+	accessRoleName: string
 	orgUnits: IOrgUnitDetail[]
 }
 export interface IOrgUnitDetail {
@@ -83,13 +84,13 @@ export interface IUser {
 	lastName: string
 	userType: string
 	userName: string
-	roles?: IUserRole[]
+	roles?: IUserRole[] // Optional to allow use of same type
 }
 
 export interface IUserRole {
 	roleId: string
 	roleName: string
-	scopes: IScope[]
+	scopes: IScope[] // Optional to allow use of same type
 }
 
 export interface IScope {

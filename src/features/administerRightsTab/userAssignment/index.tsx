@@ -4,10 +4,9 @@ import { Box, Button, Heading, HStack, Select, VStack } from "@navikt/ds-react"
 import { ArrowBack } from "@mui/icons-material"
 import React, { useEffect, useState } from "react"
 import { useUser } from "../../../api/UserContext"
-import { IRole, IUserRole } from "../../../api/types"
+import { IRole } from "../../../api/types"
 import { LoaderStyled } from "../../index"
 import RoleOrgunitAssociationTable from "./RoleOrgunitAssociationTable"
-import ChangeAssignment from "./modals/ChangeAssignment"
 import DeleteAssignment from "./modals/DeleteAssignment"
 import { useRole } from "../../../api/RoleContext"
 import ResetUserModal from "./modals/ResetUserModal"
@@ -41,14 +40,8 @@ const Index = ({ basePath }: UserAssignmentPageProps) => {
 	const { userId } = useParams()
 	const navigate = useNavigate()
 
-	const [assignmentToChange, setAssignmentToChange] = useState<IUserRole>({
-		roleId: "",
-		roleName: "",
-		scopes: []
-	})
 	const [selectedRole, setSelectedRole] = useState<IRole>({ accessRoleId: "", name: "" })
 
-	const [isModalOpen, setIsModalOpen] = useState(false)
 	const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false)
 	const [isResetRolesModalOpen, setIsResetRolesModalOpen] = useState(false)
 
@@ -96,11 +89,6 @@ const Index = ({ basePath }: UserAssignmentPageProps) => {
 
 	const toggleRolesResetModal = (value: boolean) => {
 		setIsResetRolesModalOpen(value)
-	}
-
-	const toggleChangeModal = (assignmentToChange: IUserRole) => {
-		setAssignmentToChange(assignmentToChange)
-		setIsModalOpen(true)
 	}
 
 	const toggleDeleteModal = () => {
@@ -176,12 +164,7 @@ const Index = ({ basePath }: UserAssignmentPageProps) => {
 						) : (
 							<>
 								<Toolbar />
-								<RoleOrgunitAssociationTable
-									selectedRole={selectedRole}
-									toggleChangeModal={toggleChangeModal}
-									toggleDeleteModal={toggleDeleteModal}
-									userId={userId}
-								/>
+								<RoleOrgunitAssociationTable selectedRole={selectedRole} userId={userId} />
 							</>
 						)}
 					</Box>
@@ -193,13 +176,6 @@ const Index = ({ basePath }: UserAssignmentPageProps) => {
 					isResetRolesModalOpen={isResetRolesModalOpen}
 					setIsResetRolesModalOpen={(value) => setIsResetRolesModalOpen(value)}
 					user={specificUser}
-				/>
-			)}
-			{isModalOpen && (
-				<ChangeAssignment
-					assignmentToChange={assignmentToChange}
-					modalOpenProp={isModalOpen}
-					setIsModalOpen={setIsModalOpen}
 				/>
 			)}
 			{isDeleteModalOpen && selectedRole && (

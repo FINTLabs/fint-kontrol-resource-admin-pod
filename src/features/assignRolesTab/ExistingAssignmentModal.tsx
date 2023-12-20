@@ -1,13 +1,22 @@
 import React, { useEffect, useRef } from "react"
 import { Button, Heading, Modal } from "@navikt/ds-react"
-import { IUser } from "../../api/types"
+import { useAssignments } from "../../api/AssignmentContext"
+import { IUserDetailsPage } from "../../api/types"
 
 interface ExistingAssignmentModalProps {
 	isModalOpen: boolean
 	setIsModalOpen: (isModalOpen: boolean) => void
-	existingRoleData: IUser | undefined
+	userDetailsPage: IUserDetailsPage | null
+	userFullName: string
 }
-const ExistingAssignmentModal = ({ existingRoleData, isModalOpen, setIsModalOpen }: ExistingAssignmentModalProps) => {
+const ExistingAssignmentModal = ({
+	isModalOpen,
+	setIsModalOpen,
+	userDetailsPage,
+	userFullName
+}: ExistingAssignmentModalProps) => {
+	const { isLoading } = useAssignments()
+
 	const existingRoleRef = useRef<HTMLDialogElement>(null)
 
 	useEffect(() => {
@@ -27,32 +36,36 @@ const ExistingAssignmentModal = ({ existingRoleData, isModalOpen, setIsModalOpen
 
 	return (
 		<Modal ref={existingRoleRef} onClose={() => handleCloseModal()}>
-			<Modal.Header>
-				<Heading size={"small"}>
-					Tildelingsinformasjon for {existingRoleData?.firstName} {existingRoleData?.lastName}
-				</Heading>
-			</Modal.Header>
-			<Modal.Body>
-				{existingRoleData ? (
-					existingRoleData.roles?.map((role) => (
-						<div key={role.roleId}>
-							{role.roleName}
-							<ul>
-								{role.scopes.map((scope) =>
-									scope.orgUnits.map((orgUnit) => <li key={orgUnit.orgUnitId}>{orgUnit.name}</li>)
-								)}
-							</ul>
-						</div>
-					))
-				) : (
-					<>Det fins ingen gyldig data om rolletildelingen</>
-				)}
-			</Modal.Body>
-			<Modal.Footer>
-				<Button type="button" onClick={() => handleCloseModal(true)}>
-					Lukk
-				</Button>
-			</Modal.Footer>
+			{isLoading ? (
+				<></>
+			) : (
+				<>
+					<Modal.Header>
+						<Heading size={"small"}>Tildelingsinformasjon for {userFullName}</Heading>
+					</Modal.Header>
+					<Modal.Body>
+						{userDetailsPage ? (
+							userDetailsPage.accessRoles?.map((role) => (
+								<div key={role.accessRoleId}>
+									{role.accessRoleName}
+									<ul>
+										{role.orgUnits.map((orgUnit, i) => (
+											<li key={orgUnit.orgUnitId + " " + i}>{orgUnit.name}</li>
+										))}
+									</ul>
+								</div>
+							))
+						) : (
+							<>Det fins ingen gyldig data om rolletildelingen</>
+						)}
+					</Modal.Body>
+					<Modal.Footer>
+						<Button type="button" onClick={() => handleCloseModal(true)}>
+							Lukk
+						</Button>
+					</Modal.Footer>
+				</>
+			)}
 		</Modal>
 	)
 }

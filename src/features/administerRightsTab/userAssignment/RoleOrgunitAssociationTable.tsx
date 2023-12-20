@@ -1,6 +1,6 @@
 import { Button, Pagination, Select, Table } from "@navikt/ds-react"
 import { TrashIcon } from "@navikt/aksel-icons"
-import { IOrgUnitDetail, IRole, IUserRole } from "../../../api/types"
+import { IOrgUnitDetail, IRole } from "../../../api/types"
 import React, { useState } from "react"
 import DeleteOrgUnitInAssignment from "./modals/DeleteOrgUnitInAssignment"
 import styled from "styled-components"
@@ -24,17 +24,10 @@ const PaginationWrapper = styled.div`
 `
 
 interface RoleOrgUnitAssociationTableProps {
-	toggleChangeModal: (assignmentToChange: IUserRole) => void
-	toggleDeleteModal: (assignmentToChange: IUserRole) => void
 	selectedRole: IRole
 	userId: string
 }
-const RoleOrgunitAssociationTable = ({
-	toggleChangeModal,
-	toggleDeleteModal,
-	selectedRole,
-	userId
-}: RoleOrgUnitAssociationTableProps) => {
+const RoleOrgunitAssociationTable = ({ selectedRole, userId }: RoleOrgUnitAssociationTableProps) => {
 	const { itemsPerPage, setItemsPerPage, currentPage, setCurrentPage, userDetailsPage } = useAssignments()
 	const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false)
 	const [orgUnit, setOrgUnit] = useState<IOrgUnitDetail | undefined>()

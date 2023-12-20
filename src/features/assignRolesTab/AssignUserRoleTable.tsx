@@ -6,6 +6,7 @@ import { IAssignment, IUser } from "../../api/types"
 import { useSafeTabChange } from "../../api/SafeTabChangeContext"
 import ExistingAssignmentModal from "./ExistingAssignmentModal"
 import { useGeneral } from "../../api/GeneralContext"
+import { useAssignments } from "../../api/AssignmentContext"
 
 const PaginationWrapper = styled.div`
 	display: flex;
@@ -64,6 +65,7 @@ const AssignUserRoleTable = ({ newAssignment, setNewAssignment, setHasChanges, s
 		roleFilter,
 		usersPage
 	} = useUser()
+	const { userDetailsPage, getUserOrgUnitsNoPagination } = useAssignments()
 
 	const [isModalOpen, setIsModalOpen] = useState(false)
 	const [roleDataForModal, setRoleDataForModal] = useState<IUser | undefined>()
@@ -72,6 +74,7 @@ const AssignUserRoleTable = ({ newAssignment, setNewAssignment, setHasChanges, s
 		getUsersPage()
 		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [basePath, currentPage, itemsPerPage, searchString, orgUnitIds, roleFilter])
+
 	const handleChangeRowsPerPage = (event: React.ChangeEvent<HTMLSelectElement | HTMLOptionElement>) => {
 		setItemsPerPage(parseInt(event.target.value, 10))
 		setCurrentPage(1)
@@ -98,6 +101,7 @@ const AssignUserRoleTable = ({ newAssignment, setNewAssignment, setHasChanges, s
 			setRoleDataForModal(user)
 		}
 		setRoleDataForModal(user)
+		getUserOrgUnitsNoPagination(user.resourceId)
 	}
 
 	return (
@@ -105,7 +109,10 @@ const AssignUserRoleTable = ({ newAssignment, setNewAssignment, setHasChanges, s
 			<ExistingAssignmentModal
 				isModalOpen={isModalOpen}
 				setIsModalOpen={setIsModalOpen}
-				existingRoleData={roleDataForModal}
+				userDetailsPage={userDetailsPage ? userDetailsPage : null}
+				userFullName={
+					roleDataForModal?.firstName ? roleDataForModal?.firstName + roleDataForModal?.lastName : ""
+				}
 			/>
 			<TableStyled id={"rettigheter-table-delegation"}>
 				<Table.Header>

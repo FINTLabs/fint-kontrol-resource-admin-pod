@@ -13,6 +13,7 @@ interface AssignmentContextType {
 	deleteAssignmentById: (resourceId: string, roleId: string, objectTypeToDelete: string) => void
 	deleteOrgUnitFromAssignment: (userId: string, scopeId: string, orgUnitId: string) => void
 	getUserAssignmentDetailsPage: (resourceId: string) => void
+	getUserOrgUnitsNoPagination: (resourceId: string) => void
 	postNewAssignment: (newAssignment: IAssignment) => void
 	putNewAssignment: (newAssignment: IAssignment) => void
 	isLoading: boolean
@@ -64,6 +65,16 @@ export const AssignmentProvider = ({ children, basePath }: { children: React.Rea
 			objectTypeFilter,
 			orgUnitSearchString
 		)
+			.then((response) => {
+				setUserDetailsPage(response.data)
+			})
+			.catch((err: AxiosError) => console.error(err))
+			.finally(() => setIsLoading(false))
+	}
+
+	const getUserOrgUnitsNoPagination = async (resourceId: string) => {
+		setIsLoading(true)
+		await UsersRepository.getUserDetailsNoPagination(basePath, resourceId)
 			.then((response) => {
 				setUserDetailsPage(response.data)
 			})
@@ -190,6 +201,7 @@ export const AssignmentProvider = ({ children, basePath }: { children: React.Rea
 				isLoading,
 				itemsPerPage,
 				getUserAssignmentDetailsPage,
+				getUserOrgUnitsNoPagination,
 				objectTypeFilter,
 				orgUnitSearchString,
 				postNewAssignment,
