@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react"
-import { TableStyled } from "./PermissionsMain"
+import { TableStyled } from "./index"
 import { Table } from "@navikt/ds-react"
 import { IPermissionData } from "../../api/types"
 import PermissionsTableCheckbox from "./PermissionsTableCheckbox"

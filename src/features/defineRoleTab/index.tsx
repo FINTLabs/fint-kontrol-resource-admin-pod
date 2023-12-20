@@ -34,7 +34,7 @@ const PermissionDataContainer = styled.div`
 	flex-direction: column;
 	align-items: flex-end;
 `
-export const PermissionsMain = () => {
+export const DefineRoleTab = () => {
 	const [localSelectedAccessRoleId, setLocalSelectedAccessRoleId] = useState<string>("")
 	const {
 		isLoading,

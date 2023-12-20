@@ -3,7 +3,7 @@ import { Heading, Loader, Tabs } from "@navikt/ds-react"
 import styled from "styled-components"
 
 import Index from "./assignRolesTab"
-import { PermissionsMain } from "./defineRoleTab/PermissionsMain"
+import { DefineRoleTab } from "./defineRoleTab"
 import { UsersRolesMain } from "./administerRightsTab"
 import { useSafeTabChange } from "../api/SafeTabChangeContext"
 import { useLocation, useNavigate } from "react-router-dom"
@@ -109,7 +109,7 @@ const LandingComponent = () => {
 				</Tabs.Panel>
 
 				<Tabs.Panel value="define" className="h-24 w-full bg-gray-50 p-4" aria-labelledby={"define-role-tab"}>
-					<PermissionsMain />
+					<DefineRoleTab />
 				</Tabs.Panel>
 
 				<Tabs.Panel
