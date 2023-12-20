@@ -2,8 +2,8 @@ import React, { createContext, useContext, useState, useEffect } from "react"
 import { IUser, userContextDefaultValues, IUserPage } from "./types"
 import UsersRepository from "../repositories/UsersRepository"
 import { AxiosError } from "axios"
-import { useSafeTabChange } from "./SafeTabChangeContext"
 import { toast } from "react-toastify"
+import { useLocation } from "react-router-dom"
 
 interface UserContextType {
 	getUsersPage: () => void
@@ -14,11 +14,12 @@ interface UserContextType {
 	setIsLoading: (isLoading: boolean) => void
 	selectedUser: IUser | null
 	setUser: (data: IUserPage | null) => void
+	resetPagination: () => void
 
 	isLoading: boolean
 
 	// 	Pagination
-	currentPage: number
+	currentPage: number | undefined
 	itemsPerPage: number
 	setCurrentPage: (currentPage: number) => void
 	setItemsPerPage: (itemsPerUSer: number) => void
@@ -36,12 +37,15 @@ interface UserContextType {
 export const UserContext = createContext<UserContextType | undefined>(undefined)
 
 export function UserProvider({ children, basePath }: { children: React.ReactNode; basePath: string }) {
-	const { currentTab } = useSafeTabChange()
+	const location = useLocation()
+	const searchParams = new URLSearchParams(location.search)
+	const page = searchParams.get("page")
+
 	const [isLoading, setIsLoading] = useState<boolean>(false)
 
 	// Pagination
 	const [usersPage, setUsersPage] = useState<IUserPage | null>(null)
-	const [currentPage, setCurrentPage] = useState<number>(1)
+	const [currentPage, setCurrentPage] = useState<number>()
 	const [itemsPerPage, setItemsPerPage] = useState<number>(5)
 
 	const [selectedUser, setSelectedUser] = useState<IUser | null>(null)
@@ -53,8 +57,9 @@ export function UserProvider({ children, basePath }: { children: React.ReactNode
 	const [roleFilter, setRoleFilter] = useState("")
 
 	useEffect(() => {
-		resetPagination()
-	}, [currentTab])
+		doCheckPagination()
+		// eslint-disable-next-line react-hooks/exhaustive-deps
+	}, [location])
 
 	const setUser = (data: IUserPage | null) => {
 		setUsersPage(data)
@@ -62,7 +67,15 @@ export function UserProvider({ children, basePath }: { children: React.ReactNode
 
 	const getUsersPage = async () => {
 		setIsLoading(true)
-		await UsersRepository.getUsersPage(basePath, currentPage, itemsPerPage, orgUnitIds, searchString, roleFilter)
+
+		await UsersRepository.getUsersPage(
+			basePath,
+			currentPage ? currentPage : 1,
+			itemsPerPage,
+			orgUnitIds,
+			searchString,
+			roleFilter
+		)
 			.then((response) => {
 				setUsersPage(response.data)
 			})
@@ -78,6 +91,7 @@ export function UserProvider({ children, basePath }: { children: React.ReactNode
 	const getSpecificUserById = async (userId: string) => {
 		try {
 			setIsLoading(true)
+
 			const response = await UsersRepository.getSpecificUserById(basePath, userId)
 			setSpecificUser(response.data)
 		} catch (error) {
@@ -86,6 +100,14 @@ export function UserProvider({ children, basePath }: { children: React.ReactNode
 			throw error // Throw the error to propagate it in case the caller wants to handle it
 		} finally {
 			setIsLoading(false)
+		}
+	}
+
+	const doCheckPagination = () => {
+		if (page) {
+			setCurrentPage(Number(page))
+		} else {
+			resetPagination()
 		}
 	}
 
@@ -116,6 +138,7 @@ export function UserProvider({ children, basePath }: { children: React.ReactNode
 				setRoleFilter,
 				setSpecificUser,
 				specificUser,
+				resetPagination,
 				roleFilter
 			}}
 		>

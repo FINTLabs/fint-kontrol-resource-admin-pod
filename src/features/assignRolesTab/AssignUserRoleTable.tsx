@@ -59,8 +59,8 @@ const AssignUserRoleTable = ({ newAssignment, setNewAssignment, setHasChanges, s
 		isLoading,
 		orgUnitIds,
 		getUsersPage,
-		setItemsPerPage,
 		setCurrentPage,
+		setItemsPerPage,
 		searchString,
 		roleFilter,
 		usersPage
@@ -103,7 +103,6 @@ const AssignUserRoleTable = ({ newAssignment, setNewAssignment, setHasChanges, s
 		setRoleDataForModal(user)
 		getUserOrgUnitsNoPagination(user.resourceId)
 	}
-
 	return (
 		<>
 			<ExistingAssignmentModal
@@ -161,7 +160,7 @@ const AssignUserRoleTable = ({ newAssignment, setNewAssignment, setHasChanges, s
 				</Select>
 				<Pagination
 					id="pagination"
-					page={currentPage}
+					page={currentPage ? currentPage : 1}
 					onPageChange={setCurrentPage}
 					count={Math.ceil((usersPage ? usersPage.totalItems : 1) / itemsPerPage)}
 					size="small"

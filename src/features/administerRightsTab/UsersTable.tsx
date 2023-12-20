@@ -111,7 +111,7 @@ export const UsersTable = () => {
 				</Select>
 				<Pagination
 					id="pagination"
-					page={currentPage}
+					page={currentPage ? currentPage : 1}
 					onPageChange={setCurrentPage}
 					count={Math.ceil((usersPage ? usersPage.totalItems : 1) / itemsPerPage)}
 					size="small"

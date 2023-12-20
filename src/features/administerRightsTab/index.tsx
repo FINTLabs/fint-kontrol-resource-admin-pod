@@ -4,6 +4,7 @@ import { Search, Table } from "@navikt/ds-react"
 import { useUser } from "../../api/UserContext"
 import { UsersTable, UsersTableStyled } from "./UsersTable"
 import { useGeneral } from "../../api/GeneralContext"
+import { useLocation } from "react-router-dom"
 
 const UsersWithRolesContainer = styled.div`
 	display: flex;
@@ -18,9 +19,24 @@ const UsersWithRolesContainer = styled.div`
 
 export const UsersRolesMain = () => {
 	const { basePath } = useGeneral()
-	const { usersPage, getUsersPage, currentPage, itemsPerPage, orgUnitIds, searchString, roleFilter } = useUser()
+	const { currentPage, usersPage, getUsersPage, itemsPerPage, orgUnitIds, searchString, setCurrentPage, roleFilter } =
+		useUser()
 	const { setSearchString } = useUser()
+
 	const [currentSearchString, setCurrentSearchString] = useState<string>("")
+
+	const location = useLocation()
+	const searchParams = new URLSearchParams(location.search)
+	const page = searchParams.get("page")
+
+	useEffect(() => {
+		if (page) {
+			setCurrentPage(Number(page))
+		} else {
+			setCurrentPage(1)
+		}
+		// eslint-disable-next-line react-hooks/exhaustive-deps
+	}, [])
 
 	useEffect(() => {
 		getUsersPage()

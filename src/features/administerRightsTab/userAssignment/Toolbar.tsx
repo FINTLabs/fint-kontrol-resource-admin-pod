@@ -19,7 +19,7 @@ const Toolbar = () => {
 	return (
 		<HStackStyled>
 			<Select label={"Vis objekttype"} onChange={(e) => setObjectTypeFilter(e.target.value)}>
-				<option value={"all"}>Alle</option>
+				<option value={""}>Alle</option>
 				{objectTypes.map((objectType) => (
 					<option key={objectType} value={objectType}>
 						{objectType}

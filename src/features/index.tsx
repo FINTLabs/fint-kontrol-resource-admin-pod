@@ -1,13 +1,15 @@
 import { PersonCheckmarkIcon, PersonPlusIcon } from "@navikt/aksel-icons"
 import { Heading, Loader, Tabs } from "@navikt/ds-react"
+import styled from "styled-components"
 
 import Index from "./assignRolesTab"
 import { PermissionsMain } from "./defineRoleTab/PermissionsMain"
 import { UsersRolesMain } from "./administerRightsTab"
-import styled from "styled-components"
 import { useSafeTabChange } from "../api/SafeTabChangeContext"
 import { useLocation, useNavigate } from "react-router-dom"
 import TieFeaturesToRolesTab from "./tieFeatureToRoleTab/tieFeaturesToRolesTab"
+import { useEffect } from "react"
+import { useUser } from "../api/UserContext"
 
 const LandingContainer = styled.div`
 	h1 {
@@ -22,10 +24,31 @@ export const LoaderStyled = styled(Loader)`
 
 const LandingComponent = () => {
 	const { currentTab, isTabModified, setCurrentTab, setIsModalVisible, setTabToRouteTo } = useSafeTabChange()
+
+	const { currentPage, setCurrentPage, resetPagination } = useUser()
+
 	const location = useLocation()
 	const searchParams = new URLSearchParams(location.search)
 	const tab = searchParams.get("tab")
+	const page = searchParams.get("page")
 	const navigate = useNavigate()
+
+	useEffect(() => {
+		if (page) {
+			setCurrentPage(Number(page))
+		} else {
+			setCurrentPage(1)
+		}
+		// eslint-disable-next-line react-hooks/exhaustive-deps
+	}, [])
+
+	useEffect(() => {
+		if (currentPage) {
+			const queryString = `?tab=${tab}&page=${currentPage}`
+			navigate(queryString)
+		}
+		// eslint-disable-next-line react-hooks/exhaustive-deps
+	}, [currentPage])
 
 	const handleChangeTab = (tabClicked: string) => {
 		if (isTabModified) {
@@ -33,6 +56,7 @@ const LandingComponent = () => {
 			setTabToRouteTo(tabClicked)
 		} else {
 			setCurrentTab(tabClicked)
+			resetPagination()
 			navigate(`?tab=${tabClicked}`)
 		}
 	}
