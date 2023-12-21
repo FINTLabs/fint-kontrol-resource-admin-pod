@@ -1,18 +1,19 @@
 import { Checkbox } from "@navikt/ds-react"
 import React, { useState } from "react"
 import { useSafeTabChange } from "../../api/SafeTabChangeContext"
+import { IFeatureOperation } from "../../api/types"
 
 interface IPermissionTableCheckbox {
 	indexForOperationsList: number
 	isCheckedProp: boolean
-	featureId: number
+	feature: IFeatureOperation
 	operationProp: string
 	notifyOperationsChanged: (indexForOperationsList: number, featureId: number, operationProp: string) => void
 }
 const PermissionsTableCheckbox = ({
 	indexForOperationsList,
 	isCheckedProp,
-	featureId,
+	feature,
 	operationProp,
 	notifyOperationsChanged
 }: IPermissionTableCheckbox) => {
@@ -24,7 +25,7 @@ const PermissionsTableCheckbox = ({
 			if (!isTabModified) {
 				setIsTabModified(true)
 			}
-			notifyOperationsChanged(indexForOperationsList, featureId, operationProp)
+			notifyOperationsChanged(indexForOperationsList, feature.featureId, operationProp)
 		}
 	}
 
@@ -36,7 +37,7 @@ const PermissionsTableCheckbox = ({
 			onChange={handleCheckboxChange}
 			disabled={operationProp === "GET"}
 		>
-			{operationProp}
+			`${feature.featureName}: ${operationProp}`
 		</Checkbox>
 	)
 }

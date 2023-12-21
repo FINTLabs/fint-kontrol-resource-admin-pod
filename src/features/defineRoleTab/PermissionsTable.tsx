@@ -68,7 +68,7 @@ export const PermissionsTable = ({
 						{availableOperations.map((operation: string, index) => (
 							<Table.DataCell key={operation}>
 								<PermissionsTableCheckbox
-									featureId={feature.featureId}
+									feature={feature}
 									indexForOperationsList={indexForFeature}
 									isCheckedProp={feature.operations.includes(operation)}
 									operationProp={operation}
