@@ -1,5 +1,5 @@
-import React, { createContext, useContext, useState, useEffect } from "react"
-import { IUser, userContextDefaultValues, IUserPage } from "./types"
+import React, { createContext, useContext, useEffect, useState } from "react"
+import { IUser, IUserPage, userContextDefaultValues } from "./types"
 import UsersRepository from "../repositories/UsersRepository"
 import { AxiosError } from "axios"
 import { toast } from "react-toastify"
@@ -8,6 +8,7 @@ import { useLocation } from "react-router-dom"
 interface UserContextType {
 	getUsersPage: () => void
 	getSpecificUserById: (userId: string) => void
+	getObjectTypesForUser: (resourceId: string) => Promise<string[]>
 	usersPage: IUserPage | null
 	specificUser: IUser | null
 	setSpecificUser: (user: IUser | null) => void
@@ -103,6 +104,19 @@ export function UserProvider({ children, basePath }: { children: React.ReactNode
 		}
 	}
 
+	const getObjectTypesForUser: (resourceId: string) => Promise<string[]> = async (resourceId: string) => {
+		try {
+			setIsLoading(true)
+			const response = await UsersRepository.getObjectTypesForUser(basePath, resourceId)
+			return response.data
+		} catch (error) {
+			// Handle errors here if necessary
+			console.error("Error fetching objectTypes:", error)
+			throw error // Throw the error to propagate it in case the caller wants to handle it
+		} finally {
+			setIsLoading(false)
+		}
+	}
 	const doCheckPagination = () => {
 		if (page) {
 			setCurrentPage(Number(page))
@@ -120,6 +134,7 @@ export function UserProvider({ children, basePath }: { children: React.ReactNode
 		<UserContext.Provider
 			value={{
 				currentPage,
+				getObjectTypesForUser,
 				getUsersPage,
 				getSpecificUserById,
 				itemsPerPage,

@@ -15,13 +15,15 @@ interface DeleteAssignmentsModalProps {
 	modalOpenProp: boolean
 	setIsDeleteModalOpen: (isOpen: boolean) => void
 	userData: IUser
+	objectTypesForUser: string[]
 }
 
 const DeleteAssignment = ({
 	setIsDeleteModalOpen,
 	modalOpenProp,
 	selectedRoleToDeleteFrom,
-	userData // TODO: userData will be updated in API, this requires refactoring when done.
+	userData, // TODO: userData will be updated in API, this requires refactoring when done.
+	objectTypesForUser
 }: DeleteAssignmentsModalProps) => {
 	const deleteRef = useRef<HTMLDialogElement>(null)
 	const [completeDelete, setCompleteDelete] = useState(false)
@@ -72,9 +74,6 @@ const DeleteAssignment = ({
 		closeModal()
 	}
 
-	// Use Set to get unique values
-	const uniqueObjectTypes = Array.from(new Set(objectTypesInUser))
-
 	return (
 		<Modal ref={deleteRef} header={{ heading: `Slett ${selectedRoleToDeleteFrom.name}?` }} onClose={closeModal}>
 			<ModalBodyStyled>
@@ -88,7 +87,7 @@ const DeleteAssignment = ({
 						label={"Velg objekttype å inkludere i sletting"}
 						onChange={(e) => setObjectTypeToDelete(e.target.value)}
 					>
-						{uniqueObjectTypes.map((objectType, index) => (
+						{objectTypesForUser.map((objectType, index) => (
 							<option key={index}>{objectType}</option>
 						))}
 					</Select>

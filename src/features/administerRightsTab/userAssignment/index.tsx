@@ -13,6 +13,8 @@ import ResetUserModal from "./modals/ResetUserModal"
 import { TrashIcon } from "@navikt/aksel-icons"
 import Toolbar from "./Toolbar"
 import { useAssignments } from "../../../api/AssignmentContext"
+import { log } from "util"
+import { toast } from "react-toastify"
 
 const UserAssignmentContainer = styled.div`
 	display: flex;
@@ -25,7 +27,8 @@ interface UserAssignmentPageProps {
 }
 
 const Index = ({ basePath }: UserAssignmentPageProps) => {
-	const { isLoading, setIsLoading, getSpecificUserById, specificUser, setSpecificUser } = useUser()
+	const { isLoading, setIsLoading, getSpecificUserById, getObjectTypesForUser, specificUser, setSpecificUser } =
+		useUser()
 	const { roles } = useRole()
 	const {
 		currentPage,
@@ -41,9 +44,22 @@ const Index = ({ basePath }: UserAssignmentPageProps) => {
 	const navigate = useNavigate()
 
 	const [selectedRole, setSelectedRole] = useState<IRole>({ accessRoleId: "", name: "" })
+	const [objectTypesForUser, setObjectTypesForUser] = useState<string[]>([])
 
 	const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false)
 	const [isResetRolesModalOpen, setIsResetRolesModalOpen] = useState(false)
+
+	useEffect(() => {
+		const fetchObjectTypesForUser = async () => {
+			if (userId) {
+				await getObjectTypesForUser(userId)
+					.then((res) => setObjectTypesForUser(res))
+					.catch((e) => toast.error("Henting av objekttyper på brukeren feilet"))
+			}
+		}
+		fetchObjectTypesForUser()
+		// eslint-disable-next-line react-hooks/exhaustive-deps
+	}, [])
 
 	useEffect(() => {
 		if (userId) {
@@ -163,7 +179,7 @@ const Index = ({ basePath }: UserAssignmentPageProps) => {
 							<>Brukeren har ingen roller</>
 						) : (
 							<>
-								<Toolbar />
+								<Toolbar objectTypesForUser={objectTypesForUser} />
 								<RoleOrgunitAssociationTable selectedRole={selectedRole} userId={userId} />
 							</>
 						)}
@@ -184,6 +200,7 @@ const Index = ({ basePath }: UserAssignmentPageProps) => {
 					selectedRoleToDeleteFrom={selectedRole}
 					modalOpenProp={isDeleteModalOpen}
 					setIsDeleteModalOpen={setIsDeleteModalOpen}
+					objectTypesForUser={objectTypesForUser}
 				/>
 			)}
 		</UserAssignmentContainer>

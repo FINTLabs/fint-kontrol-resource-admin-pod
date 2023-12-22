@@ -9,10 +9,11 @@ const HStackStyled = styled(HStack)`
 	align-items: end;
 	gap: 2rem;
 `
-
-const Toolbar = () => {
+interface ToolbarProps {
+	objectTypesForUser: string[]
+}
+const Toolbar = ({ objectTypesForUser }: ToolbarProps) => {
 	const { setObjectTypeFilter, setOrgUnitSearchString } = useAssignments()
-	const objectTypes = ["license", "device", "orgunit", "user", "role", "resource"] // This will change when API is ready
 
 	const [searchString, setSearchString] = useState("")
 
@@ -20,7 +21,7 @@ const Toolbar = () => {
 		<HStackStyled>
 			<Select label={"Vis objekttype"} onChange={(e) => setObjectTypeFilter(e.target.value)}>
 				<option value={""}>Alle</option>
-				{objectTypes.map((objectType) => (
+				{objectTypesForUser.map((objectType) => (
 					<option key={objectType} value={objectType}>
 						{objectType}
 					</option>

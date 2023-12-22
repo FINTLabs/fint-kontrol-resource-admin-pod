@@ -99,48 +99,45 @@ const OrgUnitTreeWithUserConnectionOrganism = ({
 		}
 	}
 
-	const renderTree = (nodes: IOrgUnit) => {
+	const renderTree = (node: IOrgUnit) => {
+		console.log(node.organisationUnitId)
 		return (
-			<StyledAccordion key={nodes.organisationUnitId}>
-				<Accordion.Item>
-					<Accordion.Header>
-						<Checkbox
-							id={`node-${nodes.organisationUnitId}`}
-							checked={selectedOrgUnits.some(
-								(unit) => unit.organisationUnitId === nodes.organisationUnitId
-							)}
-							onClick={(event) => {
-								event.stopPropagation()
-								handleCheckboxClick(nodes)
-							}}
-						>
-							{nodes.name}
-						</Checkbox>
-					</Accordion.Header>
-					<Accordion.Content>
-						{Array.isArray(nodes.childrenRef)
-							? nodes.childrenRef.map((nodeId: string) => {
-									const node = orgUnitsData?.orgUnits.find((n) => n.organisationUnitId === nodeId)
-									if (node) {
-										return renderTree(node)
-									}
-									return null
-							  })
-							: null}
-					</Accordion.Content>
-				</Accordion.Item>
-			</StyledAccordion>
+			<Accordion.Item>
+				<Accordion.Header>
+					<Checkbox
+						checked={selectedOrgUnits.some((unit) => unit.organisationUnitId === node.organisationUnitId)}
+						onClick={(event) => {
+							event.stopPropagation()
+							handleCheckboxClick(node)
+						}}
+					>
+						{node.name}
+					</Checkbox>
+				</Accordion.Header>
+				<Accordion.Content>
+					{Array.isArray(node.childrenRef)
+						? node.childrenRef.map((nodeId: string) => {
+								const node = orgUnitsData?.orgUnits.find((n) => n.organisationUnitId === nodeId)
+								if (node) {
+									return renderTree(node)
+								}
+								return null
+						  })
+						: null}
+				</Accordion.Content>
+			</Accordion.Item>
 		)
 	}
 
 	return (
 		<>
 			<b>Velg orgenheter</b>
-			{orgUnitsData?.orgUnits?.map((node: any) => {
+			{orgUnitsData?.orgUnits?.map((node: IOrgUnit) => {
 				if (node.parentRef !== node.organisationUnitId) {
 					return null
 				}
-				return renderTree(node)
+
+				return <StyledAccordion key={node.organisationUnitId}>{renderTree(node)}</StyledAccordion>
 			})}
 		</>
 	)
