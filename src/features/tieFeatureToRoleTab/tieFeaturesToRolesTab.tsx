@@ -5,6 +5,7 @@ import React, { useEffect, useState } from "react"
 import { useRole } from "../../api/RoleContext"
 import { useFeatures } from "../../api/FeatureContext"
 import { LoaderStyled } from "../index"
+import FeatureTable from "./featureTable"
 
 const ConnectionContainer = styled.div`
 	display: flex;
@@ -79,8 +80,6 @@ const TieFeaturesToRolesTab = () => {
 		putFeaturesToRole(updatedPermissionData)
 	}
 
-	const flatListOfIds = updatedPermissionData.features.flatMap((feature) => String(feature.featureId))
-
 	return (
 		<>
 			<Heading size={"small"}>Knytt features til roller</Heading>
@@ -109,38 +108,11 @@ const TieFeaturesToRolesTab = () => {
 						<LoaderStyled size={"3xlarge"} />
 					) : (
 						<>
-							<Table>
-								<Table.Header>
-									<Table.Row>
-										<Table.HeaderCell>Featurenavn</Table.HeaderCell>
-										<Table.HeaderCell align={"center"}>Knytt til rolle</Table.HeaderCell>
-									</Table.Row>
-								</Table.Header>
-								<Table.Body>
-									{allFeatures.map((feature) => (
-										<Table.Row key={feature.id}>
-											<Table.DataCell>{feature.name}</Table.DataCell>
-											<Table.DataCell align={"center"}>
-												{!flatListOfIds.includes(String(feature.id)) ? (
-													<Button
-														variant={"secondary"}
-														onClick={() => handleUpdatePermissionData(feature)}
-													>
-														Lag knytning til bruker
-													</Button>
-												) : (
-													<Button
-														variant={"danger"}
-														onClick={() => handleUpdatePermissionData(feature)}
-													>
-														Fjern knytning
-													</Button>
-												)}
-											</Table.DataCell>
-										</Table.Row>
-									))}
-								</Table.Body>
-							</Table>
+							<FeatureTable
+								allFeatures={allFeatures}
+								handleUpdatePermissionData={handleUpdatePermissionData}
+								updatedPermissionData={updatedPermissionData}
+							/>
 
 							<div className={"summary"}>
 								<Heading size={"small"}>Features lagt til</Heading>

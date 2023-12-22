@@ -18,4 +18,9 @@ describe("Check 'Knytt features til roller'", () => {
 		cy.get("select").select("accessRole1")
 		wait(1000)
 	})
+
+	it("Can see contents in table", () => {
+		cy.get("#features-table td").contains("Alle brukere").should("exist")
+		wait(1000)
+	})
 })

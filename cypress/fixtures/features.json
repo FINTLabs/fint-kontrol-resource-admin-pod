@@ -1,22 +1,22 @@
 [
 	{
-		"featureId": "1",
-		"featureName": "Alle brukere"
+		"id": "1",
+		"name": "Alle brukere"
 	},
 	{
-		"featureId": "2",
-		"featureName": "En bruker"
+		"id": "2",
+		"name": "En bruker"
 	},
 	{
-		"featureId": "3",
-		"featureName": "Grupper"
+		"id": "3",
+		"name": "Grupper"
 	},
 	{
-		"featureId": "4",
-		"featureName": "En gruppe"
+		"id": "4",
+		"name": "En gruppe"
 	},
 	{
-		"featureId": "5",
-		"featureName": "Ressurser"
+		"id": "5",
+		"name": "Ressurser"
 	}
 ]
