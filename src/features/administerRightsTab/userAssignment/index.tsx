@@ -32,6 +32,7 @@ const UserAssignment = ({ basePath }: UserAssignmentPageProps) => {
 	const {
 		currentPage,
 		itemsPerPage,
+		isLoading: loadingAssignmentData,
 		selectedRoleFilter,
 		objectTypeFilter,
 		orgUnitSearchString,
@@ -58,7 +59,7 @@ const UserAssignment = ({ basePath }: UserAssignmentPageProps) => {
 		}
 		fetchObjectTypesForUser()
 		// eslint-disable-next-line react-hooks/exhaustive-deps
-	}, [])
+	}, [loadingAssignmentData])
 
 	useEffect(() => {
 		if (userId) {
