@@ -27,24 +27,10 @@ const DeleteAssignment = ({
 }: DeleteAssignmentsModalProps) => {
 	const deleteRef = useRef<HTMLDialogElement>(null)
 	const [completeDelete, setCompleteDelete] = useState(false)
-	const [objectTypesInUser, setObjectTypesInUser] = useState<string[]>([])
 
-	const [objectTypeToDelete, setObjectTypeToDelete] = useState("")
+	const [objectTypeToDelete, setObjectTypeToDelete] = useState(objectTypesForUser[0])
 
-	const { deleteAssignmentById, userDetailsPage } = useAssignments()
-
-	useEffect(() => {
-		// TODO: This must be refactored when an API endpoint is avaialble to retrieve objectTypesInUserOrgUnits. This is to reduce frontend load scalability.
-		const objectTypesInUserOrgUnits = userDetailsPage?.accessRoles.flatMap((role) =>
-			role.orgUnits.map((orgUnit) => orgUnit.objectType)
-		)
-
-		if (objectTypesInUserOrgUnits) {
-			setObjectTypeToDelete(objectTypesInUserOrgUnits[0])
-			setObjectTypesInUser(objectTypesInUserOrgUnits)
-		}
-		// eslint-disable-next-line react-hooks/exhaustive-deps
-	}, [userData])
+	const { deleteAssignmentById } = useAssignments()
 
 	useEffect(() => {
 		if (selectedRoleToDeleteFrom.accessRoleId.length > 0 || modalOpenProp) {

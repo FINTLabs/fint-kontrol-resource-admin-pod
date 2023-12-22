@@ -1,4 +1,4 @@
-import { Button, Heading, Select, Table } from "@navikt/ds-react"
+import { Button, Heading, Select } from "@navikt/ds-react"
 import styled from "styled-components"
 import { IFeature, IFeatureOperation, IPermissionData } from "../../api/types"
 import React, { useEffect, useState } from "react"
