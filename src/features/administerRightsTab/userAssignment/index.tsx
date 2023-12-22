@@ -13,7 +13,6 @@ import ResetUserModal from "./modals/ResetUserModal"
 import { TrashIcon } from "@navikt/aksel-icons"
 import Toolbar from "./Toolbar"
 import { useAssignments } from "../../../api/AssignmentContext"
-import { log } from "util"
 import { toast } from "react-toastify"
 
 const UserAssignmentContainer = styled.div`
