@@ -7,7 +7,7 @@ import { UserProvider } from "./api/UserContext"
 import { SafeTabChangeProvider } from "./api/SafeTabChangeContext"
 import { AssignmentProvider } from "./api/AssignmentContext"
 import SuccessfulCreation from "./features/successfulCreation"
-import Index from "./features/administerRightsTab/userAssignment"
+import UserAssignment from "./features/administerRightsTab/userAssignment"
 import { useGeneral } from "./api/GeneralContext"
 import { FeaturesProvider } from "./api/FeatureContext"
 import NotFound from "./features/404"
@@ -37,7 +37,7 @@ function App() {
 									/>
 									<Route
 										path={`${basePath}/ressurser-admin/tildelingsadmin/id/:userId`}
-										element={<Index basePath={basePath} />}
+										element={<UserAssignment basePath={basePath} />}
 									/>
 
 									<Route path="*" element={<NotFound />} />

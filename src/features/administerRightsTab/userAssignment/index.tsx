@@ -25,7 +25,7 @@ interface UserAssignmentPageProps {
 	basePath: string
 }
 
-const Index = ({ basePath }: UserAssignmentPageProps) => {
+const UserAssignment = ({ basePath }: UserAssignmentPageProps) => {
 	const { isLoading, setIsLoading, getSpecificUserById, getObjectTypesForUser, specificUser, setSpecificUser } =
 		useUser()
 	const { roles } = useRole()
@@ -206,4 +206,4 @@ const Index = ({ basePath }: UserAssignmentPageProps) => {
 	)
 }
 
-export default Index
+export default UserAssignment

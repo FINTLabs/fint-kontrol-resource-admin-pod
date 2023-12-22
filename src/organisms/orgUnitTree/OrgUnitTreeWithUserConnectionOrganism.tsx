@@ -100,9 +100,8 @@ const OrgUnitTreeWithUserConnectionOrganism = ({
 	}
 
 	const renderTree = (node: IOrgUnit) => {
-		console.log(node.organisationUnitId)
 		return (
-			<Accordion.Item>
+			<Accordion.Item key={node.id + " " + node.organisationUnitId}>
 				<Accordion.Header>
 					<Checkbox
 						checked={selectedOrgUnits.some((unit) => unit.organisationUnitId === node.organisationUnitId)}
