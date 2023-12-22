@@ -87,7 +87,10 @@ const getUserDetailsNoPagination = (basePath: string, resourceId: string) => {
 }
 
 const getObjectTypesForUser = (basePath: string, resourceId: string) => {
-	const url = `${basePath === "/" ? "" : basePath}/api/accessmanagement/v1/accessassignment/objecttypes`
+	const url = `${
+		basePath === "/" ? "" : basePath
+	}/api/accessmanagement/v1/accessassignment/user/${resourceId}/objecttypes`
+
 	return axios.get<Promise<string[]>>(url)
 }
 
