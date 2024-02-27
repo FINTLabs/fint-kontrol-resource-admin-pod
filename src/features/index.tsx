@@ -44,7 +44,7 @@ const LandingComponent = () => {
 
 	const handlePagination = (newPage: number) => {
 		setCurrentPage(newPage)
-		const queryString = `?tab=${tab}&page=${newPage}`
+		const queryString = tab != null ? `?tab=${tab}&page=${newPage}` : `?page=${newPage}`
 		navigate(queryString)
 	}
 
